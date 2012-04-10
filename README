@@ -1,2 +1,40 @@
 Hej Dexter
 Hej Andreas
+
+Namn: Lauzer wars! - The Legacy of Fredrik Laurell
+
+Lasrar!
+Man går runt i ett rutnät. Och skjuter folk. Med Lausrar! Köpta från kina!
+
+Olagliga Lausrar!
+
+speglarna försvinner efter x träffar, då spawnas en ny spegel
+ljudklipp!
+Exakt såhär ska det se ut:
+http://puu.sh/m1Qr
+
+Att göra innan:
+kolla upp github
+kolla upp typ canvas och listeners
+Prata med mattis.
+Titta på Kontakt med Jodi foster
+
+Idéer:
+"rutor" som objekt? med referenser till angränsande rutor, storlek, typ "haslaser" osv som fält.
+Interface tile? Implementera med typ MirrorTile, BlockTile osv.
+
+Tänk på: Ska bara gå att spawna speglar på tiles som är “tomma” i alla riktningar.
+
+Kolla lite på bomberman! Lasern sprids typ lika snabbt, men försvinner snabbare? (än explosionerna) Även storlek på banorna bra att kolla.
+
+Klasser:
+Tile (Interface eller abstrakt eller superklass)
+OpenTile (Öppen i alla riktningar, kan spawna speglar)
+ClosedTile (Ej öppen i alla riktning, kan ej spawna speglar)
+BoxTile
+MirrorTile
+Player
+typ Controls? (Player har ett fält: Private Controls, mata in typ up, down, left, right, laser. Alltså vilken tangent som ska användas till vad.)
+
+Problem att lösa:
+Riktning man tittar åt. Typ, ett knapptryck roterar spelaren, två flyttar. Eller shift+riktning roterar, etc.
