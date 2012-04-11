@@ -6,6 +6,10 @@
 	<classpathentry kind="lib" path="lib/jorbis-0.0.15.jar"/>
 	<classpathentry kind="lib" path="lib/phys2d.jar"/>
 	<classpathentry kind="lib" path="lib/slick.jar"/>
-	<classpathentry kind="lib" path="lib/lwjgl-2.8.3/jar/lwjgl.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl-2.8.3/jar/lwjgl.jar" sourcepath="lib/lwjgl-2.8.3">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Lauzer-Wars/lib/lwjgl-2.8.3/native/windows"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
