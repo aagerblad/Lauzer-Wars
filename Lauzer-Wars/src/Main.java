@@ -74,6 +74,7 @@ public class Main extends BasicGame {
 			if (distance == speed) {
 				walkingA = false;
 				distance = 0;
+				key_Apressed = false;
 			} else {
 				player1positionX--;
 				distance += 1;
@@ -93,10 +94,12 @@ public class Main extends BasicGame {
 		} else {
 			key_Dpressed = false;
 		}
+		
 		if (walkingD == true) {
 			if (distance == speed) {
 				walkingD = false;
 				distance = 0;
+				key_Dpressed = false;
 			} else {
 				player1positionX++;
 				distance += 1;
@@ -107,11 +110,11 @@ public class Main extends BasicGame {
 
 			if (player1positionY > 0 && !key_Wpressed) {
 				key_Wpressed = true;
-				if (player1.getRotation() == 0) {
+				if (player1.getRotation() == 180) {
 					walkingW = true;
 				} else {
 
-					player1.setRotation(0);
+					player1.setRotation(180);
 
 				}
 
@@ -119,10 +122,12 @@ public class Main extends BasicGame {
 		} else {
 			key_Wpressed = false;
 		}
+		
 		if (walkingW == true) {
 			if (distance == speed) {
 				walkingW = false;
 				distance = 0;
+				key_Wpressed = false;
 			} else {
 				player1positionY--;
 				distance += 1;
@@ -132,19 +137,21 @@ public class Main extends BasicGame {
 		if (input.isKeyDown(Input.KEY_S)) {
 			if (player1positionY < (600 - player1.getHeight()) && !key_Spressed) {
 				key_Spressed = true;
-				if (player1.getRotation() == 180) {
+				if (player1.getRotation() == 0) {
 					walkingS = true;
 				} else {
-					player1.setRotation(180);
+					player1.setRotation(0);
 				}
 			}
 		} else {
 			key_Spressed = false;
 		}
+		
 		if (walkingS == true) {
 			if (distance == speed) {
 				walkingS = false;
 				distance = 0;
+				key_Spressed = false;
 			} else {
 				player1positionY++;
 				distance += 1;
