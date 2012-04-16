@@ -20,7 +20,13 @@ public class Player {
 	private float distance = 0;
 	private static final float SPEED = 100;
 	
-	public Player (Image image, float posX, float posY) {
+	/**
+	 * Creates a player-object
+	 * @param image Sprite for character
+	 * @param posX starting coordinate, x-wise
+	 * @param posY starting coordinate, y-wise
+	 */
+	public Player (String name, Image image, float posX, float posY) {
 		this.posX = posX;
 		this.posY = posY;
 		this.image = image;
@@ -56,24 +62,32 @@ public class Player {
 	public void moveNorth() {
 		if (posY > 0) {
 			move(NORTH, ROTATION_NORTH);
+		} else {
+			setRotation(ROTATION_NORTH);
 		}
 	}
 
 	public void moveWest() {
 		if (posX > 0) {
 			move(WEST,ROTATION_WEST);			
+		} else {
+			setRotation(ROTATION_WEST);
 		}
 	}
 	
 	public void moveSouth() {
 		if (posY < 500) { //TODO
 			move(SOUTH,ROTATION_SOUTH);			
+		} else {
+			setRotation(ROTATION_SOUTH);
 		}
 	}
 	
 	public void moveEast() {
 		if (posX < 700) { //TODO
 			move(EAST, ROTATION_EAST);
+		} else {
+			setRotation(ROTATION_EAST);
 		}
 	}
 	

@@ -40,8 +40,8 @@ public class Game extends BasicGame {
 	@Override
 	public void init(GameContainer arg0) throws SlickException {
 
-		player1 = new Player(new Image("src/resource/sprite.png"), 0, 0);
-		player2 = new Player(new Image("src/resource/sprite.png"), 400, 400);
+		player1 = new Player("Dexter", new Image("src/resource/sprite.png"), 0, 0);
+		player2 = new Player("Andreas", new Image("src/resource/sprite.png"), 400, 400);
 
 	}
 
