@@ -95,7 +95,7 @@ public class Player {
 		boolean directionPressed = isKeyPressed[direction];
 		if (!directionPressed) {
 			isKeyPressed[direction]= true;
-			if (image.getRotation() == wantedRotation) {
+			if (image.getRotation() == wantedRotation && !aldreadyWalking()) {
 				isWalking[direction] = true;
 			} else {
 				image.setRotation(wantedRotation);
@@ -137,6 +137,14 @@ public class Player {
 			distance += 1;
 		}
 		
+	}
+	private boolean aldreadyWalking(){
+		for (int i = 0; i < isWalking.length; i++) {
+			if (isWalking[i] == true) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 
