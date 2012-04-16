@@ -4,6 +4,7 @@ import org.newdawn.slick.Image;
 public class Player {
 	
 	private Image image = null;
+	private float scale = 1.0f;
 	private float posX = 0;
 	private float posY = 0;
 	private static final int ROTATION_NORTH = 0;
@@ -19,7 +20,9 @@ public class Player {
 	private float distance = 0;
 	private static final float SPEED = 100;
 	
-	public Player (Image image) {
+	public Player (Image image, float posX, float posY) {
+		this.posX = posX;
+		this.posY = posY;
 		this.image = image;
 		isWalking = new boolean[4];
 		isKeyPressed = new boolean[4];
@@ -36,6 +39,10 @@ public class Player {
 	
 	public float getPosY() {
 		return posY;
+	}
+	
+	public float getScale() {
+		return scale;
 	}
 	
 	public float getRotation() {
