@@ -87,6 +87,7 @@ public class Game extends BasicGame {
 	public void update(GameContainer gc, int delta) throws SlickException {
 		Input input = gc.getInput();
 
+		// Makes sure the game stays at the set framrate.
 		timePile += delta;
 		while (timePile >= msPerFrame) {
 			timePile -= msPerFrame;
@@ -103,6 +104,9 @@ public class Game extends BasicGame {
 	 *            The pressed key.
 	 */
 	private void handleInput(Input input) {
+		// Player 1
+
+		// Handles the case where the player wants to move west.
 		if (input.isKeyDown(Input.KEY_A)) {
 			player1.moveWest();
 		} else {
@@ -113,6 +117,7 @@ public class Game extends BasicGame {
 			player1.walkAnimate(WEST);
 		}
 
+		// Handles the case where the player wants to move east.
 		if (input.isKeyDown(Input.KEY_D)) {
 			player1.moveEast();
 		} else {
@@ -123,6 +128,7 @@ public class Game extends BasicGame {
 			player1.walkAnimate(EAST);
 		}
 
+		// Handles the case where the player wants to move north.
 		if (input.isKeyDown(Input.KEY_W)) {
 			player1.moveNorth();
 		} else {
@@ -133,6 +139,7 @@ public class Game extends BasicGame {
 			player1.walkAnimate(NORTH);
 		}
 
+		// Handles the case where the player wants to move south.
 		if (input.isKeyDown(Input.KEY_S)) {
 			player1.moveSouth();
 		} else {
@@ -143,6 +150,9 @@ public class Game extends BasicGame {
 			player1.walkAnimate(SOUTH);
 		}
 
+		// Player 2
+
+		// Handles the case where the player wants to move west.
 		if (input.isKeyDown(Input.KEY_LEFT)) {
 			player2.moveWest();
 		} else {
@@ -153,6 +163,7 @@ public class Game extends BasicGame {
 			player2.walkAnimate(WEST);
 		}
 
+		// Handles the case where the player wants to move east.
 		if (input.isKeyDown(Input.KEY_RIGHT)) {
 			player2.moveEast();
 		} else {
@@ -163,6 +174,7 @@ public class Game extends BasicGame {
 			player2.walkAnimate(EAST);
 		}
 
+		// Handles the case where the player wants to move north.
 		if (input.isKeyDown(Input.KEY_UP)) {
 			player2.moveNorth();
 		} else {
@@ -173,6 +185,7 @@ public class Game extends BasicGame {
 			player2.walkAnimate(NORTH);
 		}
 
+		// Handles the case where the player wants to move south.
 		if (input.isKeyDown(Input.KEY_DOWN)) {
 			player2.moveSouth();
 		} else {
