@@ -13,7 +13,7 @@ public class Game extends BasicGame {
 	Player player1 = null;
 	Player player2 = null;
 	private static final int NORTH = 0;
-	private static final int WEST= 1;
+	private static final int WEST = 1;
 	private static final int SOUTH = 2;
 	private static final int EAST = 3;
 
@@ -32,16 +32,20 @@ public class Game extends BasicGame {
 
 	@Override
 	public void render(GameContainer arg0, Graphics arg1) throws SlickException {
-		player1.getImage().draw(player1.getPosX(), player1.getPosY(), player1.getScale());
-		player2.getImage().draw(player2.getPosX(), player2.getPosY(), player2.getScale());
+		player1.getImage().draw(player1.getPosX(), player1.getPosY(),
+				player1.getScale());
+		player2.getImage().draw(player2.getPosX(), player2.getPosY(),
+				player2.getScale());
 
 	}
 
 	@Override
 	public void init(GameContainer arg0) throws SlickException {
 
-		player1 = new Player("Dexter", new Image("src/resource/sprite.png"), 0, 0);
-		player2 = new Player("Andreas", new Image("src/resource/sprite.png"), 400, 400);
+		player1 = new Player("Dexter", new Image("src/resource/sprite.png"), 0,
+				0);
+		player2 = new Player("Andreas", new Image("src/resource/sprite.png"),
+				400, 400);
 
 	}
 
@@ -58,14 +62,13 @@ public class Game extends BasicGame {
 		if (player1.isWalking(WEST)) {
 			player1.walkAnimate(WEST);
 		}
-		
 
 		if (input.isKeyDown(Input.KEY_D)) {
 			player1.moveEast();
 		} else {
 			player1.setKeyPressed(EAST, false);
 		}
-		
+
 		if (player1.isWalking(EAST)) {
 			player1.walkAnimate(EAST);
 		}
@@ -75,7 +78,7 @@ public class Game extends BasicGame {
 		} else {
 			player1.setKeyPressed(NORTH, false);
 		}
-		
+
 		if (player1.isWalking(NORTH)) {
 			player1.walkAnimate(NORTH);
 		}
@@ -85,7 +88,7 @@ public class Game extends BasicGame {
 		} else {
 			player1.setKeyPressed(SOUTH, false);
 		}
-		
+
 		if (player1.isWalking(SOUTH)) {
 			player1.walkAnimate(SOUTH);
 		}
@@ -95,17 +98,17 @@ public class Game extends BasicGame {
 		} else {
 			player2.setKeyPressed(WEST, false);
 		}
-		
+
 		if (player2.isWalking(WEST)) {
 			player2.walkAnimate(WEST);
 		}
-		
+
 		if (input.isKeyDown(Input.KEY_RIGHT)) {
 			player2.moveEast();
 		} else {
 			player2.setKeyPressed(EAST, false);
 		}
-		
+
 		if (player2.isWalking(EAST)) {
 			player2.walkAnimate(EAST);
 		}
@@ -115,7 +118,7 @@ public class Game extends BasicGame {
 		} else {
 			player2.setKeyPressed(NORTH, false);
 		}
-		
+
 		if (player2.isWalking(NORTH)) {
 			player2.walkAnimate(NORTH);
 		}
@@ -125,7 +128,7 @@ public class Game extends BasicGame {
 		} else {
 			player2.setKeyPressed(SOUTH, false);
 		}
-		
+
 		if (player2.isWalking(SOUTH)) {
 			player2.walkAnimate(SOUTH);
 		}
