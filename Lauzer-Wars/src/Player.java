@@ -130,7 +130,7 @@ public class Player {
 			float distanceLeft = TILE_DISTANCE - distance;
 			switch (direction) {
 			case NORTH:
-				if (walkedTooFar()) {
+				if (walkOverLap()) {
 					posY -= distanceLeft;
 					distance = TILE_DISTANCE - SPEED;
 				} else {
@@ -138,7 +138,7 @@ public class Player {
 				}
 				break;
 			case WEST:
-				if (walkedTooFar()) {
+				if (walkOverLap()) {
 					posX -= distanceLeft;
 					distance = TILE_DISTANCE - SPEED;
 				} else {
@@ -146,7 +146,7 @@ public class Player {
 				}
 				break;
 			case SOUTH:
-				if (walkedTooFar()) {
+				if (walkOverLap()) {
 					posY += distanceLeft;
 					distance = TILE_DISTANCE - SPEED;
 				} else {
@@ -154,7 +154,7 @@ public class Player {
 				}
 				break;
 			case EAST:
-				if (walkedTooFar()) {
+				if (walkOverLap()) {
 					posX += distanceLeft;
 					distance = TILE_DISTANCE - SPEED;
 				} else {
@@ -171,7 +171,7 @@ public class Player {
 
 	}
 
-	private boolean walkedTooFar() {
+	private boolean walkOverLap() {
 		return distance + SPEED > TILE_DISTANCE;
 	}
 

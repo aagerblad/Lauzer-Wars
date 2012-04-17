@@ -83,6 +83,9 @@ public class Game extends BasicGame {
 
 	}
 
+	/**
+	 * Updates the game world.
+	 */
 	@Override
 	public void update(GameContainer gc, int delta) throws SlickException {
 		Input input = gc.getInput();
