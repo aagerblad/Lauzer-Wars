@@ -132,35 +132,35 @@ public class Player {
 			case NORTH:
 				if (walkOverLap()) {
 					posY -= distanceLeft;
-					distance = TILE_DISTANCE - SPEED;
+					break;
 				} else {
 					posY -= SPEED;
+					break;
 				}
-				break;
 			case WEST:
 				if (walkOverLap()) {
 					posX -= distanceLeft;
-					distance = TILE_DISTANCE - SPEED;
+					break;
 				} else {
 					posX -= SPEED;
+					break;
 				}
-				break;
 			case SOUTH:
 				if (walkOverLap()) {
 					posY += distanceLeft;
-					distance = TILE_DISTANCE - SPEED;
+					break;
 				} else {
 					posY += SPEED;
+					break;
 				}
-				break;
 			case EAST:
 				if (walkOverLap()) {
 					posX += distanceLeft;
-					distance = TILE_DISTANCE - SPEED;
+					break;
 				} else {
 					posX += SPEED;
+					break;
 				}
-				break;
 			default:
 				System.err.println("Något gick feeeeel!!!!"); // Should this be
 																// here? //TODO
