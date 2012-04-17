@@ -18,7 +18,9 @@ public class Player {
 	private boolean[] isWalking = null;
 	private boolean[] isKeyPressed = null; 
 	private float distance = 0;
-	private static final float SPEED = 100;
+	private static final float TILE_DISTANCE = 100;
+	private static final float SPEED = 1.0f; 
+	//Only floats which equals TILE_DISTANCE/n where n is a integer
 	
 	/**
 	 * Creates a player-object
@@ -112,29 +114,29 @@ public class Player {
 	}
 	
 	public void walkAnimate(int direction) {
-		if (distance == SPEED) {
+		if (distance >= TILE_DISTANCE) {
 			isWalking[direction] = false;
 			distance = 0;
 			isKeyPressed[direction] = false;
 		} else {
 			switch (direction) {
 			case NORTH:
-				posY--;
+				posY-= SPEED;
 				break;
 			case WEST:
-				posX--;
+				posX-= SPEED;
 				break;
 			case SOUTH:
-				posY++;
+				posY+=SPEED;
 				break;
 			case EAST:
-				posX++;
+				posX+=SPEED;
 				break;
 			default:
 				System.err.println("Något gick feeeeel!!!!"); //Should this be here? //TODO
 				break;
 			}
-			distance += 1;
+			distance += SPEED;
 		}
 		
 	}
