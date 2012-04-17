@@ -1,5 +1,9 @@
 import org.newdawn.slick.Image;
 
+/**
+ * @author Dexter
+ * 
+ */
 public class Player {
 
 	private Image image = null;
@@ -123,11 +127,11 @@ public class Player {
 			distance = 0;
 			isKeyPressed[direction] = false;
 		} else {
-			float overStep = TILE_DISTANCE - distance;
+			float distanceLeft = TILE_DISTANCE - distance;
 			switch (direction) {
 			case NORTH:
 				if (walkedTooFar()) {
-					posY -= overStep;
+					posY -= distanceLeft;
 					distance = TILE_DISTANCE - SPEED;
 				} else {
 					posY -= SPEED;
@@ -135,7 +139,7 @@ public class Player {
 				break;
 			case WEST:
 				if (walkedTooFar()) {
-					posX -= overStep;
+					posX -= distanceLeft;
 					distance = TILE_DISTANCE - SPEED;
 				} else {
 					posX -= SPEED;
@@ -143,7 +147,7 @@ public class Player {
 				break;
 			case SOUTH:
 				if (walkedTooFar()) {
-					posY += overStep;
+					posY += distanceLeft;
 					distance = TILE_DISTANCE - SPEED;
 				} else {
 					posY += SPEED;
@@ -151,7 +155,7 @@ public class Player {
 				break;
 			case EAST:
 				if (walkedTooFar()) {
-					posX += overStep;
+					posX += distanceLeft;
 					distance = TILE_DISTANCE - SPEED;
 				} else {
 					posX += SPEED;

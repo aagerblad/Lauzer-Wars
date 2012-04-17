@@ -104,7 +104,8 @@ public class Game extends BasicGame {
 	 *            The pressed key.
 	 */
 	private void handleInput(Input input) {
-		// Player 1
+		// Player 1:
+		// The following methods handle the first player's input.
 
 		// Handles the case where the player wants to move west.
 		if (input.isKeyDown(Input.KEY_A)) {
@@ -151,6 +152,7 @@ public class Game extends BasicGame {
 		}
 
 		// Player 2
+		// The following methods handle the first player's input.
 
 		// Handles the case where the player wants to move west.
 		if (input.isKeyDown(Input.KEY_LEFT)) {
