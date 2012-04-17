@@ -4,8 +4,8 @@ import org.newdawn.slick.SlickException;
 
 public class Mirror {
 	
-	private static final int NORTH_EAST_ORIENTATION = 1;
-	private static final int NORTH_WEST_ORIENTATION = -1;
+	private static final int NORTH_EAST_ORIENTATION = 0;
+	private static final int NORTH_WEST_ORIENTATION = 1;
 	private Image image = null;
 	private int orientation = 0; 
 	
@@ -18,7 +18,7 @@ public class Mirror {
 			
 		case NORTH_WEST_ORIENTATION:
 			this.orientation = orientation;
-			image = new Image("src/resource/Mirroe NE.png");
+			image = new Image("src/resource/Mirror NE.png");
 			image.rotate(90);
 			break;
 
@@ -30,6 +30,10 @@ public class Mirror {
 	
 	public int getOrientation() {
 		return orientation;
+	}
+	
+	public Image getImage() {
+		return image;
 	}
 	
 

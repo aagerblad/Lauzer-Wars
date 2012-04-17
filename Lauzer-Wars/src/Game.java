@@ -1,3 +1,5 @@
+import java.util.Random;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
@@ -19,6 +21,7 @@ public class Game extends BasicGame {
 	private static final int NUMBER_OF_X_TILES = 8;
 	private static final int NUMBER_OF_Y_TILES = 6;
 	private Tile[][] map = null;
+	private Random random = null;
 
 	
 	public Game() {
@@ -28,6 +31,7 @@ public class Game extends BasicGame {
 	public static void main(String[] args) throws SlickException {
 		AppGameContainer app = null;
 		app = new AppGameContainer(new Game());
+		
 
 		app.setDisplayMode(SIZE_X, SIZE_Y, false);
 		app.start();
@@ -36,6 +40,14 @@ public class Game extends BasicGame {
 
 	@Override
 	public void render(GameContainer arg0, Graphics arg1) throws SlickException {
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[i].length; j++) {
+				if (map[i][j].hasMirror()) {
+					map[i][j].getMirror().getImage().draw(100*i, 100*j);
+					
+				}
+			}
+		}
 		player1.getImage().draw(player1.getPosX(), player1.getPosY(), player1.getScale());
 		player2.getImage().draw(player2.getPosX(), player2.getPosY(), player2.getScale());
 
@@ -44,8 +56,15 @@ public class Game extends BasicGame {
 	@Override
 	public void init(GameContainer arg0) throws SlickException {
 
-		player1 = new Player("Dexter", new Image("src/resource/sprite.png"), 0, 0);
-		player2 = new Player("Andreas", new Image("src/resource/sprite.png"), 400, 400);
+		player1 = new Player("Dexter", new Image("src/resource/Character.png"), 0, 0);
+		player2 = new Player("Andreas", new Image("src/resource/Character.png"), 400, 400);
+		map = new Tile[NUMBER_OF_X_TILES][NUMBER_OF_Y_TILES];
+		Random random = new Random();
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[i].length; j++) {
+				map[i][j] = new Tile(random.nextBoolean());
+			}
+		}
 
 	}
 

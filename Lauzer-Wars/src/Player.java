@@ -8,9 +8,9 @@ public class Player {
 	private float posX = 0;
 	private float posY = 0;
 	private static final int ROTATION_NORTH = 0;
-	private static final int ROTATION_WEST= 90;
+	private static final int ROTATION_WEST= 270;
 	private static final int ROTATION_SOUTH = 180;
-	private static final int ROTATION_EAST= 270;
+	private static final int ROTATION_EAST= 90;
 	private static final int NORTH = 0;
 	private static final int WEST= 1;
 	private static final int SOUTH = 2;
