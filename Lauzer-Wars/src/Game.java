@@ -1,3 +1,5 @@
+import java.util.Random;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
@@ -10,6 +12,8 @@ public class Game extends BasicGame {
 
 	static final int SIZE_X = 800;
 	static final int SIZE_Y = 600;
+	private int timePile = 0;
+	private static final int msPerFrame = 10;
 	Player player1 = null;
 	Player player2 = null;
 	private static final int NORTH = 0;
@@ -19,8 +23,8 @@ public class Game extends BasicGame {
 	private static final int NUMBER_OF_X_TILES = 8;
 	private static final int NUMBER_OF_Y_TILES = 6;
 	private Tile[][] map = null;
+	private Random random = null;
 
-	
 	public Game() {
 		super("Super awesome game");
 	}
@@ -34,8 +38,23 @@ public class Game extends BasicGame {
 
 	}
 
+	/**
+	 * Renders the game world, ie the player avatars, and the map.
+	 */
 	@Override
 	public void render(GameContainer arg0, Graphics arg1) throws SlickException {
+		player1.getImage().draw(player1.getPosX(), player1.getPosY(),
+				player1.getScale());
+		player2.getImage().draw(player2.getPosX(), player2.getPosY(),
+				player2.getScale());
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[i].length; j++) {
+				if (map[i][j].hasMirror()) {
+					map[i][j].getMirror().getImage().draw(100 * i, 100 * j);
+
+				}
+			}
+		}
 		player1.getImage().draw(player1.getPosX(), player1.getPosY(),
 				player1.getScale());
 		player2.getImage().draw(player2.getPosX(), player2.getPosY(),
@@ -50,6 +69,17 @@ public class Game extends BasicGame {
 				0);
 		player2 = new Player("Andreas", new Image("src/resource/sprite.png"),
 				400, 400);
+		player1 = new Player("Dexter",
+				new Image("src/resource/Character1.png"), 0, 0);
+		player2 = new Player("Andreas",
+				new Image("src/resource/Character2.png"), 400, 400);
+		map = new Tile[NUMBER_OF_X_TILES][NUMBER_OF_Y_TILES];
+		random = new Random();
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[i].length; j++) {
+				map[i][j] = new Tile(random.nextBoolean());
+			}
+		}
 
 	}
 
@@ -57,6 +87,22 @@ public class Game extends BasicGame {
 	public void update(GameContainer gc, int delta) throws SlickException {
 		Input input = gc.getInput();
 
+		timePile += delta;
+		while (timePile >= msPerFrame) {
+			timePile -= msPerFrame;
+			handleInput(input);
+		}
+	}
+
+	/**
+	 * Reads the input of both players, and excecutes the methods associated
+	 * with each key.
+	 * 
+	 * @param delta
+	 * @param input
+	 *            The pressed key.
+	 */
+	private void handleInput(Input input) {
 		if (input.isKeyDown(Input.KEY_A)) {
 			player1.moveWest();
 		} else {
