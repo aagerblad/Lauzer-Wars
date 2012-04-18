@@ -2,6 +2,7 @@ import org.newdawn.slick.Image;
 
 /**
  * @author Dexter
+ * @author Andreas
  * 
  */
 public class Player {
@@ -22,7 +23,7 @@ public class Player {
 	private boolean[] isKeyPressed = null;
 	private float distance = 0;
 	private static final float TILE_DISTANCE = 100;
-	private static final float SPEED = 5;
+	private static final float SPEED = 5.0f;
 
 	// Only floats which equals TILE_DISTANCE/n where n is a integer
 
