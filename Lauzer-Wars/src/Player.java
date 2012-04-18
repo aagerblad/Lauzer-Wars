@@ -22,8 +22,8 @@ public class Player {
 	private boolean[] isWalking = null;
 	private boolean[] isKeyPressed = null;
 	private float distance = 0;
-	private static final float TILE_DISTANCE = 100;
-	private static final float SPEED = 5.0f;
+	private static final float TILE_DISTANCE = 1;
+	private static final double SPEED = 0.05f;
 
 	// Only floats which equals TILE_DISTANCE/n where n is a integer
 
@@ -71,7 +71,7 @@ public class Player {
 	}
 
 	public void moveNorth() {
-		if (posY > 0) {
+		if (posY > 1) {
 			move(NORTH, ROTATION_NORTH);
 		} else {
 			setRotation(ROTATION_NORTH);
@@ -79,7 +79,7 @@ public class Player {
 	}
 
 	public void moveWest() {
-		if (posX > 0) {
+		if (posX > 1) {
 			move(WEST, ROTATION_WEST);
 		} else {
 			setRotation(ROTATION_WEST);
@@ -87,7 +87,7 @@ public class Player {
 	}
 
 	public void moveSouth() {
-		if (posY < 500) { // TODO
+		if (posY < 5) { // TODO
 			move(SOUTH, ROTATION_SOUTH);
 		} else {
 			setRotation(ROTATION_SOUTH);
@@ -95,7 +95,7 @@ public class Player {
 	}
 
 	public void moveEast() {
-		if (posX < 700) { // TODO
+		if (posX < 7) { // TODO
 			move(EAST, ROTATION_EAST);
 		} else {
 			setRotation(ROTATION_EAST);
@@ -123,7 +123,7 @@ public class Player {
 	}
 
 	public void walkAnimate(int direction) {
-		if (distance == TILE_DISTANCE) {
+		if (distance >= TILE_DISTANCE) {
 			isWalking[direction] = false;
 			distance = 0;
 			isKeyPressed[direction] = false;
@@ -168,6 +168,7 @@ public class Player {
 				break;
 			}
 			distance += SPEED;
+			System.out.println(distance);
 		}
 
 	}
