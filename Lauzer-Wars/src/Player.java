@@ -23,7 +23,9 @@ public class Player {
 	private boolean[] isKeyPressed = null;
 	private float distance = 0;
 	private static final float TILE_DISTANCE = 1;
-	private static final double SPEED = 0.05f;
+	private static final float SPEED = 0.05f;
+	private int maxX = 0;
+	private int maxY = 0;
 
 	// Only floats which equals TILE_DISTANCE/n where n is a integer
 
@@ -37,9 +39,11 @@ public class Player {
 	 * @param posY
 	 *            starting coordinate, y-wise
 	 */
-	public Player(String name, Image image, float posX, float posY) {
+	public Player(String name, Image image, float posX, float posY, int maxX, int maxY) {
 		this.posX = posX;
 		this.posY = posY;
+		this.maxX = maxX;
+		this.maxY = maxY;
 		this.image = image;
 		isWalking = new boolean[4];
 		isKeyPressed = new boolean[4];
@@ -71,7 +75,7 @@ public class Player {
 	}
 
 	public void moveNorth() {
-		if (posY > 1) {
+		if (posY >= 1) {
 			move(NORTH, ROTATION_NORTH);
 		} else {
 			setRotation(ROTATION_NORTH);
@@ -79,7 +83,7 @@ public class Player {
 	}
 
 	public void moveWest() {
-		if (posX > 1) {
+		if (posX >= 1) {
 			move(WEST, ROTATION_WEST);
 		} else {
 			setRotation(ROTATION_WEST);
@@ -87,7 +91,7 @@ public class Player {
 	}
 
 	public void moveSouth() {
-		if (posY < 5) { // TODO
+		if (posY < maxY - 1) { // TODO
 			move(SOUTH, ROTATION_SOUTH);
 		} else {
 			setRotation(ROTATION_SOUTH);
@@ -95,7 +99,7 @@ public class Player {
 	}
 
 	public void moveEast() {
-		if (posX < 7) { // TODO
+		if (posX < maxX - 1) { // TODO
 			move(EAST, ROTATION_EAST);
 		} else {
 			setRotation(ROTATION_EAST);
