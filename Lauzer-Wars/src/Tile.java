@@ -11,10 +11,10 @@ public class Tile {
 	private boolean hasMirror = false;
 	private Random random = null;
 	
-	public Tile(boolean addMirror) throws SlickException {
+	public Tile(boolean addMirror, float tileDistance) throws SlickException {
 		random = new Random();
 		if (addMirror) {
-			mirrorOnTile = new Mirror(random.nextInt(2));
+			mirrorOnTile = new Mirror(random.nextInt(2), tileDistance);
 			hasMirror = true;
 		}
 	}

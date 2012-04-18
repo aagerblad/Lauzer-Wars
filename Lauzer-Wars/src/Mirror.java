@@ -9,16 +9,16 @@ public class Mirror {
 	private Image image = null;
 	private int orientation = 0; 
 	
-	public Mirror(int orientation) throws SlickException {
+	public Mirror(int orientation, float tileDistance) throws SlickException {
 		switch (orientation) {
 		case NORTH_EAST_ORIENTATION:
 			this.orientation = orientation;
-			image = new Image("src/resource/Mirror NE.png");
+			image = new Image("src/resource/Mirror NE.png").getScaledCopy(tileDistance/100); //TODO
 			break;
 			
 		case NORTH_WEST_ORIENTATION:
 			this.orientation = orientation;
-			image = new Image("src/resource/Mirror NE.png");
+			image = new Image("src/resource/Mirror NE.png").getScaledCopy(tileDistance/100); //TODO
 			image.rotate(90);
 			break;
 

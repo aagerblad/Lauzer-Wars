@@ -29,7 +29,7 @@ public class Game extends BasicGame {
 	private Random random = null;
 
 	public Game() {
-		super("Super awesome game");
+		super("Lauzer Wars - a dirty dirty gamedevelopers production ");
 	}
 
 	public static void main(String[] args) throws SlickException {
@@ -49,17 +49,14 @@ public class Game extends BasicGame {
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
 				if (map[i][j].hasMirror()) {
-					map[i][j].getMirror().getImage().draw(TILE_DISTANCE * i, TILE_DISTANCE * j,
-							TILE_DISTANCE, TILE_DISTANCE);
+					map[i][j].getMirror().getImage().draw(TILE_DISTANCE * i, TILE_DISTANCE * j);
 
 				}
 			}
 		}
 		//TODO offset if rotated OR have different sprites for each rotation  
-		player1.getImage().draw(player1.getPosX()*TILE_DISTANCE, player1.getPosY()*TILE_DISTANCE,
-				TILE_DISTANCE, TILE_DISTANCE);
-		player2.getImage().draw(player2.getPosX()*TILE_DISTANCE, player2.getPosY()*TILE_DISTANCE,
-				TILE_DISTANCE, TILE_DISTANCE);
+		player1.getImage().draw(player1.getPosX()*TILE_DISTANCE, player1.getPosY()*TILE_DISTANCE);
+		player2.getImage().draw(player2.getPosX()*TILE_DISTANCE, player2.getPosY()*TILE_DISTANCE);
 
 	}
 
@@ -67,14 +64,16 @@ public class Game extends BasicGame {
 	public void init(GameContainer arg0) throws SlickException {
 
 		player1 = new Player("Dexter",
-				new Image("src/resource/Character1.png"), 1, 0, NUMBER_OF_X_TILES, NUMBER_OF_Y_TILES);
+				new Image("src/resource/Character1.png").getScaledCopy(TILE_DISTANCE/100 //TODO
+						), 1, 0, NUMBER_OF_X_TILES, NUMBER_OF_Y_TILES);
 		player2 = new Player("Andreas",
-				new Image("src/resource/Character2.png"), 4, 4, NUMBER_OF_X_TILES, NUMBER_OF_Y_TILES);
+				new Image("src/resource/Character2.png").getScaledCopy(TILE_DISTANCE/100 //TODO
+						), 4, 4, NUMBER_OF_X_TILES, NUMBER_OF_Y_TILES);
 		map = new Tile[NUMBER_OF_X_TILES][NUMBER_OF_Y_TILES];
 		random = new Random();
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
-				map[i][j] = new Tile(random.nextBoolean());
+				map[i][j] = new Tile(random.nextBoolean(), TILE_DISTANCE);
 			}
 		}
 
