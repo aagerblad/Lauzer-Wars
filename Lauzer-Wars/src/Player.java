@@ -169,8 +169,18 @@ public class Player {
 			}
 			distance += SPEED;
 			System.out.println(distance);
-		}
+			if (distance < 0.5) {
+				scale += (scale >= 1.002f) ? 0 : 0.1f;
+				image.setCenterOfRotation(image.getWidth() / 2.0f * scale,
+						image.getHeight() / 2.0f * scale);
+			} else {
+				scale -= (scale <= 1.0f) ? 0 : 0.1f;
+				image.setCenterOfRotation(image.getWidth() / 2.0f * scale,
+						image.getHeight() / 2.0f * scale);
 
+			}
+
+		}
 	}
 
 	private boolean walkOverLap() {
@@ -185,8 +195,9 @@ public class Player {
 		}
 		return false;
 	}
-	public void die(){
-		//TODO
+
+	public void die() {
+		// TODO
 		return;
 	}
 
