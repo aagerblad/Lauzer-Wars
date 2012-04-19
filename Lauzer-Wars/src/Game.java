@@ -20,11 +20,9 @@ public class Game extends BasicGame {
 	private static final int WEST = 1;
 	private static final int SOUTH = 2;
 	private static final int EAST = 3;
-	private static final int NUMBER_OF_X_TILES = 16; //TODO BIG BUG while != 8
-	private static final int NUMBER_OF_Y_TILES = 12; //TODO BUG BUG while != 6 // =6*NUMBER_OF_X_TILES/8
-//	private static final int NUMBER_OF_Y_TILES = 6*NUMBER_OF_X_TILES/8;
-	private static final float TILE_DISTANCE = 50; //TODO BUG BUG while != 100 // =100*8/NUMBER_OF_X_TILES
-//	private static final float TILE_DISTANCE = 100*8/NUMBER_OF_X_TILES;
+	private static final int NUMBER_OF_X_TILES = 4*6; // number % 4 = 0 !!!!! 
+	private static final int NUMBER_OF_Y_TILES = 6*NUMBER_OF_X_TILES/8;
+	private static final float TILE_DISTANCE = 100*8/NUMBER_OF_X_TILES;
 	private Tile[][] map = null;
 	private Random random = null;
 
@@ -54,7 +52,7 @@ public class Game extends BasicGame {
 				}
 			}
 		}
-		//TODO offset if rotated OR have different sprites for each rotation  
+		
 		player1.getImage().draw(player1.getPosX()*TILE_DISTANCE, player1.getPosY()*TILE_DISTANCE);
 		player2.getImage().draw(player2.getPosX()*TILE_DISTANCE, player2.getPosY()*TILE_DISTANCE);
 
@@ -65,10 +63,10 @@ public class Game extends BasicGame {
 
 		player1 = new Player("Dexter",
 				new Image("src/resource/Character1.png").getScaledCopy(TILE_DISTANCE/100 //TODO
-						), 1, 0, NUMBER_OF_X_TILES, NUMBER_OF_Y_TILES);
+						), 0, 0, NUMBER_OF_X_TILES, NUMBER_OF_Y_TILES);
 		player2 = new Player("Andreas",
 				new Image("src/resource/Character2.png").getScaledCopy(TILE_DISTANCE/100 //TODO
-						), 4, 4, NUMBER_OF_X_TILES, NUMBER_OF_Y_TILES);
+						), NUMBER_OF_X_TILES-1, NUMBER_OF_Y_TILES-1, NUMBER_OF_X_TILES, NUMBER_OF_Y_TILES);
 		map = new Tile[NUMBER_OF_X_TILES][NUMBER_OF_Y_TILES];
 		random = new Random();
 		for (int i = 0; i < map.length; i++) {
