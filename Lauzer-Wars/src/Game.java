@@ -119,7 +119,7 @@ public class Game extends BasicGame {
 		// to move west: use
 		// if(!map[player1.getx-1][player1.getY-1].hasCollision) ie if the tile
 		// the player wants to move to does not have a collision, the player can
-		// move to that tile.
+		// move to that tile. For east, use player1.getx+1 etc.
 
 		// Handles the case where the player wants to move west.
 		if (input.isKeyDown(Input.KEY_A)) {
