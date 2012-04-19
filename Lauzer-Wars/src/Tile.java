@@ -60,4 +60,12 @@ public class Tile {
 		playerOnTile = player;
 	}
 
+	public void removePlayer() {
+		playerOnTile = null;
+	}
+
+	public void addPillar(Pillar pillar) {
+		pillarOnTile = pillar;
+	}
+
 }

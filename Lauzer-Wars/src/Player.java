@@ -75,32 +75,32 @@ public class Player {
 		image.setRotation(r);
 	}
 
-	public void moveNorth() {
-		if (posY >= 1) {
+	public void moveNorth(boolean collision) {
+		if (!collision) {
 			move(NORTH, ROTATION_NORTH);
 		} else {
 			setRotation(ROTATION_NORTH);
 		}
 	}
 
-	public void moveWest() {
-		if (posX >= 1) {
+	public void moveWest(boolean collision) {
+		if (!collision) {
 			move(WEST, ROTATION_WEST);
 		} else {
 			setRotation(ROTATION_WEST);
 		}
 	}
 
-	public void moveSouth() {
-		if (posY < maxY - 1) { // TODO
+	public void moveSouth(boolean collision) {
+		if (!collision) { // TODO
 			move(SOUTH, ROTATION_SOUTH);
 		} else {
 			setRotation(ROTATION_SOUTH);
 		}
 	}
 
-	public void moveEast() {
-		if (posX < maxX - 1) { // TODO
+	public void moveEast(boolean collision) {
+		if (!collision) { // TODO
 			move(EAST, ROTATION_EAST);
 		} else {
 			setRotation(ROTATION_EAST);
@@ -172,7 +172,8 @@ public class Player {
 				break;
 			}
 			distance += SPEED;
-			System.out.println(distance);
+			// System.out.println(distance);
+			System.out.println(Math.round(posX) + ", " + Math.round(posY));
 		}
 
 	}
