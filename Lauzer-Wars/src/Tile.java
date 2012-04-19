@@ -56,4 +56,8 @@ public class Tile {
 		return false;
 	}
 
+	public void addPlayer(Player player) {
+		playerOnTile = player;
+	}
+
 }

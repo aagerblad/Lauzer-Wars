@@ -89,6 +89,11 @@ public class Game extends BasicGame {
 	@Override
 	public void update(GameContainer gc, int delta) throws SlickException {
 		Input input = gc.getInput();
+		// TODO handle the players' current position in the tile matrix. Use
+		// math.round(player.getxPos) and math.round(player.getYpos) and cast to
+		// int. Use map[x][y].addPlayer for updating the reference. Handle the
+		// position of lasers etc the same way? Refactor into different methods
+		// ie handlePlayerPosition and handleLaserPosition?
 
 		// Makes sure the game stays at the set framrate.
 		timePile += delta;
@@ -109,6 +114,12 @@ public class Game extends BasicGame {
 	private void handleInput(Input input) {
 		// Player 1:
 		// The following methods handle the first player's input.
+
+		// TODO handle collisions using the tile matrix. Example: player1 wants
+		// to move west: use
+		// if(!map[player1.getx-1][player1.getY-1].hasCollision) ie if the tile
+		// the player wants to move to does not have a collision, the player can
+		// move to that tile.
 
 		// Handles the case where the player wants to move west.
 		if (input.isKeyDown(Input.KEY_A)) {
