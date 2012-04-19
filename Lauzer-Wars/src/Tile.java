@@ -24,6 +24,10 @@ public class Tile {
 		return mirrorOnTile;
 	}
 
+	public Pillar getPillar() {
+		return pillarOnTile;
+	}
+
 	public boolean hasPlayer() {
 		if (playerOnTile != null) {
 			return true;
@@ -40,6 +44,13 @@ public class Tile {
 
 	public boolean hasPillar() {
 		if (pillarOnTile != null) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean hasCollision() {
+		if (playerOnTile != null || pillarOnTile != null) {
 			return true;
 		}
 		return false;
