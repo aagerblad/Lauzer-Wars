@@ -1,7 +1,3 @@
-
-import java.util.ArrayList;
-import java.util.Random;
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
@@ -23,15 +19,15 @@ public class Game extends BasicGame {
 	private static final int SOUTH = 2;
 	private static final int EAST = 3;
 	private static final int CHANGE_MIRROR = 4;
-	private static final int NUMBER_OF_X_TILES = 23; // TODO Fix the ratio, does
+	private static final int NUMBER_OF_X_TILES = 65; // TODO Fix the ratio, does
 														// not work consistently
 														// in current state
-	private static final int NUMBER_OF_Y_TILES = 6 * NUMBER_OF_X_TILES / 8 ;
+	private static final int NUMBER_OF_Y_TILES = 6 * NUMBER_OF_X_TILES / 8;
 	private static final float TILE_DISTANCE = 100 * 8 / NUMBER_OF_X_TILES;
 	private Tile[][] map = null;
 
 	public Game() {
-		//super("Lauzer Wars - a dirty dirty gamedevelopers production ");
+		// super("Lauzer Wars - a dirty dirty gamedevelopers production ");
 		super("Lauzer Wars");
 	}
 
@@ -53,29 +49,30 @@ public class Game extends BasicGame {
 			for (int j = 0; j < map[i].length; j++) {
 				if (map[i][j].hasMirror()) {
 					map[i][j].getMirror().getImage()
-					.draw(TILE_DISTANCE * i, TILE_DISTANCE * j);
+							.draw(TILE_DISTANCE * i, TILE_DISTANCE * j);
 
 				}
 				if (map[i][j].hasPillar()) {
 					map[i][j].getPillar().getImage()
-					.draw(TILE_DISTANCE * i, TILE_DISTANCE * j);
+							.draw(TILE_DISTANCE * i, TILE_DISTANCE * j);
 				}
 				if (map[i][j].hasLaser()) {
 					for (Laser laser : map[i][j].getLaser()) {
-						laser.getImage().draw(TILE_DISTANCE *i, TILE_DISTANCE * j);
+						laser.getImage().draw(TILE_DISTANCE * i,
+								TILE_DISTANCE * j);
 					}
 				}
 			}
 		}
 
-//		for (int i = 0; i < map.length; i++) {
-//			for (int j = 0; j < map[i].length; j++) {
-//				if (map[i][j].hasPillar()) {
-//					map[i][j].getPillar().getImage()
-//					.draw(TILE_DISTANCE * i, TILE_DISTANCE * j);
-//				}
-//			}
-//		}
+		// for (int i = 0; i < map.length; i++) {
+		// for (int j = 0; j < map[i].length; j++) {
+		// if (map[i][j].hasPillar()) {
+		// map[i][j].getPillar().getImage()
+		// .draw(TILE_DISTANCE * i, TILE_DISTANCE * j);
+		// }
+		// }
+		// }
 
 		// TODO offset if rotated OR have different sprites for each rotation
 		player1.getImage().draw(player1.getPosX() * TILE_DISTANCE,
@@ -93,12 +90,12 @@ public class Game extends BasicGame {
 
 		player1 = new Player("Dexter",
 				new Image("src/resource/Character1.png")
-		.getScaledCopy(TILE_DISTANCE / 100 // TODO
-				), 1, 1);
+						.getScaledCopy(TILE_DISTANCE / 100 // TODO
+						), 1, 1);
 		player2 = new Player("Andreas",
 				new Image("src/resource/Character2.png")
-		.getScaledCopy(TILE_DISTANCE / 100 // TODO
-				), NUMBER_OF_X_TILES - 2, NUMBER_OF_Y_TILES - 2);
+						.getScaledCopy(TILE_DISTANCE / 100 // TODO
+						), NUMBER_OF_X_TILES - 2, NUMBER_OF_Y_TILES - 2);
 		map = new Tile[NUMBER_OF_X_TILES][NUMBER_OF_Y_TILES];
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
@@ -188,14 +185,14 @@ public class Game extends BasicGame {
 	}
 
 	private void handleLaser(Player player) throws SlickException {
-		//TODO cast floats to int
-		laserAlgorithm(Math.round(player.getRotation()), 
-				Math.round(player.getPosX()),
-				Math.round(player.getPosY()));
+		// TODO cast floats to int
+		laserAlgorithm(Math.round(player.getRotation()),
+				Math.round(player.getPosX()), Math.round(player.getPosY()));
 
 	}
 
-	private void laserAlgorithm(int rotation, int posX, int posY) throws SlickException {
+	private void laserAlgorithm(int rotation, int posX, int posY)
+			throws SlickException {
 		switch (rotation) {
 		case 0:
 			posY -= 1;
@@ -215,34 +212,32 @@ public class Game extends BasicGame {
 		if (map[posX][posY].hasCollision()) {
 			return;
 
-		} else if (map[posX][posY].hasMirror()){
+		} else if (map[posX][posY].hasMirror()) {
 			int orientation = map[posX][posY].getMirror().getOrientation();
 			/**
-			 * This if-statement says that if the mirror is in NorthEast orientation
-			 * and the direction of the laser is either east or west OR
-			 * the mirror is in NorthWest orientation and the direction is either
-			 * north or south,
-			 * the rotation will change by 90 degrees counter clockwise
-			 * otherwise the rotation will be 90 degrees clockwise.
+			 * This if-statement says that if the mirror is in NorthEast
+			 * orientation and the direction of the laser is either east or west
+			 * OR the mirror is in NorthWest orientation and the direction is
+			 * either north or south, the rotation will change by 90 degrees
+			 * counter clockwise otherwise the rotation will be 90 degrees
+			 * clockwise.
 			 */
 			if ((orientation == 0 && (rotation == 90 || rotation == 270))
-					|| (orientation == 1 && 
-					(rotation == 0 || rotation == 180)) ) { //NE
+					|| (orientation == 1 && (rotation == 0 || rotation == 180))) { // NE
 				rotation += 360;
-				rotation -=  90;
+				rotation -= 90;
 				rotation = rotation % 360;
 
 			} else {
-				
+
 				rotation += 90;
 				rotation = rotation % 360;
 
 			}
 		}
-		map[posX][posY].addLaser(rotation, TILE_DISTANCE); //TODO Mirrorlasers
+		map[posX][posY].addLaser(rotation, TILE_DISTANCE); // TODO Mirrorlasers
 		laserAlgorithm(rotation, posX, posY);
 	}
-
 
 	/**
 	 * Updates the tile matrix with the players' current positions.
@@ -271,7 +266,7 @@ public class Game extends BasicGame {
 	 * @param delta
 	 * @param input
 	 *            The pressed key.
-	 * @throws SlickException 
+	 * @throws SlickException
 	 */
 	private void handleInput(Input input) throws SlickException {
 		// Player 1:
