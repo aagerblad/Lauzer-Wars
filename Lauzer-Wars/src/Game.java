@@ -96,6 +96,11 @@ public class Game extends BasicGame {
 		}
 		// Add the wall surrounding the map.
 		addWall();
+		for (int i = 0; i < NUMBER_OF_X_TILES; i++) {
+			for (int j = 0; j < NUMBER_OF_Y_TILES; j++) {
+				//TODO
+			}
+		}
 
 	}
 
