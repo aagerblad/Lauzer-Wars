@@ -11,11 +11,8 @@ public class Tile {
 	private ArrayList<Laser> laserOnTile = null;
 	private Random random = null;
 
-	public Tile(boolean addMirror, float tileDistance) throws SlickException {
+	public Tile(float tileDistance) throws SlickException {
 		random = new Random();
-		if (addMirror) {
-			mirrorOnTile = new Mirror(random.nextInt(2), tileDistance);
-		}
 		laserOnTile = new ArrayList<Laser>();
 	}
 	
@@ -27,19 +24,35 @@ public class Tile {
 		laserOnTile.add(new Laser(direction, tileDistance));
 		return true;
 	}
+	
+	public boolean hasLaser() {
+		return laserOnTile.size() != 0;
+	}
 
+	/**
+	 * @return the player on the tile, or null if no player exists.
+	 */
 	public Player getPlayer() {
 		return playerOnTile;
 	}
 
+	/**
+	 * @return the mirror on the tile, or null if no mirror exists.
+	 */
 	public Mirror getMirror() {
 		return mirrorOnTile;
 	}
 
+	/**
+	 * @return the pillar on the tile, or null if no pillar exists.
+	 */
 	public Pillar getPillar() {
 		return pillarOnTile;
 	}
 
+	/**
+	 * @return true if there is a player on the tile.
+	 */
 	public boolean hasPlayer() {
 		if (playerOnTile != null) {
 			return true;
@@ -47,6 +60,9 @@ public class Tile {
 		return false;
 	}
 
+	/**
+	 * @return true if there is a mirror on the tile.
+	 */
 	public boolean hasMirror() {
 		if (mirrorOnTile != null) {
 			return true;
@@ -54,6 +70,9 @@ public class Tile {
 		return false;
 	}
 
+	/**
+	 * @return true if there is a pillar on the tile.
+	 */
 	public boolean hasPillar() {
 		if (pillarOnTile != null) {
 			return true;
@@ -61,6 +80,9 @@ public class Tile {
 		return false;
 	}
 
+	/**
+	 * @return true if there is some type of collision.
+	 */
 	public boolean hasCollision() {
 		if (playerOnTile != null || pillarOnTile != null) {
 			return true;
@@ -68,18 +90,48 @@ public class Tile {
 		return false;
 	}
 
-	public boolean addPlayer(Player player) {
+	/**
+	 * Adds a reference to a player to the tile.
+	 * 
+	 * @param player
+	 *            The player to add to the tile.
+	 */
+	public void addPlayer(Player player) {
 		playerOnTile = player;
-		return true; //TODO
 	}
 
+	/**
+	 * Removes the reference to the player on the tile.
+	 */
 	public void removePlayer() {
 		playerOnTile = null;
 	}
 
-	public boolean addPillar(Pillar pillar) {
+	/**
+	 * Adds a reference to a pillar to the tile.
+	 * 
+	 * @param pillar
+	 *            The pillar to add to the tile.
+	 */
+	public void addPillar(Pillar pillar) {
 		pillarOnTile = pillar;
-		return true; //TODO
+	}
+
+	/**
+	 * Adds a reference to a pillar on the tile.
+	 * 
+	 * @param mirror
+	 *            The mirror to add to the tile
+	 * @throws SlickException
+	 */
+	public boolean addMirror(float tileDistance) throws SlickException {
+		int randomMirror = random.nextInt(2);
+		System.out.println(randomMirror);
+		if (randomMirror == 1) {
+			Mirror mirrorToAdd = new Mirror(random.nextInt(2), tileDistance);
+			mirrorOnTile = mirrorToAdd;
+		}
+		return true; // TODO
 	}
 
 }

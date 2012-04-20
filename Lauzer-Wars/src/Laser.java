@@ -13,6 +13,7 @@ public class Laser {
 	
 	public Laser(int direction, float tileDistance) throws SlickException {
 		image = new Image("src/resource/Laser.png").getScaledCopy(tileDistance/100);
+		image.rotate(90); //TODO issue with sprite
 		image.rotate(direction);
 	}
 	

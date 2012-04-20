@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 import org.newdawn.slick.AppGameContainer;
@@ -20,8 +21,10 @@ public class Game extends BasicGame {
 	private static final int WEST = 1;
 	private static final int SOUTH = 2;
 	private static final int EAST = 3;
-	private static final int NUMBER_OF_X_TILES = 128;
-	private static final int NUMBER_OF_Y_TILES = 6 * NUMBER_OF_X_TILES / 8;
+	private static final int NUMBER_OF_X_TILES = 64; // TODO Fix the ratio, does
+														// not work consistently
+														// in current state
+	private static final int NUMBER_OF_Y_TILES = 6 * NUMBER_OF_X_TILES / 8 ;
 	private static final float TILE_DISTANCE = 100 * 8 / NUMBER_OF_X_TILES;
 	private Tile[][] map = null;
 	private Random random = null;
@@ -52,18 +55,26 @@ public class Game extends BasicGame {
 					.draw(TILE_DISTANCE * i, TILE_DISTANCE * j);
 
 				}
-			}
-		}
-
-		for (int i = 0; i < map.length; i++) {
-			for (int j = 0; j < map[i].length; j++) {
 				if (map[i][j].hasPillar()) {
 					map[i][j].getPillar().getImage()
 					.draw(TILE_DISTANCE * i, TILE_DISTANCE * j);
-
+				}
+				if (map[i][j].hasLaser()) {
+					for (Laser laser : map[i][j].getLaser()) {
+						laser.getImage().draw(TILE_DISTANCE *i, TILE_DISTANCE * j);
+					}
 				}
 			}
 		}
+
+//		for (int i = 0; i < map.length; i++) {
+//			for (int j = 0; j < map[i].length; j++) {
+//				if (map[i][j].hasPillar()) {
+//					map[i][j].getPillar().getImage()
+//					.draw(TILE_DISTANCE * i, TILE_DISTANCE * j);
+//				}
+//			}
+//		}
 
 		// TODO offset if rotated OR have different sprites for each rotation
 		player1.getImage().draw(player1.getPosX() * TILE_DISTANCE,
@@ -73,6 +84,9 @@ public class Game extends BasicGame {
 
 	}
 
+	/**
+	 * Initializes the players and the map.
+	 */
 	@Override
 	public void init(GameContainer arg0) throws SlickException {
 
@@ -88,12 +102,49 @@ public class Game extends BasicGame {
 		random = new Random();
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
-				map[i][j] = new Tile(random.nextBoolean(), TILE_DISTANCE);
+				map[i][j] = new Tile(TILE_DISTANCE);
 			}
 		}
 		// Add the wall surrounding the map.
 		addWall();
+		// Add the "checkerboard" of pillars in the map.
+		addCheckerboard();
+		// Add the random mirrors to the map.
+		addMirrors();
+	}
 
+	/**
+	 * Add random mirrors to the map.
+	 * 
+	 * @throws SlickException
+	 */
+	private void addMirrors() throws SlickException {
+		for (int i = 1; i < NUMBER_OF_X_TILES - 1; i++) {
+			for (int j = 1; j < NUMBER_OF_Y_TILES - 1; j++) {
+				if ((map[i - 1][j].hasPillar() && map[i + 1][j].hasPillar())
+						|| (map[i][j - 1].hasPillar())
+						&& map[i][j + 1].hasPillar()) {
+					// Do nothing
+				} else {
+					map[i][j].addMirror(TILE_DISTANCE);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Add pillars in a checkerboard pattern across the map.
+	 * 
+	 * @throws SlickException
+	 */
+	private void addCheckerboard() throws SlickException {
+		for (int i = 2; i < NUMBER_OF_X_TILES - 2; i++) {
+			for (int j = 2; j < NUMBER_OF_Y_TILES - 2; j++) {
+				if ((i % 2 == 0) && (j % 2 == 0)) {
+					map[i][j].addPillar(new Pillar(TILE_DISTANCE));
+				}
+			}
+		}
 	}
 
 	/**
@@ -126,11 +177,6 @@ public class Game extends BasicGame {
 	@Override
 	public void update(GameContainer gc, int delta) throws SlickException {
 		Input input = gc.getInput();
-		// TODO handle the players' current position in the tile matrix. Use
-		// math.round(player.getxPos) and math.round(player.getYpos) and cast to
-		// int. Use map[x][y].addPlayer for updating the reference. Handle the
-		// position of lasers etc the same way? Refactor into different methods
-		// ie handlePlayerPosition and handleLaserPosition?
 
 		// Makes sure the game stays at the set framrate.
 		timePile += delta;
@@ -225,19 +271,18 @@ public class Game extends BasicGame {
 	 * @param delta
 	 * @param input
 	 *            The pressed key.
+	 * @throws SlickException 
 	 */
-	private void handleInput(Input input) {
+	private void handleInput(Input input) throws SlickException {
 		// Player 1:
 		// The following methods handle the first player's input.
 
-		// TODO handle collisions using the tile matrix. Example: player1 wants
-		// to move west: use
-		// if(!map[player1.getx-1][player1.getY-1].hasCollision) ie if the tile
-		// the player wants to move to does not have a collision, the player can
-		// move to that tile. For east, use player1.getx+1 etc.
-
 		int player1X = Math.round(player1.getPosX());
 		int player1Y = Math.round(player1.getPosY());
+
+		if (input.isKeyDown(Input.KEY_Q)) {
+			handleLaser(player1);
+		}
 
 		// Handles the case where the player wants to move west.
 		if (input.isKeyDown(Input.KEY_A)) {
