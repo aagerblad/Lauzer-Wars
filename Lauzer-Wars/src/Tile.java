@@ -77,4 +77,16 @@ public class Tile {
 		return false;
 	}
 
+	public void addPlayer(Player player) {
+		playerOnTile = player;
+	}
+
+	public void removePlayer() {
+		playerOnTile = null;
+	}
+
+	public void addPillar(Pillar pillar) {
+		pillarOnTile = pillar;
+	}
+
 }

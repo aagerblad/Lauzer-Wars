@@ -53,6 +53,17 @@ public class Game extends BasicGame {
 				}
 			}
 		}
+
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[i].length; j++) {
+				if (map[i][j].hasPillar()) {
+					map[i][j].getPillar().getImage()
+							.draw(TILE_DISTANCE * i, TILE_DISTANCE * j);
+
+				}
+			}
+		}
+
 		// TODO offset if rotated OR have different sprites for each rotation
 		player1.getImage().draw(player1.getPosX() * TILE_DISTANCE,
 				player1.getPosY() * TILE_DISTANCE);
@@ -83,7 +94,33 @@ public class Game extends BasicGame {
 				map[i][j] = new Tile(random.nextBoolean(), TILE_DISTANCE);
 			}
 		}
+		// Add the wall surrounding the map.
+		addWall();
 
+	}
+
+	/**
+	 * Adds pillars surrounding the map.
+	 * 
+	 * @throws SlickException
+	 */
+	private void addWall() throws SlickException {
+		for (int i = 0; i < map.length; i++) {
+			int j = 0;
+			map[i][j].addPillar(new Pillar(TILE_DISTANCE));
+		}
+		for (int j = 0; j < NUMBER_OF_Y_TILES; j++) {
+			int i = 0;
+			map[i][j].addPillar(new Pillar(TILE_DISTANCE));
+		}
+		for (int i = 0; i < NUMBER_OF_X_TILES; i++) {
+			int j = NUMBER_OF_Y_TILES - 1;
+			map[i][j].addPillar(new Pillar(TILE_DISTANCE));
+		}
+		for (int j = 0; j < NUMBER_OF_Y_TILES; j++) {
+			int i = NUMBER_OF_X_TILES - 1;
+			map[i][j].addPillar(new Pillar(TILE_DISTANCE));
+		}
 	}
 
 	/**
@@ -92,13 +129,39 @@ public class Game extends BasicGame {
 	@Override
 	public void update(GameContainer gc, int delta) throws SlickException {
 		Input input = gc.getInput();
+		// TODO handle the players' current position in the tile matrix. Use
+		// math.round(player.getxPos) and math.round(player.getYpos) and cast to
+		// int. Use map[x][y].addPlayer for updating the reference. Handle the
+		// position of lasers etc the same way? Refactor into different methods
+		// ie handlePlayerPosition and handleLaserPosition?
 
 		// Makes sure the game stays at the set framrate.
 		timePile += delta;
 		while (timePile >= msPerFrame) {
 			timePile -= msPerFrame;
+			handlePlayerPositions();
 			handleInput(input);
 		}
+	}
+
+	/**
+	 * Updates the tile matrix with the players' current positions.
+	 */
+	private void handlePlayerPositions() {
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[i].length; j++) {
+				map[i][j].removePlayer();
+			}
+		}
+		int player1X = Math.round(player1.getPosX());
+		int player1Y = Math.round(player1.getPosY());
+		Tile tileToAddPlayer1 = map[player1X][player1Y];
+		tileToAddPlayer1.addPlayer(player1);
+
+		int player2X = Math.round(player2.getPosX());
+		int player2Y = Math.round(player2.getPosY());
+		Tile tileToAddPlayer2 = map[player2X][player2Y];
+		tileToAddPlayer2.addPlayer(player2);
 	}
 
 	/**
@@ -113,9 +176,22 @@ public class Game extends BasicGame {
 		// Player 1:
 		// The following methods handle the first player's input.
 
+		// TODO handle collisions using the tile matrix. Example: player1 wants
+		// to move west: use
+		// if(!map[player1.getx-1][player1.getY-1].hasCollision) ie if the tile
+		// the player wants to move to does not have a collision, the player can
+		// move to that tile. For east, use player1.getx+1 etc.
+
+		int player1X = Math.round(player1.getPosX());
+		int player1Y = Math.round(player1.getPosY());
+
 		// Handles the case where the player wants to move west.
 		if (input.isKeyDown(Input.KEY_A)) {
-			player1.moveWest();
+			Tile wantedTile = map[player1X - 1][player1Y];
+			if (!wantedTile.hasCollision()) {
+				player1.moveWest(false);
+			}
+			player1.moveWest(true);
 		} else {
 			player1.setKeyPressed(WEST, false);
 		}
@@ -126,7 +202,11 @@ public class Game extends BasicGame {
 
 		// Handles the case where the player wants to move east.
 		if (input.isKeyDown(Input.KEY_D)) {
-			player1.moveEast();
+			Tile wantedTile = map[player1X + 1][player1Y];
+			if (!wantedTile.hasCollision()) {
+				player1.moveEast(false);
+			}
+			player1.moveEast(true);
 		} else {
 			player1.setKeyPressed(EAST, false);
 		}
@@ -137,7 +217,12 @@ public class Game extends BasicGame {
 
 		// Handles the case where the player wants to move north.
 		if (input.isKeyDown(Input.KEY_W)) {
-			player1.moveNorth();
+			Tile wantedTile = map[player1X][player1Y - 1];
+			if (!wantedTile.hasCollision()) {
+				player1.moveNorth(false);
+			} else {
+				player1.moveNorth(true);
+			}
 		} else {
 			player1.setKeyPressed(NORTH, false);
 		}
@@ -148,7 +233,11 @@ public class Game extends BasicGame {
 
 		// Handles the case where the player wants to move south.
 		if (input.isKeyDown(Input.KEY_S)) {
-			player1.moveSouth();
+			Tile wantedTile = map[player1X][player1Y + 1];
+			if (!wantedTile.hasCollision()) {
+				player1.moveSouth(false);
+			}
+			player1.moveSouth(true);
 		} else {
 			player1.setKeyPressed(SOUTH, false);
 		}
@@ -160,9 +249,15 @@ public class Game extends BasicGame {
 		// Player 2
 		// The following methods handle the first player's input.
 
+		int player2X = Math.round(player2.getPosX());
+		int player2Y = Math.round(player2.getPosY());
 		// Handles the case where the player wants to move west.
 		if (input.isKeyDown(Input.KEY_LEFT)) {
-			player2.moveWest();
+			Tile wantedTile = map[player2X - 1][player2Y];
+			if (!wantedTile.hasCollision()) {
+				player2.moveWest(false);
+			}
+			player2.moveWest(true);
 		} else {
 			player2.setKeyPressed(WEST, false);
 		}
@@ -173,7 +268,11 @@ public class Game extends BasicGame {
 
 		// Handles the case where the player wants to move east.
 		if (input.isKeyDown(Input.KEY_RIGHT)) {
-			player2.moveEast();
+			Tile wantedTile = map[player2X + 1][player2Y];
+			if (!wantedTile.hasCollision()) {
+				player2.moveEast(false);
+			}
+			player2.moveEast(true);
 		} else {
 			player2.setKeyPressed(EAST, false);
 		}
@@ -184,7 +283,11 @@ public class Game extends BasicGame {
 
 		// Handles the case where the player wants to move north.
 		if (input.isKeyDown(Input.KEY_UP)) {
-			player2.moveNorth();
+			Tile wantedTile = map[player2X][player2Y - 1];
+			if (!wantedTile.hasCollision()) {
+				player2.moveNorth(false);
+			}
+			player2.moveNorth(true);
 		} else {
 			player2.setKeyPressed(NORTH, false);
 		}
@@ -195,7 +298,11 @@ public class Game extends BasicGame {
 
 		// Handles the case where the player wants to move south.
 		if (input.isKeyDown(Input.KEY_DOWN)) {
-			player2.moveSouth();
+			Tile wantedTile = map[player2X][player2Y + 1];
+			if (!wantedTile.hasCollision()) {
+				player2.moveSouth(false);
+			}
+			player2.moveSouth(true);
 		} else {
 			player2.setKeyPressed(SOUTH, false);
 		}
