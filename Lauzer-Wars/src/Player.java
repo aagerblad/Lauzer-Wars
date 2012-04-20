@@ -42,7 +42,7 @@ public class Player {
 		this.posY = posY;
 		this.image = image;
 		isWalking = new boolean[4];
-		isKeyPressed = new boolean[4];
+		isKeyPressed = new boolean[5];
 
 	}
 
@@ -64,6 +64,10 @@ public class Player {
 
 	public float getRotation() {
 		return image.getRotation();
+	}
+
+	public boolean getKeyPressed(int keyNumber) {
+		return isKeyPressed[keyNumber];
 	}
 
 	private void setRotation(float r) {
@@ -177,7 +181,7 @@ public class Player {
 		return distance + SPEED > TILE_DISTANCE;
 	}
 
-	private boolean aldreadyWalking() {
+	public boolean aldreadyWalking() {
 		for (int i = 0; i < isWalking.length; i++) {
 			if (isWalking[i] == true) {
 				return true;
