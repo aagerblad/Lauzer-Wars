@@ -141,11 +141,15 @@ public class Game extends BasicGame {
 		}
 	}
 
-	private void handleLaser(Player player) {
+	private void handleLaser(Player player) throws SlickException {
+		//TODO cast floats to int
+		laserAlgorithm(Math.round(player.getRotation()), 
+				Math.round(player.getPosX()),
+				Math.round(player.getPosY()));
 
 	}
 
-	private void laserAlgorithm(int rotation, int posX, int posY) {
+	private void laserAlgorithm(int rotation, int posX, int posY) throws SlickException {
 		switch (rotation) {
 		case 0:
 			posY -= 1;
@@ -166,7 +170,15 @@ public class Game extends BasicGame {
 			return;
 
 		} else if (map[posX][posY].hasMirror()){
-			int orientation = map[posX][posY].getMirror().getOrientation(); 
+			int orientation = map[posX][posY].getMirror().getOrientation();
+			/**
+			 * This if-statement says that if the mirror is in NorthEast orientation
+			 * and the direction of the laser is either east or west OR
+			 * the mirror is in NorthWest orientation and the direction is either
+			 * north or south,
+			 * the rotation will change by 90 degrees counter clockwise
+			 * otherwise the rotation will be 90 degrees clockwise.
+			 */
 			if ((orientation == 0 && (rotation == 90 || rotation == 270))
 					|| (orientation == 1 && 
 					(rotation == 0 || rotation == 180)) ) { //NE
@@ -181,7 +193,7 @@ public class Game extends BasicGame {
 
 			}
 		}
-		map[posX][posY].addLaser(rotation); //TODO Mirrorlasers
+		map[posX][posY].addLaser(rotation, TILE_DISTANCE); //TODO Mirrorlasers
 		laserAlgorithm(rotation, posX, posY);
 	}
 

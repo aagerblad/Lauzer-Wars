@@ -23,8 +23,8 @@ public class Tile {
 		return laserOnTile;
 	}
 	
-	public boolean addLaser(int direction) {
-		laserOnTile.add(new Laser(direction));
+	public boolean addLaser(int direction, float tileDistance) throws SlickException {
+		laserOnTile.add(new Laser(direction, tileDistance));
 		return true;
 	}
 
