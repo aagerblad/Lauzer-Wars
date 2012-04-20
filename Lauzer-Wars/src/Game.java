@@ -272,10 +272,11 @@ public class Game extends BasicGame {
 
 		// Handles the case where the player wants to change the orientation of
 		// a tile
-		if (input.isKeyDown(Input.KEY_E)) {
+		if (input.isKeyDown(Input.KEY_LSHIFT)) {
 			Tile tileToCheck = map[player1X][player1Y];
 			if (tileToCheck.hasMirror()) {
-				if (!player1.getKeyPressed(CHANGE_MIRROR)) { // TODO
+				if (!player1.getKeyPressed(CHANGE_MIRROR)
+						&& !player1.aldreadyWalking()) { // TODO
 					Mirror mirrorToChange = tileToCheck.getMirror();
 					mirrorToChange.changeOrientation();
 				}
@@ -354,7 +355,11 @@ public class Game extends BasicGame {
 		if (input.isKeyDown(Input.KEY_ENTER)) {
 			Tile tileToCheck = map[player2X][player2Y];
 			if (tileToCheck.hasMirror()) {
-				if (!player2.getKeyPressed(CHANGE_MIRROR)) { // TODO
+				if (!player2.getKeyPressed(CHANGE_MIRROR)
+						&& !player2.aldreadyWalking()) { // TODO Ability to
+															// change
+															// orientation while
+															// walking?
 					Mirror mirrorToChange = tileToCheck.getMirror();
 					mirrorToChange.changeOrientation();
 				}

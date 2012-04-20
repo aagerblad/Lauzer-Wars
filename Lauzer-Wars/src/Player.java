@@ -186,7 +186,7 @@ public class Player {
 		return distance + SPEED > TILE_DISTANCE;
 	}
 
-	private boolean aldreadyWalking() {
+	public boolean aldreadyWalking() {
 		for (int i = 0; i < isWalking.length; i++) {
 			if (isWalking[i] == true) {
 				return true;
