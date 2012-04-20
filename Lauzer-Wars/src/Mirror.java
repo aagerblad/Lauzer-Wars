@@ -28,6 +28,10 @@ public class Mirror {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return Orientation of mirror, 0 if NE, 1 if NW
+	 */
 	public int getOrientation() {
 		return orientation;
 	}

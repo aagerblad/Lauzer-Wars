@@ -24,8 +24,6 @@ public class Player {
 	private float distance = 0;
 	private static final float TILE_DISTANCE = 1;
 	private static final float SPEED = 0.05f;
-	private int maxX = 0;
-	private int maxY = 0;
 
 	// Only floats which equals TILE_DISTANCE/n where n is a integer
 
@@ -39,11 +37,9 @@ public class Player {
 	 * @param posY
 	 *            starting coordinate, y-wise
 	 */
-	public Player(String name, Image image, float posX, float posY, int maxX, int maxY) {
+	public Player(String name, Image image, float posX, float posY) {
 		this.posX = posX;
 		this.posY = posY;
-		this.maxX = maxX;
-		this.maxY = maxY;
 		this.image = image;
 		isWalking = new boolean[4];
 		isKeyPressed = new boolean[4];
@@ -74,32 +70,32 @@ public class Player {
 		image.setRotation(r);
 	}
 
-	public void moveNorth() {
-		if (posY >= 1) {
+	public void moveNorth(boolean collision) {
+		if (!collision) {
 			move(NORTH, ROTATION_NORTH);
 		} else {
 			setRotation(ROTATION_NORTH);
 		}
 	}
 
-	public void moveWest() {
-		if (posX >= 1) {
+	public void moveWest(boolean collision) {
+		if (!collision) {
 			move(WEST, ROTATION_WEST);
 		} else {
 			setRotation(ROTATION_WEST);
 		}
 	}
 
-	public void moveSouth() {
-		if (posY < maxY - 1) { // TODO
+	public void moveSouth(boolean collision) {
+		if (!collision) { // TODO
 			move(SOUTH, ROTATION_SOUTH);
 		} else {
 			setRotation(ROTATION_SOUTH);
 		}
 	}
 
-	public void moveEast() {
-		if (posX < maxX - 1) { // TODO
+	public void moveEast(boolean collision) {
+		if (!collision) { // TODO
 			move(EAST, ROTATION_EAST);
 		} else {
 			setRotation(ROTATION_EAST);
@@ -167,12 +163,12 @@ public class Player {
 					break;
 				}
 			default:
-				System.err.println("Något gick feeeeel!!!!"); // Should this be
-																// here? //TODO
+				System.err.println("Invalid direction");
 				break;
 			}
 			distance += SPEED;
-			System.out.println(distance);
+			// System.out.println(distance);
+			System.out.println(Math.round(posX) + ", " + Math.round(posY));
 		}
 
 	}
@@ -189,8 +185,9 @@ public class Player {
 		}
 		return false;
 	}
-	public void die(){
-		//TODO
+
+	public void die() {
+		// TODO
 		return;
 	}
 
