@@ -37,4 +37,13 @@ public class Mirror {
 		return image;
 	}
 
+	public void changeOrientation() {
+		if (orientation == NORTH_EAST_ORIENTATION) {
+			orientation = NORTH_WEST_ORIENTATION;
+		} else {// orientation == NORTH_WEST_ORIENTATION
+			orientation = NORTH_EAST_ORIENTATION;
+		}
+		image.rotate(90);
+	}
+
 }

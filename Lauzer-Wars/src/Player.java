@@ -47,7 +47,7 @@ public class Player {
 		this.maxY = maxY;
 		this.image = image;
 		isWalking = new boolean[4];
-		isKeyPressed = new boolean[4];
+		isKeyPressed = new boolean[5];
 
 	}
 
@@ -69,6 +69,10 @@ public class Player {
 
 	public float getRotation() {
 		return image.getRotation();
+	}
+
+	public boolean getKeyPressed(int keyNumber) {
+		return isKeyPressed[keyNumber];
 	}
 
 	private void setRotation(float r) {

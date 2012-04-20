@@ -1,5 +1,3 @@
-import java.util.Random;
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
@@ -20,13 +18,13 @@ public class Game extends BasicGame {
 	private static final int WEST = 1;
 	private static final int SOUTH = 2;
 	private static final int EAST = 3;
-	private static final int NUMBER_OF_X_TILES = 15; // TODO Fix the ratio, does
+	private static final int CHANGE_MIRROR = 4;
+	private static final int NUMBER_OF_X_TILES = 23; // TODO Fix the ratio, does
 														// not work consistently
 														// in current state
 	private static final int NUMBER_OF_Y_TILES = 6 * NUMBER_OF_X_TILES / 8;
 	private static final float TILE_DISTANCE = 100 * 8 / NUMBER_OF_X_TILES;
 	private Tile[][] map = null;
-	private Random random = null;
 
 	public Game() {
 		super("Lauzer Wars");
@@ -89,7 +87,6 @@ public class Game extends BasicGame {
 						), NUMBER_OF_X_TILES - 2, NUMBER_OF_Y_TILES - 2,
 				NUMBER_OF_X_TILES, NUMBER_OF_Y_TILES);
 		map = new Tile[NUMBER_OF_X_TILES][NUMBER_OF_Y_TILES];
-		random = new Random();
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
 				map[i][j] = new Tile(TILE_DISTANCE);
@@ -273,8 +270,23 @@ public class Game extends BasicGame {
 			player1.walkAnimate(SOUTH);
 		}
 
+		// Handles the case where the player wants to change the orientation of
+		// a tile
+		if (input.isKeyDown(Input.KEY_E)) {
+			Tile tileToCheck = map[player1X][player1Y];
+			if (tileToCheck.hasMirror()) {
+				if (!player1.getKeyPressed(CHANGE_MIRROR)) { // TODO
+					Mirror mirrorToChange = tileToCheck.getMirror();
+					mirrorToChange.changeOrientation();
+				}
+			}
+			player1.setKeyPressed(CHANGE_MIRROR, true);
+		} else {
+			player1.setKeyPressed(CHANGE_MIRROR, false);
+		}
+
 		// Player 2
-		// The following methods handle the first player's input.
+		// The following methods handle the second player's input.
 
 		int player2X = Math.round(player2.getPosX());
 		int player2Y = Math.round(player2.getPosY());
@@ -336,6 +348,20 @@ public class Game extends BasicGame {
 
 		if (player2.isWalking(SOUTH)) {
 			player2.walkAnimate(SOUTH);
+		}
+		// Handles the case where the player wants to change the orientation of
+		// a tile
+		if (input.isKeyDown(Input.KEY_ENTER)) {
+			Tile tileToCheck = map[player2X][player2Y];
+			if (tileToCheck.hasMirror()) {
+				if (!player2.getKeyPressed(CHANGE_MIRROR)) { // TODO
+					Mirror mirrorToChange = tileToCheck.getMirror();
+					mirrorToChange.changeOrientation();
+				}
+			}
+			player2.setKeyPressed(CHANGE_MIRROR, true);
+		} else {
+			player2.setKeyPressed(CHANGE_MIRROR, false);
 		}
 	}
 }
