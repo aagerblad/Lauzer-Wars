@@ -28,6 +28,10 @@ public class Tile {
 	public boolean hasLaser() {
 		return laserOnTile.size() != 0;
 	}
+	
+	public void clearLaser() {
+		laserOnTile.clear();
+	}
 
 	/**
 	 * @return the player on the tile, or null if no player exists.

@@ -23,11 +23,12 @@ public class Game extends BasicGame {
 	private static final int SOUTH = 2;
 	private static final int EAST = 3;
 	private static final int CHANGE_MIRROR = 4;
-	private static final int NUMBER_OF_X_TILES = 23; // TODO Fix the ratio, does
+	private static final int NUMBER_OF_X_TILES = 32 - 1; // TODO Fix the ratio, does
 														// not work consistently
 														// in current state
 	private static final int NUMBER_OF_Y_TILES = 6 * NUMBER_OF_X_TILES / 8 ;
-	private static final float TILE_DISTANCE = 100 * 8 / NUMBER_OF_X_TILES;
+	private static final float TILE_DISTANCE = 100 * 8 / (NUMBER_OF_X_TILES + 1);
+	private static final float OFFSET = TILE_DISTANCE/2;
 	private Tile[][] map = null;
 
 	public Game() {
@@ -53,35 +54,29 @@ public class Game extends BasicGame {
 			for (int j = 0; j < map[i].length; j++) {
 				if (map[i][j].hasMirror()) {
 					map[i][j].getMirror().getImage()
-					.draw(TILE_DISTANCE * i, TILE_DISTANCE * j);
+					.draw(TILE_DISTANCE * i + OFFSET, TILE_DISTANCE * j + OFFSET);
 
 				}
 				if (map[i][j].hasPillar()) {
 					map[i][j].getPillar().getImage()
-					.draw(TILE_DISTANCE * i, TILE_DISTANCE * j);
+					.draw(TILE_DISTANCE * i + OFFSET, TILE_DISTANCE * j + OFFSET);
 				}
 				if (map[i][j].hasLaser()) {
 					for (Laser laser : map[i][j].getLaser()) {
-						laser.getImage().draw(TILE_DISTANCE *i, TILE_DISTANCE * j);
+						laser.getImage().draw(TILE_DISTANCE *i + OFFSET,
+								TILE_DISTANCE * j + OFFSET);
 					}
+//					map[i][j].clearLaser();
 				}
 			}
 		}
 
-//		for (int i = 0; i < map.length; i++) {
-//			for (int j = 0; j < map[i].length; j++) {
-//				if (map[i][j].hasPillar()) {
-//					map[i][j].getPillar().getImage()
-//					.draw(TILE_DISTANCE * i, TILE_DISTANCE * j);
-//				}
-//			}
-//		}
 
 		// TODO offset if rotated OR have different sprites for each rotation
-		player1.getImage().draw(player1.getPosX() * TILE_DISTANCE,
-				player1.getPosY() * TILE_DISTANCE);
-		player2.getImage().draw(player2.getPosX() * TILE_DISTANCE,
-				player2.getPosY() * TILE_DISTANCE);
+		player1.getImage().draw(player1.getPosX() * TILE_DISTANCE + OFFSET,
+				player1.getPosY() * TILE_DISTANCE + OFFSET);
+		player2.getImage().draw(player2.getPosX() * TILE_DISTANCE + OFFSET,
+				player2.getPosY() * TILE_DISTANCE + OFFSET);
 
 	}
 
