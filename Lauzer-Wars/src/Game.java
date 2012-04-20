@@ -20,14 +20,14 @@ public class Game extends BasicGame {
 	private static final int WEST = 1;
 	private static final int SOUTH = 2;
 	private static final int EAST = 3;
-	private static final int NUMBER_OF_X_TILES = 8;
+	private static final int NUMBER_OF_X_TILES = 16;
 	private static final int NUMBER_OF_Y_TILES = 6 * NUMBER_OF_X_TILES / 8;
 	private static final float TILE_DISTANCE = 100 * 8 / NUMBER_OF_X_TILES;
 	private Tile[][] map = null;
 	private Random random = null;
 
 	public Game() {
-		super("Lauzer Wars - a dirty dirty gamedevelopers production ");
+		super("Lauzer Wars");
 	}
 
 	public static void main(String[] args) throws SlickException {

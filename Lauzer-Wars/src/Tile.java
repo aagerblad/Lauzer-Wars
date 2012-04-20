@@ -77,14 +77,25 @@ public class Tile {
 		return false;
 	}
 
+	/**
+	 * Adds a reference to a player to the tile.
+	 * @param player The player to add to the tile.
+	 */
 	public void addPlayer(Player player) {
 		playerOnTile = player;
 	}
 
+	/**
+	 * Removes the reference to the player on the tile.
+	 */
 	public void removePlayer() {
 		playerOnTile = null;
 	}
 
+	/**
+	 * Adds a reference to a pillar to the tile.
+	 * @param pillar The pillar to add to the tile.
+	 */
 	public void addPillar(Pillar pillar) {
 		pillarOnTile = pillar;
 	}
