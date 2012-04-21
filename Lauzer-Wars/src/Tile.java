@@ -15,18 +15,30 @@ public class Tile {
 		random = new Random();
 		laserOnTile = new ArrayList<Laser>();
 	}
-	
+
 	public ArrayList<Laser> getLaser() {
 		return laserOnTile;
 	}
-	
-	public boolean addLaser(int direction, float tileDistance) throws SlickException {
+
+	public boolean addLaser(int direction, float tileDistance)
+			throws SlickException {
 		laserOnTile.add(new Laser(direction, tileDistance));
 		return true;
 	}
-	
+
 	public boolean hasLaser() {
 		return laserOnTile.size() != 0;
+	}
+
+	public void clearLaser() {
+		laserOnTile.clear();
+	}
+
+	public void rotateLastLaser(int rotation, float tileDistance)
+			throws SlickException {
+		Laser rotatedLaser = laserOnTile.get(laserOnTile.size() - 1);
+		rotatedLaser.setRotated(rotation, tileDistance);
+		laserOnTile.set(laserOnTile.size() - 1, rotatedLaser);
 	}
 
 	/**
@@ -125,7 +137,7 @@ public class Tile {
 	 * @throws SlickException
 	 */
 	public boolean addMirror(float tileDistance) throws SlickException {
-		int randomMirror = random.nextInt(2);
+		int randomMirror = random.nextInt(6);
 		System.out.println(randomMirror);
 		if (randomMirror == 1) {
 			Mirror mirrorToAdd = new Mirror(random.nextInt(2), tileDistance);

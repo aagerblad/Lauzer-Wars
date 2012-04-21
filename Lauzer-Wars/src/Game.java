@@ -19,11 +19,14 @@ public class Game extends BasicGame {
 	private static final int SOUTH = 2;
 	private static final int EAST = 3;
 	private static final int CHANGE_MIRROR = 4;
-	private static final int NUMBER_OF_X_TILES = 65; // TODO Fix the ratio, does
-														// not work consistently
-														// in current state
+	private static final int NUMBER_OF_X_TILES = 16 - 1; // TODO Fix the ratio,
+															// does
+															// not work
+															// consistently
+															// in current state
 	private static final int NUMBER_OF_Y_TILES = 6 * NUMBER_OF_X_TILES / 8;
-	private static final float TILE_DISTANCE = 100 * 8 / NUMBER_OF_X_TILES;
+	private static final float TILE_DISTANCE = 100 * 8 / (NUMBER_OF_X_TILES + 1);
+	private static final float OFFSET = TILE_DISTANCE / 2;
 	private Tile[][] map = null;
 
 	public Game() {
@@ -48,37 +51,35 @@ public class Game extends BasicGame {
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
 				if (map[i][j].hasMirror()) {
-					map[i][j].getMirror().getImage()
-							.draw(TILE_DISTANCE * i, TILE_DISTANCE * j);
+					map[i][j]
+							.getMirror()
+							.getImage()
+							.draw(TILE_DISTANCE * i + OFFSET,
+									TILE_DISTANCE * j + OFFSET);
 
 				}
 				if (map[i][j].hasPillar()) {
-					map[i][j].getPillar().getImage()
-							.draw(TILE_DISTANCE * i, TILE_DISTANCE * j);
+					map[i][j]
+							.getPillar()
+							.getImage()
+							.draw(TILE_DISTANCE * i + OFFSET,
+									TILE_DISTANCE * j + OFFSET);
 				}
 				if (map[i][j].hasLaser()) {
 					for (Laser laser : map[i][j].getLaser()) {
-						laser.getImage().draw(TILE_DISTANCE * i,
-								TILE_DISTANCE * j);
+						laser.getImage().draw(TILE_DISTANCE * i + OFFSET,
+								TILE_DISTANCE * j + OFFSET);
 					}
+					// map[i][j].clearLaser();
 				}
 			}
 		}
 
-		// for (int i = 0; i < map.length; i++) {
-		// for (int j = 0; j < map[i].length; j++) {
-		// if (map[i][j].hasPillar()) {
-		// map[i][j].getPillar().getImage()
-		// .draw(TILE_DISTANCE * i, TILE_DISTANCE * j);
-		// }
-		// }
-		// }
-
 		// TODO offset if rotated OR have different sprites for each rotation
-		player1.getImage().draw(player1.getPosX() * TILE_DISTANCE,
-				player1.getPosY() * TILE_DISTANCE);
-		player2.getImage().draw(player2.getPosX() * TILE_DISTANCE,
-				player2.getPosY() * TILE_DISTANCE);
+		player1.getImage().draw(player1.getPosX() * TILE_DISTANCE + OFFSET,
+				player1.getPosY() * TILE_DISTANCE + OFFSET);
+		player2.getImage().draw(player2.getPosX() * TILE_DISTANCE + OFFSET,
+				player2.getPosY() * TILE_DISTANCE + OFFSET);
 
 	}
 
@@ -87,7 +88,6 @@ public class Game extends BasicGame {
 	 */
 	@Override
 	public void init(GameContainer arg0) throws SlickException {
-
 		player1 = new Player("Dexter",
 				new Image("src/resource/Character1.png")
 						.getScaledCopy(TILE_DISTANCE / 100 // TODO
@@ -193,6 +193,7 @@ public class Game extends BasicGame {
 
 	private void laserAlgorithm(int rotation, int posX, int posY)
 			throws SlickException {
+		boolean rotated = false;
 		switch (rotation) {
 		case 0:
 			posY -= 1;
@@ -214,6 +215,7 @@ public class Game extends BasicGame {
 
 		} else if (map[posX][posY].hasMirror()) {
 			int orientation = map[posX][posY].getMirror().getOrientation();
+			rotated = true;
 			/**
 			 * This if-statement says that if the mirror is in NorthEast
 			 * orientation and the direction of the laser is either east or west
@@ -235,7 +237,11 @@ public class Game extends BasicGame {
 
 			}
 		}
-		map[posX][posY].addLaser(rotation, TILE_DISTANCE); // TODO Mirrorlasers
+		map[posX][posY].addLaser(rotation, TILE_DISTANCE);
+		if (rotated == true) {
+			map[posX][posY].rotateLastLaser(rotation, TILE_DISTANCE); // TODO
+																		// fix
+		}
 		laserAlgorithm(rotation, posX, posY);
 	}
 
