@@ -43,10 +43,16 @@ public class Mirror {
 		return orientation;
 	}
 
+	/**
+	 * @return The image representing the mirror.
+	 */
 	public Image getImage() {
 		return image;
 	}
 
+	/**
+	 * Change the orientation of the mirror to NE if NW, and to NW if NE.
+	 */
 	public void changeOrientation() {
 		if (orientation == NORTH_EAST_ORIENTATION) {
 			orientation = NORTH_WEST_ORIENTATION;
