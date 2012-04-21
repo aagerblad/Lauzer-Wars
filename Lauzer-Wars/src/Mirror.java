@@ -8,6 +8,13 @@ public class Mirror {
 	private Image image = null;
 	private int orientation = 0;
 
+	/**
+	 * Initialize the mirror object.
+	 * 
+	 * @param orientation
+	 * @param tileDistance
+	 * @throws SlickException
+	 */
 	public Mirror(int orientation, float tileDistance) throws SlickException {
 		switch (orientation) {
 		case NORTH_EAST_ORIENTATION:
@@ -28,9 +35,8 @@ public class Mirror {
 			break;
 		}
 	}
-	
+
 	/**
-	 * 
 	 * @return Orientation of mirror, 0 if NE, 1 if NW
 	 */
 	public int getOrientation() {

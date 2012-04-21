@@ -184,6 +184,12 @@ public class Game extends BasicGame {
 		}
 	}
 
+	/**
+	 * Initiates the laser Algorithm, based on the player position.
+	 * 
+	 * @param player
+	 * @throws SlickException
+	 */
 	private void handleLaser(Player player) throws SlickException {
 		// TODO cast floats to int
 		laserAlgorithm(Math.round(player.getRotation()),
@@ -191,6 +197,14 @@ public class Game extends BasicGame {
 
 	}
 
+	/**
+	 * Calculates the path of the laser, and adds laser to the relevant tiles.
+	 * 
+	 * @param rotation
+	 * @param posX
+	 * @param posY
+	 * @throws SlickException
+	 */
 	private void laserAlgorithm(int rotation, int posX, int posY)
 			throws SlickException {
 		boolean rotated = false;

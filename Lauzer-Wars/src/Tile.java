@@ -11,29 +11,60 @@ public class Tile {
 	private ArrayList<Laser> laserOnTile = null;
 	private Random random = null;
 
+	/**
+	 * Initialize the tile object.
+	 * 
+	 * @param tileDistance
+	 * @throws SlickException
+	 */
 	public Tile(float tileDistance) throws SlickException {
 		random = new Random();
 		laserOnTile = new ArrayList<Laser>();
 	}
 
+	/**
+	 * @return The list of lasers on the tile.
+	 */
 	public ArrayList<Laser> getLaser() {
 		return laserOnTile;
 	}
 
+	/**
+	 * Adds a laser object to the end of the tile's list of lasers.
+	 * 
+	 * @param direction
+	 * @param tileDistance
+	 * @return
+	 * @throws SlickException
+	 */
 	public boolean addLaser(int direction, float tileDistance)
 			throws SlickException {
 		laserOnTile.add(new Laser(direction, tileDistance));
 		return true;
 	}
 
+	/**
+	 * @return true if the tile has any laser objects, false otherwise.
+	 */
 	public boolean hasLaser() {
 		return laserOnTile.size() != 0;
 	}
 
+	/**
+	 * Remove all the laser objects on the tile.
+	 */
 	public void clearLaser() {
 		laserOnTile.clear();
 	}
 
+	/**
+	 * Change the image of the laser last added to the list of lasers into one
+	 * representing a reflected laser.
+	 * 
+	 * @param rotation
+	 * @param tileDistance
+	 * @throws SlickException
+	 */
 	public void rotateLastLaser(int rotation, float tileDistance)
 			throws SlickException {
 		Laser rotatedLaser = laserOnTile.get(laserOnTile.size() - 1);
