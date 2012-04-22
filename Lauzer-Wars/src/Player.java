@@ -171,7 +171,6 @@ public class Player {
 				break;
 			}
 			distance += SPEED;
-			// System.out.println(distance);
 			System.out.println(Math.round(posX) + ", " + Math.round(posY));
 		}
 
