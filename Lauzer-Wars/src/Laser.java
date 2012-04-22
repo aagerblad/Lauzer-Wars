@@ -17,11 +17,47 @@ public class Laser {
 	 * @param tileDistance
 	 * @throws SlickException
 	 */
-	public Laser(int direction, float tileDistance) throws SlickException {
-		image = new Image("src/resource/Laser.png")
-				.getScaledCopy(tileDistance / 100);
-		image.rotate(90); // TODO issue with sprite
-		image.rotate(direction);
+	public Laser(int lastDirection, int direction, float tileDistance) throws SlickException {
+		if (lastDirection == direction) {
+			image = new Image("src/resource/Laser.png")
+			.getScaledCopy(tileDistance / 100);
+			image.rotate(90); // TODO issue with sprite
+			image.rotate(direction);
+		}else {
+			image = new Image("src/resource/rotatedlaser.png").getScaledCopy(tileDistance/100);
+			image.rotate(270);
+			switch (lastDirection) {
+			case ROTATION_NORTH:
+				if (direction == ROTATION_WEST) {
+					//Do nothing.
+				}else if (direction == ROTATION_EAST) {
+					image = image.getFlippedCopy(true, true);
+				}
+				break;
+			case ROTATION_WEST:
+				if (direction == ROTATION_NORTH) {
+					image = image.getFlippedCopy(true, false);
+				}else if (direction == ROTATION_SOUTH) {
+					image = image.getFlippedCopy(true, true);
+				}
+			case ROTATION_SOUTH:
+				if (direction == ROTATION_WEST) {
+					image = image.getFlippedCopy(false, false);
+				}else if (direction == ROTATION_EAST) {
+					image = image.getFlippedCopy(true, false);
+				}
+			case ROTATION_EAST:
+				if (direction == ROTATION_NORTH) {
+					image = image.getFlippedCopy(false, false); //TODO
+				}else if (direction == ROTATION_SOUTH) {
+					//Do nothing
+				}
+				
+
+			default:
+				break;
+			}
+		}
 	}
 
 	/**
@@ -39,7 +75,7 @@ public class Laser {
 	 * @param tileDistance
 	 * @throws SlickException
 	 */
-	public void setRotated(int rotation, float tileDistance)
+	public void setRotated(int lastRotation, int rotation, float tileDistance)
 			throws SlickException {
 		image = new Image("src/resource/rotatedlaser.png")
 				.getScaledCopy(tileDistance / 100);

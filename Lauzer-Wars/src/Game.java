@@ -207,7 +207,7 @@ public class Game extends BasicGame {
 	 */
 	private void laserAlgorithm(int rotation, int posX, int posY)
 			throws SlickException {
-		boolean rotated = false;
+		int lastRotation = rotation;
 		switch (rotation) {
 		case 0:
 			posY -= 1;
@@ -225,11 +225,14 @@ public class Game extends BasicGame {
 			break;
 		}
 		if (map[posX][posY].hasCollision()) {
+			if (map[posX][posY].hasPlayer()) {
+				Player playerToKill = map[posX][posY].getPlayer(); //TODO
+				playerToKill.die();
+			}
 			return;
 
 		} else if (map[posX][posY].hasMirror()) {
 			int orientation = map[posX][posY].getMirror().getOrientation();
-			rotated = true;
 			/**
 			 * This if-statement says that if the mirror is in NorthEast
 			 * orientation and the direction of the laser is either east or west
@@ -251,11 +254,7 @@ public class Game extends BasicGame {
 
 			}
 		}
-		map[posX][posY].addLaser(rotation, TILE_DISTANCE);
-		if (rotated == true) {
-			map[posX][posY].rotateLastLaser(rotation, TILE_DISTANCE); // TODO
-																		// fix
-		}
+		map[posX][posY].addLaser(lastRotation, rotation, TILE_DISTANCE);
 		laserAlgorithm(rotation, posX, posY);
 	}
 

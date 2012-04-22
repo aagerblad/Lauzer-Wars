@@ -191,6 +191,7 @@ public class Player {
 	}
 
 	public void die() {
+		System.out.println("dead");
 		// TODO
 		return;
 	}
