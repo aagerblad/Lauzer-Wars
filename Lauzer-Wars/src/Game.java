@@ -8,7 +8,7 @@ import org.newdawn.slick.SlickException;
 
 public class Game extends BasicGame {
 
-	static final int SIZE_X = 800;
+	static final int SIZE_X = 1200;
 	static final int SIZE_Y = SIZE_X * 6/8;
 	private int timePile = 0;
 	private static final int msPerFrame = 10;
@@ -20,7 +20,7 @@ public class Game extends BasicGame {
 	private static final int EAST = 3;
 	private static final int CHANGE_MIRROR = 4;
 
-	private static final int NUMBER_OF_X_TILES = 32 - 1;
+	private static final int NUMBER_OF_X_TILES = 64 - 1;
 	private static final int NUMBER_OF_Y_TILES = 6 * NUMBER_OF_X_TILES / 8;
 	private static final float TILE_DISTANCE = (SIZE_X / 8) * 8 / (NUMBER_OF_X_TILES + 1);
 	private static final float OFFSET = TILE_DISTANCE / 2;
@@ -37,6 +37,7 @@ public class Game extends BasicGame {
 		app = new AppGameContainer(new Game());
 
 		app.setDisplayMode(SIZE_X, SIZE_Y, false);
+		app.setIcon("src/resource/Character1.png"); //TODO http://slick.javaunlimited.net/viewtopic.php?p=19642
 		app.start();
 
 	}
@@ -320,13 +321,7 @@ public class Game extends BasicGame {
 		int player1X = Math.round(player1.getPosX());
 		int player1Y = Math.round(player1.getPosY());
 
-		if (input.isKeyDown(Input.KEY_E)) {
-			//			for (int i = 0; i < map.length; i++) {
-			//				for (int j = 0; j < map[i].length; j++) {				
-			//						map[i][j].clearLaser(1);
-			//				}
-			//			}
-		}
+
 
 		// Handles the case where the player wants to move west.
 		if (input.isKeyDown(Input.KEY_A)) {
