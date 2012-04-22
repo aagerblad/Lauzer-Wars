@@ -8,7 +8,7 @@ import org.newdawn.slick.SlickException;
 
 public class Game extends BasicGame {
 
-	static final int SIZE_X = 1200;
+	static final int SIZE_X = 800;
 	static final int SIZE_Y = SIZE_X * 6/8;
 	private int timePile = 0;
 	private static final int msPerFrame = 10;
