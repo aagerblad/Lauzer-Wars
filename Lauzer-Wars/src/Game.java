@@ -9,7 +9,7 @@ import org.newdawn.slick.SlickException;
 public class Game extends BasicGame {
 
 	static final int SIZE_X = 800;
-	static final int SIZE_Y = 600;
+	static final int SIZE_Y = SIZE_X * 6/8;
 	private int timePile = 0;
 	private static final int msPerFrame = 10;
 	Player player1 = null;
@@ -19,13 +19,10 @@ public class Game extends BasicGame {
 	private static final int SOUTH = 2;
 	private static final int EAST = 3;
 	private static final int CHANGE_MIRROR = 4;
-	private static final int NUMBER_OF_X_TILES = 32 - 1; // TODO Fix the ratio,
-	// does
-	// not work
-	// consistently
-	// in current state
+
+	private static final int NUMBER_OF_X_TILES = 80 - 1;
 	private static final int NUMBER_OF_Y_TILES = 6 * NUMBER_OF_X_TILES / 8;
-	private static final float TILE_DISTANCE = 100 * 8 / (NUMBER_OF_X_TILES + 1);
+	private static final float TILE_DISTANCE = (SIZE_X / 8) * 8 / (NUMBER_OF_X_TILES + 1);
 	private static final float OFFSET = TILE_DISTANCE / 2;
 	private Tile[][] map = null;
 
@@ -70,7 +67,7 @@ public class Game extends BasicGame {
 						laser.getImage().draw(TILE_DISTANCE * i + OFFSET,
 								TILE_DISTANCE * j + OFFSET);
 					}
-					// map[i][j].clearLaser();
+					 map[i][j].clearLaser();
 				}
 			}
 		}
