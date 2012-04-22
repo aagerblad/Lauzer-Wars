@@ -19,11 +19,11 @@ public class Game extends BasicGame {
 	private static final int SOUTH = 2;
 	private static final int EAST = 3;
 	private static final int CHANGE_MIRROR = 4;
-	private static final int NUMBER_OF_X_TILES = 16 - 1; // TODO Fix the ratio,
-															// does
-															// not work
-															// consistently
-															// in current state
+	private static final int NUMBER_OF_X_TILES = 32 - 1; // TODO Fix the ratio,
+	// does
+	// not work
+	// consistently
+	// in current state
 	private static final int NUMBER_OF_Y_TILES = 6 * NUMBER_OF_X_TILES / 8;
 	private static final float TILE_DISTANCE = 100 * 8 / (NUMBER_OF_X_TILES + 1);
 	private static final float OFFSET = TILE_DISTANCE / 2;
@@ -88,14 +88,14 @@ public class Game extends BasicGame {
 	 */
 	@Override
 	public void init(GameContainer arg0) throws SlickException {
-		player1 = new Player("Dexter",
+		player1 = new Player("Andreas",
 				new Image("src/resource/Character1.png")
-						.getScaledCopy(TILE_DISTANCE / 100 // TODO
-						), 1, 1);
-		player2 = new Player("Andreas",
+		.getScaledCopy(TILE_DISTANCE / 100 // TODO
+				), 1, 1);
+		player2 = new Player("Dexter",
 				new Image("src/resource/Character2.png")
-						.getScaledCopy(TILE_DISTANCE / 100 // TODO
-						), NUMBER_OF_X_TILES - 2, NUMBER_OF_Y_TILES - 2);
+		.getScaledCopy(TILE_DISTANCE / 100 // TODO
+				), NUMBER_OF_X_TILES - 2, NUMBER_OF_Y_TILES - 2);
 		map = new Tile[NUMBER_OF_X_TILES][NUMBER_OF_Y_TILES];
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
@@ -294,10 +294,6 @@ public class Game extends BasicGame {
 		int player1X = Math.round(player1.getPosX());
 		int player1Y = Math.round(player1.getPosY());
 
-		if (input.isKeyDown(Input.KEY_Q)) {
-			handleLaser(player1);
-		}
-
 		// Handles the case where the player wants to move west.
 		if (input.isKeyDown(Input.KEY_A)) {
 			Tile wantedTile = map[player1X - 1][player1Y];
@@ -374,6 +370,14 @@ public class Game extends BasicGame {
 		} else {
 			player1.setKeyPressed(CHANGE_MIRROR, false);
 		}
+		
+		// Handles the case where the player wants to shoot.
+		if (input.isKeyDown(Input.KEY_Q)) {
+			if (!player1.aldreadyWalking()) {
+				handleLaser(player1);
+			}
+		}
+
 
 		// Player 2
 		// The following methods handle the second player's input.
@@ -445,10 +449,7 @@ public class Game extends BasicGame {
 			Tile tileToCheck = map[player2X][player2Y];
 			if (tileToCheck.hasMirror()) {
 				if (!player2.getKeyPressed(CHANGE_MIRROR)
-						&& !player2.aldreadyWalking()) { // TODO Ability to
-															// change
-															// orientation while
-															// walking?
+						&& !player2.aldreadyWalking()) { 
 					Mirror mirrorToChange = tileToCheck.getMirror();
 					mirrorToChange.changeOrientation();
 				}
@@ -456,6 +457,13 @@ public class Game extends BasicGame {
 			player2.setKeyPressed(CHANGE_MIRROR, true);
 		} else {
 			player2.setKeyPressed(CHANGE_MIRROR, false);
+		}
+
+		// Handles the case where the player wants to shoot.
+		if (input.isKeyDown(Input.KEY_RCONTROL)) {
+			if (!player2.aldreadyWalking()) {
+				handleLaser(player2);
+			}
 		}
 	}
 }

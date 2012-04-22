@@ -5,6 +5,7 @@ import org.newdawn.slick.SlickException;
 
 public class Tile {
 
+	private static final int CHANCE_OF_MIRROR = 4;
 	private Player playerOnTile = null;
 	private Mirror mirrorOnTile = null;
 	private Pillar pillarOnTile = null;
@@ -168,7 +169,7 @@ public class Tile {
 	 * @throws SlickException
 	 */
 	public boolean addMirror(float tileDistance) throws SlickException {
-		int randomMirror = random.nextInt(2);
+		int randomMirror = random.nextInt(CHANCE_OF_MIRROR);
 		System.out.println(randomMirror);
 		if (randomMirror == 1) {
 			Mirror mirrorToAdd = new Mirror(random.nextInt(2), tileDistance);

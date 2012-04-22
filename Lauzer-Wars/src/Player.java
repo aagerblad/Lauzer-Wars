@@ -24,6 +24,7 @@ public class Player {
 	private float distance = 0;
 	private static final float TILE_DISTANCE = 1;
 	private static final float SPEED = 0.05f;
+	private String name = null;
 
 	// Only floats which equals TILE_DISTANCE/n where n is a integer
 
@@ -41,6 +42,7 @@ public class Player {
 		this.posX = posX;
 		this.posY = posY;
 		this.image = image;
+		this.name = name;
 		isWalking = new boolean[4];
 		isKeyPressed = new boolean[5];
 
@@ -68,6 +70,10 @@ public class Player {
 
 	public boolean getKeyPressed(int keyNumber) {
 		return isKeyPressed[keyNumber];
+	}
+	
+	public String getName(){
+		return name;
 	}
 
 	private void setRotation(float r) {
@@ -191,7 +197,7 @@ public class Player {
 	}
 
 	public void die() {
-		System.out.println("dead");
+		System.out.println(name + " got lauzered to death");
 		// TODO
 		return;
 	}
