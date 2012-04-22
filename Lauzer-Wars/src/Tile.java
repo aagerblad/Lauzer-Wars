@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 import org.newdawn.slick.SlickException;
@@ -38,9 +39,9 @@ public class Tile {
 	 * @return
 	 * @throws SlickException
 	 */
-	public boolean addLaser(int lastDirection, int direction, float tileDistance)
+	public boolean addLaser(int lastDirection, int direction, float tileDistance, int id)
 			throws SlickException {
-		laserOnTile.add(new Laser(lastDirection, direction, tileDistance));
+		laserOnTile.add(new Laser(lastDirection, direction, tileDistance, id));
 		return true;
 	}
 
@@ -54,24 +55,17 @@ public class Tile {
 	/**
 	 * Remove all the laser objects on the tile.
 	 */
-	public void clearLaser() {
-		laserOnTile.clear();
+	public void clearLaser(int idToRemove) {
+		Iterator<Laser> i = laserOnTile.iterator();
+		while (i.hasNext()) {
+			if (i.next().getId() == idToRemove) {
+				i.remove();
+			}
+		}
+		
 	}
 
-	/**
-	 * Change the image of the laser last added to the list of lasers into one
-	 * representing a reflected laser.
-	 * 
-	 * @param rotation
-	 * @param tileDistance
-	 * @throws SlickException
-	 */
-//	public void rotateLastLaser(int rotation, float tileDistance)
-//			throws SlickException {
-//		Laser rotatedLaser = laserOnTile.get(laserOnTile.size() - 1);
-//		rotatedLaser.setRotated(rotation, tileDistance);
-//		laserOnTile.set(laserOnTile.size() - 1, rotatedLaser);
-//	}
+
 
 	/**
 	 * @return the player on the tile, or null if no player exists.

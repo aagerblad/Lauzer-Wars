@@ -8,6 +8,7 @@ public class Laser {
 	private static final int ROTATION_WEST = 270;
 	private static final int ROTATION_SOUTH = 180;
 	private static final int ROTATION_EAST = 90;
+	private int id = 0;
 
 	/**
 	 * Iniitiate a laser object.
@@ -17,7 +18,8 @@ public class Laser {
 	 * @param tileDistance
 	 * @throws SlickException
 	 */
-	public Laser(int lastDirection, int direction, float tileDistance) throws SlickException {
+	public Laser(int lastDirection, int direction, float tileDistance, int id) throws SlickException {
+		this.id = id;
 		if (lastDirection == direction) {
 			image = new Image("src/resource/Laser.png")
 			.getScaledCopy(tileDistance / 100);
@@ -58,6 +60,10 @@ public class Laser {
 				break;
 			}
 		}
+	}
+	
+	public int getId() {
+		return id;
 	}
 
 	/**

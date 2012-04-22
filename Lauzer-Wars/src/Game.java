@@ -20,11 +20,12 @@ public class Game extends BasicGame {
 	private static final int EAST = 3;
 	private static final int CHANGE_MIRROR = 4;
 
-	private static final int NUMBER_OF_X_TILES = 80 - 1;
+	private static final int NUMBER_OF_X_TILES = 32 - 1;
 	private static final int NUMBER_OF_Y_TILES = 6 * NUMBER_OF_X_TILES / 8;
 	private static final float TILE_DISTANCE = (SIZE_X / 8) * 8 / (NUMBER_OF_X_TILES + 1);
 	private static final float OFFSET = TILE_DISTANCE / 2;
 	private Tile[][] map = null;
+	TimeHandler timeHandler = null;
 
 	public Game() {
 		// super("Lauzer Wars - a dirty dirty gamedevelopers production ");
@@ -67,7 +68,7 @@ public class Game extends BasicGame {
 						laser.getImage().draw(TILE_DISTANCE * i + OFFSET,
 								TILE_DISTANCE * j + OFFSET);
 					}
-					 map[i][j].clearLaser();
+
 				}
 			}
 		}
@@ -85,11 +86,12 @@ public class Game extends BasicGame {
 	 */
 	@Override
 	public void init(GameContainer arg0) throws SlickException {
-		player1 = new Player("Andreas",
+		timeHandler = new TimeHandler(); 
+		player1 = new Player("Andreas", 1,
 				new Image("src/resource/Character1.png")
 		.getScaledCopy(TILE_DISTANCE / 100 // TODO
 				), 1, 1);
-		player2 = new Player("Dexter",
+		player2 = new Player("Dexter", 2,
 				new Image("src/resource/Character2.png")
 		.getScaledCopy(TILE_DISTANCE / 100 // TODO
 				), NUMBER_OF_X_TILES - 2, NUMBER_OF_Y_TILES - 2);
@@ -176,10 +178,34 @@ public class Game extends BasicGame {
 		timePile += delta;
 		while (timePile >= msPerFrame) {
 			timePile -= msPerFrame;
+			timeHandler.tick();
 			handlePlayerPositions();
+			checkLaserLife();
 			handleInput(input);
 		}
 	}
+
+	/*
+	 * TODO make this shit work!
+	 */
+	private void checkLaserLife() {
+		if (timeHandler.isLaserDone(1)) {
+			for (int x = 0; x < map.length; x++) {
+				for (int y = 0; y < map[x].length; y++) {				
+					player1.setShot(false);
+					map[x][y].clearLaser(1);
+				}
+			}
+		} else if (timeHandler.isLaserDone(2)) {
+			for (int x = 0; x < map.length; x++) {
+				for (int y = 0; y < map[x].length; y++) {				
+					player2.setShot(false);
+					map[x][y].clearLaser(2);
+				}
+			}
+		}
+	}
+
 
 	/**
 	 * Initiates the laser Algorithm, based on the player position.
@@ -188,9 +214,12 @@ public class Game extends BasicGame {
 	 * @throws SlickException
 	 */
 	private void handleLaser(Player player) throws SlickException {
-		// TODO cast floats to int
-		laserAlgorithm(Math.round(player.getRotation()),
-				Math.round(player.getPosX()), Math.round(player.getPosY()));
+		if (!player.hasShot()) {
+			player.setShot(true);
+			timeHandler.playerJustShotWithHisOrHerLaser(player);
+			laserAlgorithm(Math.round(player.getRotation()),
+					Math.round(player.getPosX()), Math.round(player.getPosY()), player.getId());
+		}
 
 	}
 
@@ -202,7 +231,7 @@ public class Game extends BasicGame {
 	 * @param posY
 	 * @throws SlickException
 	 */
-	private void laserAlgorithm(int rotation, int posX, int posY)
+	private void laserAlgorithm(int rotation, int posX, int posY, int id)
 			throws SlickException {
 		int lastRotation = rotation;
 		switch (rotation) {
@@ -251,8 +280,8 @@ public class Game extends BasicGame {
 
 			}
 		}
-		map[posX][posY].addLaser(lastRotation, rotation, TILE_DISTANCE);
-		laserAlgorithm(rotation, posX, posY);
+		map[posX][posY].addLaser(lastRotation, rotation, TILE_DISTANCE, id);
+		laserAlgorithm(rotation, posX, posY, id);
 	}
 
 	/**
@@ -290,6 +319,14 @@ public class Game extends BasicGame {
 
 		int player1X = Math.round(player1.getPosX());
 		int player1Y = Math.round(player1.getPosY());
+
+		if (input.isKeyDown(Input.KEY_E)) {
+			//			for (int i = 0; i < map.length; i++) {
+			//				for (int j = 0; j < map[i].length; j++) {				
+			//						map[i][j].clearLaser(1);
+			//				}
+			//			}
+		}
 
 		// Handles the case where the player wants to move west.
 		if (input.isKeyDown(Input.KEY_A)) {
@@ -367,7 +404,7 @@ public class Game extends BasicGame {
 		} else {
 			player1.setKeyPressed(CHANGE_MIRROR, false);
 		}
-		
+
 		// Handles the case where the player wants to shoot.
 		if (input.isKeyDown(Input.KEY_Q)) {
 			if (!player1.aldreadyWalking()) {
