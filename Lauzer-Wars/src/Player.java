@@ -24,6 +24,9 @@ public class Player {
 	private float distance = 0;
 	private static final float TILE_DISTANCE = 1;
 	private static final float SPEED = 0.05f;
+	private String name = null;
+	private int id = 0;
+	private boolean hasShot;
 
 	// Only floats which equals TILE_DISTANCE/n where n is a integer
 
@@ -37,10 +40,12 @@ public class Player {
 	 * @param posY
 	 *            starting coordinate, y-wise
 	 */
-	public Player(String name, Image image, float posX, float posY) {
+	public Player(String name, int id, Image image, float posX, float posY) {
 		this.posX = posX;
 		this.posY = posY;
 		this.image = image;
+		this.name = name;
+		this.id = id;
 		isWalking = new boolean[4];
 		isKeyPressed = new boolean[5];
 
@@ -68,6 +73,14 @@ public class Player {
 
 	public boolean getKeyPressed(int keyNumber) {
 		return isKeyPressed[keyNumber];
+	}
+	
+	public String getName(){
+		return name;
+	}
+	
+	public int getId() {
+		return id;
 	}
 
 	private void setRotation(float r) {
@@ -190,8 +203,17 @@ public class Player {
 	}
 
 	public void die() {
+		System.out.println(name + " got lauzered to death");
 		// TODO
 		return;
+	}
+
+	public boolean hasShot() {
+		return hasShot;
+	}
+
+	public void setShot(boolean b) {
+		hasShot = b;
 	}
 
 }

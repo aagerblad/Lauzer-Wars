@@ -1,10 +1,12 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 import org.newdawn.slick.SlickException;
 
 public class Tile {
 
+	private static final int CHANCE_OF_MIRROR = 4;
 	private Player playerOnTile = null;
 	private Mirror mirrorOnTile = null;
 	private Pillar pillarOnTile = null;
@@ -37,9 +39,9 @@ public class Tile {
 	 * @return
 	 * @throws SlickException
 	 */
-	public boolean addLaser(int direction, float tileDistance)
-			throws SlickException {
-		laserOnTile.add(new Laser(direction, tileDistance));
+	public boolean addLaser(int lastDirection, int direction,
+			float tileDistance, int id) throws SlickException {
+		laserOnTile.add(new Laser(lastDirection, direction, tileDistance, id));
 		return true;
 	}
 
@@ -53,23 +55,14 @@ public class Tile {
 	/**
 	 * Remove all the laser objects on the tile.
 	 */
-	public void clearLaser() {
-		laserOnTile.clear();
-	}
+	public void clearLaser(int idToRemove) {
+		Iterator<Laser> i = laserOnTile.iterator();
+		while (i.hasNext()) {
+			if (i.next().getId() == idToRemove) {
+				i.remove();
+			}
+		}
 
-	/**
-	 * Change the image of the laser last added to the list of lasers into one
-	 * representing a reflected laser.
-	 * 
-	 * @param rotation
-	 * @param tileDistance
-	 * @throws SlickException
-	 */
-	public void rotateLastLaser(int rotation, float tileDistance)
-			throws SlickException {
-		Laser rotatedLaser = laserOnTile.get(laserOnTile.size() - 1);
-		rotatedLaser.setRotated(rotation, tileDistance);
-		laserOnTile.set(laserOnTile.size() - 1, rotatedLaser);
 	}
 
 	/**
@@ -168,7 +161,7 @@ public class Tile {
 	 * @throws SlickException
 	 */
 	public boolean addMirror(float tileDistance) throws SlickException {
-		int randomMirror = random.nextInt(6);
+		int randomMirror = random.nextInt(CHANCE_OF_MIRROR);
 		if (randomMirror == 1) {
 			Mirror mirrorToAdd = new Mirror(random.nextInt(2), tileDistance);
 			mirrorOnTile = mirrorToAdd;
