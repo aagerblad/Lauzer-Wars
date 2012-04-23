@@ -74,11 +74,11 @@ public class Player {
 	public boolean getKeyPressed(int keyNumber) {
 		return isKeyPressed[keyNumber];
 	}
-	
-	public String getName(){
+
+	public String getName() {
 		return name;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -185,6 +185,7 @@ public class Player {
 			}
 			distance += SPEED;
 			System.out.println(Math.round(posX) + ", " + Math.round(posY));
+
 		}
 
 	}

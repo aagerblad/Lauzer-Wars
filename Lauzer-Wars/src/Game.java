@@ -37,6 +37,8 @@ public class Game extends BasicGame {
 		app = new AppGameContainer(new Game());
 
 		app.setDisplayMode(SIZE_X, SIZE_Y, false);
+		app.setIcon("src/resource/Character1.png"); // TODO
+													// http://slick.javaunlimited.net/viewtopic.php?p=19642
 		app.start();
 
 	}
@@ -319,14 +321,6 @@ public class Game extends BasicGame {
 
 		int player1X = Math.round(player1.getPosX());
 		int player1Y = Math.round(player1.getPosY());
-
-		if (input.isKeyDown(Input.KEY_E)) {
-			// for (int i = 0; i < map.length; i++) {
-			// for (int j = 0; j < map[i].length; j++) {
-			// map[i][j].clearLaser(1);
-			// }
-			// }
-		}
 
 		// Handles the case where the player wants to move west.
 		if (input.isKeyDown(Input.KEY_A)) {
