@@ -97,4 +97,13 @@ public class Laser {
 		image = new Image("src/resource/rotatedlaser.png")
 				.getScaledCopy(tileDistance / 100);
 	}
+
+	/**
+	 * Draw the laser at a new alpha value, simulating a fadeout.
+	 * 
+	 * @param newAlpha
+	 */
+	public void fade(float newAlpha) {
+		image.setAlpha(newAlpha);
+	}
 }

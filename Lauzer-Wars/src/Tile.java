@@ -169,4 +169,11 @@ public class Tile {
 		return true; // TODO
 	}
 
+	public void laserFade(int idToFade, float newAlpha) {
+		for (Laser laser : laserOnTile) {
+			if (laser.getId() == idToFade) {
+				laser.fade(newAlpha);
+			}
+		}
+	}
 }

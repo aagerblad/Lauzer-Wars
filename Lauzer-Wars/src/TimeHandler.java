@@ -4,7 +4,7 @@ public class TimeHandler {
 	private long player2LaserTime = 0;
 	private boolean player1LaserActivated;
 	private boolean player2LaserActivated;
-	private static final int LASER_LIFE = 70; // Time in s * 10^-2
+	private static final int LASER_LIFE = 100; // Time in s * 10^-2
 
 	public TimeHandler() {
 
@@ -59,6 +59,36 @@ public class TimeHandler {
 		default:
 			return false;
 		}
+	}
+
+	public boolean timeToFade(int idOfPlayer) {
+		switch (idOfPlayer) {
+		case 1:
+			if (player1LaserTime >= LASER_LIFE / 3) {
+				return true;
+			} else {
+				return false;
+			}
+		case 2:
+			if (player2LaserTime >= LASER_LIFE / 3) {
+				return true;
+			} else {
+				return false;
+			}
+
+		default:
+			return false;
+		}
+	}
+
+	public float fadeAmount(int idOfPlayer) {
+		if (idOfPlayer == 1) {
+			return (float) (LASER_LIFE - player1LaserTime) / 100;
+		} else { // idOfPlayer == 2
+			return (float) (LASER_LIFE - player2LaserTime) / 100;
+
+		}
+
 	}
 
 }
