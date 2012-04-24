@@ -8,8 +8,8 @@ import org.newdawn.slick.SlickException;
 
 public class Game extends BasicGame {
 
-	static final int SIZE_X = 1200;
-	static final int SIZE_Y = SIZE_X * 6/8;
+	static final int SIZE_X = 800;
+	static final int SIZE_Y = SIZE_X * 6 / 8;
 	private int timePile = 0;
 	private static final int msPerFrame = 10;
 	Player player1 = null;
@@ -20,9 +20,10 @@ public class Game extends BasicGame {
 	private static final int EAST = 3;
 	private static final int CHANGE_MIRROR = 4;
 
-	private static final int NUMBER_OF_X_TILES = 64 - 1;
+	private static final int NUMBER_OF_X_TILES = 32 - 1;
 	private static final int NUMBER_OF_Y_TILES = 6 * NUMBER_OF_X_TILES / 8;
-	private static final float TILE_DISTANCE = (SIZE_X / 8) * 8 / (NUMBER_OF_X_TILES + 1);
+	private static final float TILE_DISTANCE = (SIZE_X / 8) * 8
+			/ (NUMBER_OF_X_TILES + 1);
 	private static final float OFFSET = TILE_DISTANCE / 2;
 	private Tile[][] map = null;
 	TimeHandler timeHandler = null;
@@ -37,7 +38,8 @@ public class Game extends BasicGame {
 		app = new AppGameContainer(new Game());
 
 		app.setDisplayMode(SIZE_X, SIZE_Y, false);
-		app.setIcon("src/resource/Character1.png"); //TODO http://slick.javaunlimited.net/viewtopic.php?p=19642
+		app.setIcon("src/resource/Character1.png"); // TODO
+													// http://slick.javaunlimited.net/viewtopic.php?p=19642
 		app.start();
 
 	}
@@ -87,15 +89,15 @@ public class Game extends BasicGame {
 	 */
 	@Override
 	public void init(GameContainer arg0) throws SlickException {
-		timeHandler = new TimeHandler(); 
+		timeHandler = new TimeHandler();
 		player1 = new Player("Andreas", 1,
 				new Image("src/resource/Character1.png")
-		.getScaledCopy(TILE_DISTANCE / 100 // TODO
-				), 1, 1);
+						.getScaledCopy(TILE_DISTANCE / 100 // TODO
+						), 1, 1);
 		player2 = new Player("Dexter", 2,
 				new Image("src/resource/Character2.png")
-		.getScaledCopy(TILE_DISTANCE / 100 // TODO
-				), NUMBER_OF_X_TILES - 2, NUMBER_OF_Y_TILES - 2);
+						.getScaledCopy(TILE_DISTANCE / 100 // TODO
+						), NUMBER_OF_X_TILES - 2, NUMBER_OF_Y_TILES - 2);
 		map = new Tile[NUMBER_OF_X_TILES][NUMBER_OF_Y_TILES];
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
@@ -192,21 +194,20 @@ public class Game extends BasicGame {
 	private void checkLaserLife() {
 		if (timeHandler.isLaserDone(1)) {
 			for (int x = 0; x < map.length; x++) {
-				for (int y = 0; y < map[x].length; y++) {				
+				for (int y = 0; y < map[x].length; y++) {
 					player1.setShot(false);
 					map[x][y].clearLaser(1);
 				}
 			}
 		} else if (timeHandler.isLaserDone(2)) {
 			for (int x = 0; x < map.length; x++) {
-				for (int y = 0; y < map[x].length; y++) {				
+				for (int y = 0; y < map[x].length; y++) {
 					player2.setShot(false);
 					map[x][y].clearLaser(2);
 				}
 			}
 		}
 	}
-
 
 	/**
 	 * Initiates the laser Algorithm, based on the player position.
@@ -219,7 +220,8 @@ public class Game extends BasicGame {
 			player.setShot(true);
 			timeHandler.playerJustShotWithHisOrHerLaser(player);
 			laserAlgorithm(Math.round(player.getRotation()),
-					Math.round(player.getPosX()), Math.round(player.getPosY()), player.getId());
+					Math.round(player.getPosX()), Math.round(player.getPosY()),
+					player.getId());
 		}
 
 	}
@@ -253,7 +255,7 @@ public class Game extends BasicGame {
 		}
 		if (map[posX][posY].hasCollision()) {
 			if (map[posX][posY].hasPlayer()) {
-				Player playerToKill = map[posX][posY].getPlayer(); //TODO
+				Player playerToKill = map[posX][posY].getPlayer(); // TODO
 				playerToKill.die();
 			}
 			return;
@@ -320,8 +322,6 @@ public class Game extends BasicGame {
 
 		int player1X = Math.round(player1.getPosX());
 		int player1Y = Math.round(player1.getPosY());
-
-
 
 		// Handles the case where the player wants to move west.
 		if (input.isKeyDown(Input.KEY_A)) {
@@ -407,7 +407,6 @@ public class Game extends BasicGame {
 			}
 		}
 
-
 		// Player 2
 		// The following methods handle the second player's input.
 
@@ -478,7 +477,7 @@ public class Game extends BasicGame {
 			Tile tileToCheck = map[player2X][player2Y];
 			if (tileToCheck.hasMirror()) {
 				if (!player2.getKeyPressed(CHANGE_MIRROR)
-						&& !player2.aldreadyWalking()) { 
+						&& !player2.aldreadyWalking()) {
 					Mirror mirrorToChange = tileToCheck.getMirror();
 					mirrorToChange.changeOrientation();
 				}
