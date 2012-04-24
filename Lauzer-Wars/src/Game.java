@@ -194,7 +194,6 @@ public class Game extends BasicGame {
 		if (timeHandler.timeToFade(1)) {
 			for (int x = 0; x < map.length; x++) {
 				for (int y = 0; y < map[x].length; y++) {
-					player2.setShot(false);
 					map[x][y].laserFade(1, timeHandler.fadeAmount(1));
 				}
 			}
@@ -202,7 +201,6 @@ public class Game extends BasicGame {
 		if (timeHandler.timeToFade(2)) {
 			for (int x = 0; x < map.length; x++) {
 				for (int y = 0; y < map[x].length; y++) {
-					player2.setShot(false);
 					map[x][y].laserFade(2, timeHandler.fadeAmount(2));
 				}
 			}
