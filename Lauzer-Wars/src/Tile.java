@@ -39,8 +39,8 @@ public class Tile {
 	 * @return
 	 * @throws SlickException
 	 */
-	public boolean addLaser(int lastDirection, int direction, float tileDistance, int id)
-			throws SlickException {
+	public boolean addLaser(int lastDirection, int direction,
+			float tileDistance, int id) throws SlickException {
 		laserOnTile.add(new Laser(lastDirection, direction, tileDistance, id));
 		return true;
 	}
@@ -62,10 +62,8 @@ public class Tile {
 				i.remove();
 			}
 		}
-		
+
 	}
-
-
 
 	/**
 	 * @return the player on the tile, or null if no player exists.
@@ -164,7 +162,6 @@ public class Tile {
 	 */
 	public boolean addMirror(float tileDistance) throws SlickException {
 		int randomMirror = random.nextInt(CHANCE_OF_MIRROR);
-		System.out.println(randomMirror);
 		if (randomMirror == 1) {
 			Mirror mirrorToAdd = new Mirror(random.nextInt(2), tileDistance);
 			mirrorOnTile = mirrorToAdd;
@@ -172,4 +169,11 @@ public class Tile {
 		return true; // TODO
 	}
 
+	public void laserFade(int idToFade, float newAlpha) {
+		for (Laser laser : laserOnTile) {
+			if (laser.getId() == idToFade) {
+				laser.fade(newAlpha);
+			}
+		}
+	}
 }

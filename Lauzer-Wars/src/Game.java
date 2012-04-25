@@ -19,8 +19,7 @@ public class Game extends BasicGame {
 	private static final int SOUTH = 2;
 	private static final int EAST = 3;
 	private static final int CHANGE_MIRROR = 4;
-
-	private static final int NUMBER_OF_X_TILES = 32 - 1;
+	private static final int NUMBER_OF_X_TILES = 40 - 1;
 	private static final int NUMBER_OF_Y_TILES = 6 * NUMBER_OF_X_TILES / 8;
 	private static final float TILE_DISTANCE = (SIZE_X / 8) * 8
 			/ (NUMBER_OF_X_TILES + 1);
@@ -192,6 +191,22 @@ public class Game extends BasicGame {
 	 * TODO make this shit work!
 	 */
 	private void checkLaserLife() {
+		if (timeHandler.timeToFade(1)) {
+			for (int x = 0; x < map.length; x++) {
+				for (int y = 0; y < map[x].length; y++) {
+					map[x][y].laserFade(1, timeHandler.fadeAmount(1));
+				}
+			}
+		}
+		if (timeHandler.timeToFade(2)) {
+			for (int x = 0; x < map.length; x++) {
+				for (int y = 0; y < map[x].length; y++) {
+					map[x][y].laserFade(2, timeHandler.fadeAmount(2));
+				}
+			}
+
+		}
+
 		if (timeHandler.isLaserDone(1)) {
 			for (int x = 0; x < map.length; x++) {
 				for (int y = 0; y < map[x].length; y++) {
