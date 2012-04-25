@@ -20,7 +20,7 @@ public class Game extends BasicGame {
 	private static final int EAST = 3;
 	private static final int CHANGE_MIRROR = 4;
 
-	private static final int NUMBER_OF_X_TILES = 80 - 1;
+	private static final int NUMBER_OF_X_TILES = 24 - 1;
 	private static final int NUMBER_OF_Y_TILES = 6 * NUMBER_OF_X_TILES / 8;
 	private static final float TILE_DISTANCE = (SIZE_X / 8) * 8 / (NUMBER_OF_X_TILES + 1);
 	private static final float OFFSET = TILE_DISTANCE / 2;
