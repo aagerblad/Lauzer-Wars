@@ -10,8 +10,6 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class GameplayState extends BasicGameState {
 
-	static final int SIZE_X = 800;
-	static final int SIZE_Y = SIZE_X * 6 / 8;
 	private int timePile = 0;
 	private static final int msPerFrame = 10;
 	Player player1 = null;
@@ -23,27 +21,17 @@ public class GameplayState extends BasicGameState {
 	private static final int CHANGE_MIRROR = 4;
 	private static final int NUMBER_OF_X_TILES = 24 - 1;
 	private static final int NUMBER_OF_Y_TILES = 6 * NUMBER_OF_X_TILES / 8;
-	private static final float TILE_DISTANCE = (SIZE_X / 8) * 8
-			/ (NUMBER_OF_X_TILES + 1);
-	private static final float OFFSET = TILE_DISTANCE / 2;
+	private static float tileDistance = 0;
+	private static float offset = 0;
 	private Tile[][] map = null;
 	TimeHandler timeHandler = null;
 	private int stateID;
 
-	public GameplayState() {
-		// super("Lauzer Wars - a dirty dirty gamedevelopers production ");
+	public GameplayState(int stateID, int sizeX) {
+		this.stateID = stateID;
+		tileDistance = sizeX / (NUMBER_OF_X_TILES + 1);
+		offset = tileDistance / 2;
 	}
-
-	// public static void main(String[] args) throws SlickException {
-	// AppGameContainer app = null;
-	// app = new AppGameContainer(new GameplayState());
-	//
-	// app.setDisplayMode(SIZE_X, SIZE_Y, false);
-	// app.setIcon("src/resource/Character1.png"); // TODO
-	// // http://slick.javaunlimited.net/viewtopic.php?p=19642
-	// app.start();
-	//
-	// }
 
 	public int getID() {
 		return stateID;
@@ -61,21 +49,21 @@ public class GameplayState extends BasicGameState {
 					map[i][j]
 							.getMirror()
 							.getImage()
-							.draw(TILE_DISTANCE * i + OFFSET,
-									TILE_DISTANCE * j + OFFSET);
+							.draw(tileDistance * i + offset,
+									tileDistance * j + offset);
 
 				}
 				if (map[i][j].hasPillar()) {
 					map[i][j]
 							.getPillar()
 							.getImage()
-							.draw(TILE_DISTANCE * i + OFFSET,
-									TILE_DISTANCE * j + OFFSET);
+							.draw(tileDistance * i + offset,
+									tileDistance * j + offset);
 				}
 				if (map[i][j].hasLaser()) {
 					for (Laser laser : map[i][j].getLaser()) {
-						laser.getImage().draw(TILE_DISTANCE * i + OFFSET,
-								TILE_DISTANCE * j + OFFSET);
+						laser.getImage().draw(tileDistance * i + offset,
+								tileDistance * j + offset);
 					}
 
 				}
@@ -83,10 +71,10 @@ public class GameplayState extends BasicGameState {
 		}
 
 		// TODO offset if rotated OR have different sprites for each rotation
-		player1.getImage().draw(player1.getPosX() * TILE_DISTANCE + OFFSET,
-				player1.getPosY() * TILE_DISTANCE + OFFSET);
-		player2.getImage().draw(player2.getPosX() * TILE_DISTANCE + OFFSET,
-				player2.getPosY() * TILE_DISTANCE + OFFSET);
+		player1.getImage().draw(player1.getPosX() * tileDistance + offset,
+				player1.getPosY() * tileDistance + offset);
+		player2.getImage().draw(player2.getPosX() * tileDistance + offset,
+				player2.getPosY() * tileDistance + offset);
 
 	}
 
@@ -97,18 +85,16 @@ public class GameplayState extends BasicGameState {
 	public void init(GameContainer arg0, StateBasedGame sbg)
 			throws SlickException {
 		timeHandler = new TimeHandler();
-		player1 = new Player("Andreas", 1,
-				new Image("src/resource/Character1.png")
-						.getScaledCopy(TILE_DISTANCE / 100 // TODO
-						), 1, 1);
-		player2 = new Player("Dexter", 2,
-				new Image("src/resource/Character2.png")
-						.getScaledCopy(TILE_DISTANCE / 100 // TODO
-						), NUMBER_OF_X_TILES - 2, NUMBER_OF_Y_TILES - 2);
+		player1 = new Player("Andreas", 1, new Image(
+				"src/resource/Character1.png").getScaledCopy(tileDistance / 100 // TODO
+				), 1, 1);
+		player2 = new Player("Dexter", 2, new Image(
+				"src/resource/Character2.png").getScaledCopy(tileDistance / 100 // TODO
+				), NUMBER_OF_X_TILES - 2, NUMBER_OF_Y_TILES - 2);
 		map = new Tile[NUMBER_OF_X_TILES][NUMBER_OF_Y_TILES];
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
-				map[i][j] = new Tile(TILE_DISTANCE);
+				map[i][j] = new Tile(tileDistance);
 			}
 		}
 		// Add the wall surrounding the map.
@@ -132,7 +118,7 @@ public class GameplayState extends BasicGameState {
 						&& map[i][j + 1].hasPillar()) {
 					// Do nothing
 				} else {
-					map[i][j].addMirror(TILE_DISTANCE);
+					map[i][j].addMirror(tileDistance);
 				}
 			}
 		}
@@ -147,7 +133,7 @@ public class GameplayState extends BasicGameState {
 		for (int i = 2; i < NUMBER_OF_X_TILES - 2; i++) {
 			for (int j = 2; j < NUMBER_OF_Y_TILES - 2; j++) {
 				if ((i % 2 == 0) && (j % 2 == 0)) {
-					map[i][j].addPillar(new Pillar(TILE_DISTANCE));
+					map[i][j].addPillar(new Pillar(tileDistance));
 				}
 			}
 		}
@@ -161,19 +147,19 @@ public class GameplayState extends BasicGameState {
 	private void addWall() throws SlickException {
 		for (int i = 0; i < map.length; i++) {
 			int j = 0;
-			map[i][j].addPillar(new Pillar(TILE_DISTANCE));
+			map[i][j].addPillar(new Pillar(tileDistance));
 		}
 		for (int j = 0; j < NUMBER_OF_Y_TILES; j++) {
 			int i = 0;
-			map[i][j].addPillar(new Pillar(TILE_DISTANCE));
+			map[i][j].addPillar(new Pillar(tileDistance));
 		}
 		for (int i = 0; i < NUMBER_OF_X_TILES; i++) {
 			int j = NUMBER_OF_Y_TILES - 1;
-			map[i][j].addPillar(new Pillar(TILE_DISTANCE));
+			map[i][j].addPillar(new Pillar(tileDistance));
 		}
 		for (int j = 0; j < NUMBER_OF_Y_TILES; j++) {
 			int i = NUMBER_OF_X_TILES - 1;
-			map[i][j].addPillar(new Pillar(TILE_DISTANCE));
+			map[i][j].addPillar(new Pillar(tileDistance));
 		}
 	}
 
@@ -310,7 +296,7 @@ public class GameplayState extends BasicGameState {
 
 			}
 		}
-		map[posX][posY].addLaser(lastRotation, rotation, TILE_DISTANCE, id);
+		map[posX][posY].addLaser(lastRotation, rotation, tileDistance, id);
 		laserAlgorithm(rotation, posX, posY, id);
 	}
 
@@ -442,8 +428,7 @@ public class GameplayState extends BasicGameState {
 		if (input.isKeyDown(Input.KEY_LSHIFT)) {
 			Tile tileToCheck = map[player1X][player1Y];
 			if (tileToCheck.hasMirror()) {
-				if (!player1.getKeyPressed(CHANGE_MIRROR)
-						&& !player1.aldreadyWalking()) { // TODO
+				if (!player1.getKeyPressed(CHANGE_MIRROR)) { // TODO
 					Mirror mirrorToChange = tileToCheck.getMirror();
 					mirrorToChange.changeOrientation();
 				}
@@ -529,8 +514,7 @@ public class GameplayState extends BasicGameState {
 		if (input.isKeyDown(Input.KEY_ENTER)) {
 			Tile tileToCheck = map[player2X][player2Y];
 			if (tileToCheck.hasMirror()) {
-				if (!player2.getKeyPressed(CHANGE_MIRROR)
-						&& !player2.aldreadyWalking()) {
+				if (!player2.getKeyPressed(CHANGE_MIRROR)) {
 					Mirror mirrorToChange = tileToCheck.getMirror();
 					mirrorToChange.changeOrientation();
 				}
