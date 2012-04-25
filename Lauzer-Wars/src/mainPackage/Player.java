@@ -1,6 +1,7 @@
 package mainPackage;
 
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 
 /**
  * @author Dexter
@@ -213,9 +214,22 @@ public class Player {
 		return;
 	}
 
-	public void hit() {
+	public void hit(int idOfPlayer, float tileDistance) throws SlickException {
 		paralyzed = true;
 		invulnerable = true;
+		switch (idOfPlayer) {
+		case 1:
+			image = new Image("src/resource/Character1stopped.png")
+					.getScaledCopy(tileDistance / 100);
+			break;
+		case 2:
+			image = new Image("src/resource/Character2stopped.png")
+					.getScaledCopy(tileDistance / 100);
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	public void setParalyzed(boolean b) {
