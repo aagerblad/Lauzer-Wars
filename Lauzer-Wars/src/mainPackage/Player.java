@@ -1,3 +1,4 @@
+package mainPackage;
 import org.newdawn.slick.Image;
 
 /**

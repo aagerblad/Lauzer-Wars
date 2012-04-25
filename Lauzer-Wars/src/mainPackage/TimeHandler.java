@@ -1,3 +1,4 @@
+package mainPackage;
 public class TimeHandler {
 
 	private long player1LaserTime = 0;
