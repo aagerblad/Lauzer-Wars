@@ -1,4 +1,5 @@
 package mainPackage;
+
 import org.newdawn.slick.Image;
 
 /**
@@ -24,10 +25,12 @@ public class Player {
 	private boolean[] isKeyPressed = null;
 	private float distance = 0;
 	private static final float TILE_DISTANCE = 1;
-	private static final float SPEED = 0.05f;
+	private static final float SPEED = 0.07f;
 	private String name = null;
 	private int id = 0;
 	private boolean hasShot;
+	private boolean paralyzed;
+	private boolean invulnerable;
 
 	// Only floats which equals TILE_DISTANCE/n where n is a integer
 
@@ -89,34 +92,34 @@ public class Player {
 	}
 
 	public void moveNorth(boolean collision) {
-		if (!collision) {
-			move(NORTH, ROTATION_NORTH);
-		} else {
+		if (paralyzed || collision) {
 			setRotation(ROTATION_NORTH);
+		} else {
+			move(NORTH, ROTATION_NORTH);
 		}
 	}
 
 	public void moveWest(boolean collision) {
-		if (!collision) {
-			move(WEST, ROTATION_WEST);
-		} else {
+		if (paralyzed || collision) {
 			setRotation(ROTATION_WEST);
+		} else {
+			move(WEST, ROTATION_WEST);
 		}
 	}
 
 	public void moveSouth(boolean collision) {
-		if (!collision) { // TODO
-			move(SOUTH, ROTATION_SOUTH);
-		} else {
+		if (paralyzed || collision) {
 			setRotation(ROTATION_SOUTH);
+		} else {
+			move(SOUTH, ROTATION_SOUTH);
 		}
 	}
 
 	public void moveEast(boolean collision) {
-		if (!collision) { // TODO
-			move(EAST, ROTATION_EAST);
-		} else {
+		if (paralyzed || collision) {
 			setRotation(ROTATION_EAST);
+		} else {
+			move(EAST, ROTATION_EAST);
 		}
 	}
 
@@ -210,12 +213,33 @@ public class Player {
 		return;
 	}
 
+	public void hit() {
+		paralyzed = true;
+		invulnerable = true;
+	}
+
+	public void setParalyzed(boolean b) {
+		paralyzed = b;
+	}
+
+	public void setInvulnerable(boolean b) {
+		invulnerable = b;
+	}
+
 	public boolean hasShot() {
 		return hasShot;
 	}
 
+	public boolean isParalyzed() {
+		return paralyzed;
+	}
+
 	public void setShot(boolean b) {
 		hasShot = b;
+	}
+
+	public boolean isInvulnerable() {
+		return invulnerable;
 	}
 
 }

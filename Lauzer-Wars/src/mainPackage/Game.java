@@ -1,4 +1,5 @@
 package mainPackage;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
@@ -20,7 +21,7 @@ public class Game extends BasicGame {
 	private static final int SOUTH = 2;
 	private static final int EAST = 3;
 	private static final int CHANGE_MIRROR = 4;
-	private static final int NUMBER_OF_X_TILES = 40 - 1;
+	private static final int NUMBER_OF_X_TILES = 24 - 1;
 	private static final int NUMBER_OF_Y_TILES = 6 * NUMBER_OF_X_TILES / 8;
 	private static final float TILE_DISTANCE = (SIZE_X / 8) * 8
 			/ (NUMBER_OF_X_TILES + 1);
@@ -271,8 +272,11 @@ public class Game extends BasicGame {
 		}
 		if (map[posX][posY].hasCollision()) {
 			if (map[posX][posY].hasPlayer()) {
-				Player playerToKill = map[posX][posY].getPlayer(); // TODO
-				playerToKill.die();
+				Player hitPlayer = map[posX][posY].getPlayer();
+				if (!hitPlayer.isInvulnerable()) {
+					hitPlayer.die(); // TODO Some type of life management
+					hitPlayer.hit();
+				}
 			}
 			return;
 
@@ -321,6 +325,32 @@ public class Game extends BasicGame {
 		int player2Y = Math.round(player2.getPosY());
 		Tile tileToAddPlayer2 = map[player2X][player2Y];
 		tileToAddPlayer2.addPlayer(player2);
+
+		if (timeHandler.paralyzeDone(1)) {
+			player1.setParalyzed(false);
+		}
+
+		if (timeHandler.invulnerableDone(1)) {
+			player1.setInvulnerable(false);
+		}
+
+		if (timeHandler.paralyzeDone(2)) {
+			player2.setParalyzed(false);
+		}
+
+		if (timeHandler.invulnerableDone(2)) {
+			player2.setInvulnerable(false);
+		}
+
+		if (player1.isInvulnerable()) {
+			timeHandler.hitTick(1);
+		}
+
+		if (player2.isInvulnerable()) {
+			timeHandler.hitTick(2);
+		}
+		System.out.println(player1.isInvulnerable());
+
 	}
 
 	/**
@@ -418,7 +448,7 @@ public class Game extends BasicGame {
 
 		// Handles the case where the player wants to shoot.
 		if (input.isKeyDown(Input.KEY_Q)) {
-			if (!player1.aldreadyWalking()) {
+			if (!player1.aldreadyWalking() && !player1.isParalyzed()) {
 				handleLaser(player1);
 			}
 		}
@@ -505,7 +535,7 @@ public class Game extends BasicGame {
 
 		// Handles the case where the player wants to shoot.
 		if (input.isKeyDown(Input.KEY_RCONTROL)) {
-			if (!player2.aldreadyWalking()) {
+			if (!player2.aldreadyWalking() && !player2.isParalyzed()) {
 				handleLaser(player2);
 			}
 		}
