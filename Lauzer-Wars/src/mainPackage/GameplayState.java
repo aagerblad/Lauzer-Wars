@@ -1,14 +1,14 @@
 package mainPackage;
 
-import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.StateBasedGame;
 
-public class Game extends BasicGame {
+public class GameplayState extends BasicGameState {
 
 	static final int SIZE_X = 800;
 	static final int SIZE_Y = SIZE_X * 6 / 8;
@@ -28,28 +28,33 @@ public class Game extends BasicGame {
 	private static final float OFFSET = TILE_DISTANCE / 2;
 	private Tile[][] map = null;
 	TimeHandler timeHandler = null;
+	private int stateID;
 
-	public Game() {
+	public GameplayState() {
 		// super("Lauzer Wars - a dirty dirty gamedevelopers production ");
-		super("Lauzer Wars");
 	}
 
-	public static void main(String[] args) throws SlickException {
-		AppGameContainer app = null;
-		app = new AppGameContainer(new Game());
+	// public static void main(String[] args) throws SlickException {
+	// AppGameContainer app = null;
+	// app = new AppGameContainer(new GameplayState());
+	//
+	// app.setDisplayMode(SIZE_X, SIZE_Y, false);
+	// app.setIcon("src/resource/Character1.png"); // TODO
+	// // http://slick.javaunlimited.net/viewtopic.php?p=19642
+	// app.start();
+	//
+	// }
 
-		app.setDisplayMode(SIZE_X, SIZE_Y, false);
-		app.setIcon("src/resource/Character1.png"); // TODO
-													// http://slick.javaunlimited.net/viewtopic.php?p=19642
-		app.start();
-
+	public int getID() {
+		return stateID;
 	}
 
 	/**
 	 * Renders the game world, ie the player avatars, and the map.
 	 */
 	@Override
-	public void render(GameContainer arg0, Graphics arg1) throws SlickException {
+	public void render(GameContainer arg0, StateBasedGame sgb, Graphics arg1)
+			throws SlickException {
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
 				if (map[i][j].hasMirror()) {
@@ -89,7 +94,8 @@ public class Game extends BasicGame {
 	 * Initializes the players and the map.
 	 */
 	@Override
-	public void init(GameContainer arg0) throws SlickException {
+	public void init(GameContainer arg0, StateBasedGame sbg)
+			throws SlickException {
 		timeHandler = new TimeHandler();
 		player1 = new Player("Andreas", 1,
 				new Image("src/resource/Character1.png")
@@ -175,7 +181,8 @@ public class Game extends BasicGame {
 	 * Updates the game world.
 	 */
 	@Override
-	public void update(GameContainer gc, int delta) throws SlickException {
+	public void update(GameContainer gc, StateBasedGame sbg, int delta)
+			throws SlickException {
 		Input input = gc.getInput();
 
 		// Makes sure the game stays at the set framrate.

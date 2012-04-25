@@ -25,7 +25,7 @@ public class Player {
 	private boolean[] isKeyPressed = null;
 	private float distance = 0;
 	private static final float TILE_DISTANCE = 1;
-	private static final float SPEED = 0.07f;
+	private static final float SPEED = 0.075f;
 	private String name = null;
 	private int id = 0;
 	private boolean hasShot;
