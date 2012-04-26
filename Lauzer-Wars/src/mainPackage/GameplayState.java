@@ -176,6 +176,12 @@ public class GameplayState extends BasicGameState {
 		while (timePile >= msPerFrame) {
 			timePile -= msPerFrame;
 			timeHandler.tick();
+			if (player1.isDead()) {
+				System.out.println(player1.getName() + " died.");
+			}
+			if (player2.isDead()) {
+				System.out.println(player2.getName() + " died.");
+			}
 			handlePlayerPositions();
 			checkLaserLife();
 			handleInput(gc, input);
@@ -267,8 +273,7 @@ public class GameplayState extends BasicGameState {
 			if (map[posX][posY].hasPlayer()) {
 				Player hitPlayer = map[posX][posY].getPlayer();
 				if (!hitPlayer.isInvulnerable()) {
-					hitPlayer.die(); // TODO Some type of life management
-					hitPlayer.hit();
+					hitPlayer.hit(hitPlayer.getId(), tileDistance);
 				}
 			}
 			return;
@@ -342,7 +347,6 @@ public class GameplayState extends BasicGameState {
 		if (player2.isInvulnerable()) {
 			timeHandler.hitTick(2);
 		}
-		System.out.println(player1.isInvulnerable());
 
 	}
 
