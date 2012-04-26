@@ -41,13 +41,13 @@ public class TimeHandler {
 	public boolean paralyzeDone(int idOfPlayer) {
 		switch (idOfPlayer) {
 		case 1:
-			if (player1hitTime >= PARALYZE_TIME) {
+			if (player1hitTime == PARALYZE_TIME) {
 				return true;
 			} else {
 				return false;
 			}
 		case 2:
-			if (player2hitTime >= PARALYZE_TIME) {
+			if (player2hitTime == PARALYZE_TIME) {
 				return true;
 			} else {
 				return false;

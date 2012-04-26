@@ -94,7 +94,9 @@ public class Player {
 	}
 
 	public void moveNorth(boolean collision) {
-		if (paralyzed || collision) {
+		if (paralyzed) {
+			// Do nothing
+		} else if (collision) {
 			setRotation(ROTATION_NORTH);
 		} else {
 			move(NORTH, ROTATION_NORTH);
@@ -102,7 +104,9 @@ public class Player {
 	}
 
 	public void moveWest(boolean collision) {
-		if (paralyzed || collision) {
+		if (paralyzed) {
+			// Do nothing
+		} else if (collision) {
 			setRotation(ROTATION_WEST);
 		} else {
 			move(WEST, ROTATION_WEST);
@@ -110,7 +114,9 @@ public class Player {
 	}
 
 	public void moveSouth(boolean collision) {
-		if (paralyzed || collision) {
+		if (paralyzed) {
+			// Do nothing
+		} else if (collision) {
 			setRotation(ROTATION_SOUTH);
 		} else {
 			move(SOUTH, ROTATION_SOUTH);
@@ -118,7 +124,9 @@ public class Player {
 	}
 
 	public void moveEast(boolean collision) {
-		if (paralyzed || collision) {
+		if (paralyzed) {
+			// Do nothing
+		} else if (collision) {
 			setRotation(ROTATION_EAST);
 		} else {
 			move(EAST, ROTATION_EAST);
@@ -207,18 +215,22 @@ public class Player {
 		return false;
 	}
 
-	public void hit(int idOfPlayer, float tileDistance) throws SlickException {
+	public void hit(int idOfPlayer, int rotation, float tileDistance)
+			throws SlickException {
 		paralyzed = true;
 		invulnerable = true;
 		life--;
+		System.out.println(name + ": " + life);
 		switch (idOfPlayer) {
 		case 1:
 			image = new Image("src/resource/Character1stopped.png")
 					.getScaledCopy(tileDistance / 100);
+			image.setAlpha(0.4f);
 			break;
 		case 2:
 			image = new Image("src/resource/Character2stopped.png")
 					.getScaledCopy(tileDistance / 100);
+			image.setAlpha(0.4f);
 			break;
 
 		default:
@@ -248,12 +260,32 @@ public class Player {
 	// }
 	// }
 
-	public void setParalyzed(boolean b) {
+	public void setParalyzed(boolean b, int idOfPlayer, float tileDistance)
+			throws SlickException {
 		paralyzed = b;
+		if (b == false) {
+			switch (idOfPlayer) {
+			case 1:
+				image = new Image("src/resource/Character1.png")
+						.getScaledCopy(tileDistance / 100);
+				image.setAlpha(0.4f);
+				break;
+			case 2:
+				image = new Image("src/resource/Character2.png")
+						.getScaledCopy(tileDistance / 100);
+				image.setAlpha(0.4f);
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 	public void setInvulnerable(boolean b) {
 		invulnerable = b;
+		if (b == false) {
+			image.setAlpha(1);
+		}
 	}
 
 	public boolean hasShot() {

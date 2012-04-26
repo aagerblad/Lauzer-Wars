@@ -273,7 +273,7 @@ public class GameplayState extends BasicGameState {
 			if (map[posX][posY].hasPlayer()) {
 				Player hitPlayer = map[posX][posY].getPlayer();
 				if (!hitPlayer.isInvulnerable()) {
-					hitPlayer.hit(hitPlayer.getId(), tileDistance);
+					hitPlayer.hit(hitPlayer.getId(), rotation, tileDistance);
 				}
 			}
 			return;
@@ -307,8 +307,10 @@ public class GameplayState extends BasicGameState {
 
 	/**
 	 * Updates the tile matrix with the players' current positions.
+	 * 
+	 * @throws SlickException
 	 */
-	private void handlePlayerPositions() {
+	private void handlePlayerPositions() throws SlickException {
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
 				map[i][j].removePlayer();
@@ -325,7 +327,7 @@ public class GameplayState extends BasicGameState {
 		tileToAddPlayer2.addPlayer(player2);
 
 		if (timeHandler.paralyzeDone(1)) {
-			player1.setParalyzed(false);
+			player1.setParalyzed(false, 1, tileDistance);
 		}
 
 		if (timeHandler.invulnerableDone(1)) {
@@ -333,7 +335,7 @@ public class GameplayState extends BasicGameState {
 		}
 
 		if (timeHandler.paralyzeDone(2)) {
-			player2.setParalyzed(false);
+			player2.setParalyzed(false, 2, tileDistance);
 		}
 
 		if (timeHandler.invulnerableDone(2)) {
