@@ -11,6 +11,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class GameplayState extends BasicGameState {
 
 	private int timePile = 0;
+	private Image background = null;
 	private static final int msPerFrame = 10;
 	Player player1 = null;
 	Player player2 = null;
@@ -43,6 +44,7 @@ public class GameplayState extends BasicGameState {
 	@Override
 	public void render(GameContainer arg0, StateBasedGame sgb, Graphics arg1)
 			throws SlickException {
+		background.draw(0, 0);
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
 				if (map[i][j].hasMirror()) {
@@ -85,6 +87,7 @@ public class GameplayState extends BasicGameState {
 	public void init(GameContainer arg0, StateBasedGame sbg)
 			throws SlickException {
 		timeHandler = new TimeHandler();
+		background = new Image("src/resource/background.png");
 		player1 = new Player("Andreas", 1, new Image(
 				"src/resource/Character1.png").getScaledCopy(tileDistance / 100 // TODO
 				), 1, 1);
