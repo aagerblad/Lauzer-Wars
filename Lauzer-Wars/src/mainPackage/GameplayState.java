@@ -26,6 +26,7 @@ public class GameplayState extends BasicGameState {
 	private Tile[][] map = null;
 	TimeHandler timeHandler = null;
 	private int stateID;
+	private boolean gameHasBeenReset;
 
 	public GameplayState(int stateID, int sizeX) {
 		this.stateID = stateID;
@@ -113,6 +114,7 @@ public class GameplayState extends BasicGameState {
 	private void addMirrors() throws SlickException {
 		for (int i = 1; i < NUMBER_OF_X_TILES - 1; i++) {
 			for (int j = 1; j < NUMBER_OF_Y_TILES - 1; j++) {
+				map[i][j].clearMirror();
 				if ((map[i - 1][j].hasPillar() && map[i + 1][j].hasPillar())
 						|| (map[i][j - 1].hasPillar())
 						&& map[i][j + 1].hasPillar()) {
@@ -162,6 +164,16 @@ public class GameplayState extends BasicGameState {
 			map[i][j].addPillar(new Pillar(tileDistance));
 		}
 	}
+	
+	private void resetGame() throws SlickException {
+		addMirrors();
+		System.out.println("HEJ");
+		player1.ressurect();
+		player2.ressurect();
+		player1.setPosition(1,1);
+		player2.setPosition(NUMBER_OF_X_TILES - 2, NUMBER_OF_Y_TILES - 2);
+		gameHasBeenReset = true;
+	}
 
 	/**
 	 * Updates the game world.
@@ -169,6 +181,11 @@ public class GameplayState extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
+		if (!gameHasBeenReset) {
+			resetGame();
+			
+		}
+		
 		Input input = gc.getInput();
 
 		// Makes sure the game stays at the set framrate.
@@ -176,11 +193,17 @@ public class GameplayState extends BasicGameState {
 		while (timePile >= msPerFrame) {
 			timePile -= msPerFrame;
 			timeHandler.tick();
+//			System.out.println(player2.isDead());
 			if (player1.isDead()) {
 				System.out.println(player1.getName() + " died.");
+				gameHasBeenReset = false;
+				sbg.enterState(2);
+				
 			}
 			if (player2.isDead()) {
 				System.out.println(player2.getName() + " died.");
+				gameHasBeenReset = false;
+				sbg.enterState(3);
 			}
 			handlePlayerPositions();
 			checkLaserLife();

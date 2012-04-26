@@ -107,6 +107,10 @@ public class Tile {
 		}
 		return false;
 	}
+	
+	public void clearMirror() {
+		mirrorOnTile = null;
+	}
 
 	/**
 	 * @return true if there is a pillar on the tile.
