@@ -1,6 +1,7 @@
 package mainPackage;
 
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 
 /**
  * @author Dexter
@@ -13,6 +14,7 @@ public class Player {
 	private float scale = 1.0f;
 	private float posX = 0;
 	private float posY = 0;
+	private int life = 5;
 	private static final int ROTATION_NORTH = 0;
 	private static final int ROTATION_WEST = 270;
 	private static final int ROTATION_SOUTH = 180;
@@ -188,8 +190,6 @@ public class Player {
 				break;
 			}
 			distance += SPEED;
-			System.out.println(Math.round(posX) + ", " + Math.round(posY));
-
 		}
 
 	}
@@ -207,23 +207,23 @@ public class Player {
 		return false;
 	}
 
-	public void die() {
-		System.out.println(name + " got lauzered to death");
-		// TODO
-		return;
-	}
-
-	public void hit() {
+	public void hit(int idOfPlayer, float tileDistance) throws SlickException {
 		paralyzed = true;
 		invulnerable = true;
-		// for (int i = 0; i < isWalking.length; i++) {
-		// if (isWalking[i] == true) {
-		// isWalking[i] = false;
-		// resetPosition(i);
-		//
-		// }
-		// }
+		life--;
+		switch (idOfPlayer) {
+		case 1:
+			image = new Image("src/resource/Character1stopped.png")
+					.getScaledCopy(tileDistance / 100);
+			break;
+		case 2:
+			image = new Image("src/resource/Character2stopped.png")
+					.getScaledCopy(tileDistance / 100);
+			break;
 
+		default:
+			break;
+		}
 	}
 
 	// private void resetPosition(int direction) {
@@ -270,6 +270,14 @@ public class Player {
 
 	public boolean isInvulnerable() {
 		return invulnerable;
+	}
+
+	public boolean isDead() {
+		if (life <= 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }
