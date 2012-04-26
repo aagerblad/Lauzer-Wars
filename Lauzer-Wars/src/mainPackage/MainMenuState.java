@@ -33,13 +33,13 @@ public class MainMenuState extends BasicGameState{
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
-		background = new Image("src/resource/MainMenuBackground.png");
-		pointer = new Image("src/resource/MainMenuPointer.png").getSubImage(0, 0, 130, 89);
-		backgroundComplete = new Image("src/resource/MainMenuComplete.png");
+		background = new Image("resources/MainMenuBackground.png");
+		pointer = new Image("resources/MainMenuPointer.png").getSubImage(0, 0, 130, 89);
+		backgroundComplete = new Image("resources/MainMenuComplete.png");
 		start2pGameOption = backgroundComplete.getSubImage(171, 339, 686 - 171, 412 - 339);
 		start1pGameOption = backgroundComplete.getSubImage(171, 408, 708 - 171, 476 - 408);
 		exitOption = backgroundComplete.getSubImage(171, 480, 318 - 171, 554 - 480);
-		laser = new Image("src/resource/MainMenuLaser.png").getSubImage(117, 297, 800-117, 456-297);
+		laser = new Image("resources/MainMenuLaser.png").getSubImage(117, 297, 800-117, 456-297);
 		
 	}
 
@@ -80,12 +80,13 @@ public class MainMenuState extends BasicGameState{
 		}
 		
 		if (gameplayStateToStart || gameToExit) {
-			tick++;
-			if (tick >= 100) {
+			tick += delta;
+			if (tick >= 800) {
 				if (gameplayStateToStart) {
 					game.enterState(1);					
 				} else if (gameToExit) {
-					System.exit(0);
+					container.exit();
+					return;
 				}
 			}
 		}

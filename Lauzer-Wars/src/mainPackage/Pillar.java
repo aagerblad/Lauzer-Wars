@@ -16,7 +16,7 @@ public class Pillar {
 	 * @throws SlickException
 	 */
 	public Pillar(float tileDistance) throws SlickException {
-		image = new Image("src/resource/pillar.png")
+		image = new Image("resources/pillar.png")
 				.getScaledCopy(tileDistance / 100);
 	}
 

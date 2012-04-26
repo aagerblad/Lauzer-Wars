@@ -86,11 +86,11 @@ public class GameplayState extends BasicGameState {
 			throws SlickException {
 		timeHandler = new TimeHandler();
 		player1 = new Player("Andreas", 1, new Image(
-				"src/resource/Character1.png").getScaledCopy(tileDistance / 100 // TODO
-				), 1, 1);
+				"resources/Character1.png").getScaledCopy(tileDistance / 100 // TODO
+						), 1, 1);
 		player2 = new Player("Dexter", 2, new Image(
-				"src/resource/Character2.png").getScaledCopy(tileDistance / 100 // TODO
-				), NUMBER_OF_X_TILES - 2, NUMBER_OF_Y_TILES - 2);
+				"resources/Character2.png").getScaledCopy(tileDistance / 100 // TODO
+						), NUMBER_OF_X_TILES - 2, NUMBER_OF_Y_TILES - 2);
 		map = new Tile[NUMBER_OF_X_TILES][NUMBER_OF_Y_TILES];
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
@@ -178,7 +178,7 @@ public class GameplayState extends BasicGameState {
 			timeHandler.tick();
 			handlePlayerPositions();
 			checkLaserLife();
-			handleInput(input);
+			handleInput(gc, input);
 		}
 	}
 
@@ -355,12 +355,17 @@ public class GameplayState extends BasicGameState {
 	 *            The pressed key.
 	 * @throws SlickException
 	 */
-	private void handleInput(Input input) throws SlickException {
+	private void handleInput(GameContainer gc, Input input) throws SlickException {
 		// Player 1:
 		// The following methods handle the first player's input.
 
 		int player1X = Math.round(player1.getPosX());
 		int player1Y = Math.round(player1.getPosY());
+		
+		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
+			gc.exit();
+			return;
+		}
 
 		// Handles the case where the player wants to move west.
 		if (input.isKeyDown(Input.KEY_A)) {
