@@ -216,7 +216,37 @@ public class Player {
 	public void hit() {
 		paralyzed = true;
 		invulnerable = true;
+		// for (int i = 0; i < isWalking.length; i++) {
+		// if (isWalking[i] == true) {
+		// isWalking[i] = false;
+		// resetPosition(i);
+		//
+		// }
+		// }
+
 	}
+
+	// private void resetPosition(int direction) {
+	// switch (direction) {
+	// case NORTH:
+	// posY += distance;
+	// break;
+	//
+	// case WEST:
+	// posX += distance;
+	// break;
+	//
+	// case SOUTH:
+	// posY -= distance;
+	// break;
+	//
+	// case EAST:
+	// posX -= distance;
+	//
+	// default:
+	// break;
+	// }
+	// }
 
 	public void setParalyzed(boolean b) {
 		paralyzed = b;
