@@ -9,7 +9,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class MainMenuState extends BasicGameState{
-	
+
 	int StateID = -1;
 	Image background = null;
 	Image pointer = null;
@@ -25,7 +25,8 @@ public class MainMenuState extends BasicGameState{
 	private boolean gameplayStateToStart;
 	private int tick;
 	private boolean gameToExit;
-	
+	private boolean mainMenuReseted;
+
 	public MainMenuState(int stateID) {
 		this.StateID = stateID;
 	}
@@ -40,7 +41,7 @@ public class MainMenuState extends BasicGameState{
 		start1pGameOption = backgroundComplete.getSubImage(171, 408, 708 - 171, 476 - 408);
 		exitOption = backgroundComplete.getSubImage(171, 480, 318 - 171, 554 - 480);
 		laser = new Image("resources/MainMenuLaser.png").getSubImage(117, 297, 800-117, 456-297);
-		
+
 	}
 
 	@Override
@@ -54,12 +55,23 @@ public class MainMenuState extends BasicGameState{
 		if (laserShot) {
 			laser.draw(120, pointerPositionY-50);
 		}
-		
+
+	}
+
+	private void resetMainMenu() throws InterruptedException {
+		mainMenuReseted = true;
 	}
 
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
+		if (!mainMenuReseted) {			
+			try {
+				resetMainMenu();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 		Input input = container.getInput();
 		if (input.isKeyPressed(Input.KEY_DOWN) || input.isKeyPressed(Input.KEY_S)) {
 			if (pointerValue < 2) {
@@ -67,18 +79,18 @@ public class MainMenuState extends BasicGameState{
 			}
 			pointerPosition();
 		}
-		
+
 		if (input.isKeyPressed(Input.KEY_UP) || input.isKeyPressed(Input.KEY_W)) {
 			if (pointerValue > 0) {
 				pointerValue--;
 			}
 			pointerPosition();
 		}
-		
+
 		if (input.isKeyPressed(Input.KEY_ENTER) || input.isKeyPressed(Input.KEY_SPACE)) {
 			handlePointer(game);
 		}
-		
+
 		if (gameplayStateToStart || gameToExit) {
 			tick += delta;
 			if (tick >= 800) {
@@ -90,11 +102,11 @@ public class MainMenuState extends BasicGameState{
 				}
 			}
 		}
-		
-		
-		
+
+
+
 	}
-	
+
 	private void pointerPosition() {
 		switch (pointerValue) {
 		case 0:
@@ -110,8 +122,9 @@ public class MainMenuState extends BasicGameState{
 			break;
 		}
 	}
-	
+
 	private void handlePointer(StateBasedGame game) {
+		mainMenuReseted = false;
 		laserShot = true;
 		switch (pointerValue) {
 		case 0:
@@ -125,7 +138,7 @@ public class MainMenuState extends BasicGameState{
 		default:
 			break;
 		}
-		
+
 	}
 
 	@Override

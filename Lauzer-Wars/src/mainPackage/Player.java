@@ -228,12 +228,12 @@ public class Player {
 		System.out.println(name + ": " + life);
 		switch (idOfPlayer) {
 		case 1:
-			image = new Image("src/resource/Character1stopped.png")
+			image = new Image("resources/Character1stopped.png")
 					.getScaledCopy(tileDistance / 100);
 			image.setAlpha(0.4f);
 			break;
 		case 2:
-			image = new Image("src/resource/Character2stopped.png")
+			image = new Image("resources/Character2stopped.png")
 					.getScaledCopy(tileDistance / 100);
 			image.setAlpha(0.4f);
 			break;
@@ -271,12 +271,12 @@ public class Player {
 		if (b == false) {
 			switch (idOfPlayer) {
 			case 1:
-				image = new Image("src/resource/Character1.png")
+				image = new Image("resources/Character1.png")
 						.getScaledCopy(tileDistance / 100);
 				image.setAlpha(0.4f);
 				break;
 			case 2:
-				image = new Image("src/resource/Character2.png")
+				image = new Image("resources/Character2.png")
 						.getScaledCopy(tileDistance / 100);
 				image.setAlpha(0.4f);
 				break;

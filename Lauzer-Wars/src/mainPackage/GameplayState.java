@@ -88,7 +88,7 @@ public class GameplayState extends BasicGameState {
 	public void init(GameContainer arg0, StateBasedGame sbg)
 			throws SlickException {
 		timeHandler = new TimeHandler();
-		background = new Image("src/resource/background.png");
+		background = new Image("resources/background.png");
 		player1 = new Player("Andreas", 1,
 				new Image("resources/Character1.png")
 						.getScaledCopy(tileDistance / 100 // TODO
