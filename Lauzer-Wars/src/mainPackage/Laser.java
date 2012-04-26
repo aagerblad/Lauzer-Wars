@@ -24,20 +24,20 @@ public class Laser {
 		this.id = id;
 		if (lastDirection == direction) {
 			if (id == 1) {
-				image = new Image("src/resource/Laser.png")
+				image = new Image("resources/Laser.png")
 						.getScaledCopy(tileDistance / 100);
 			} else if (id == 2) {
-				image = new Image("src/resource/Laser2.png")
+				image = new Image("resources/Laser2.png")
 						.getScaledCopy(tileDistance / 100);
 			}
 			image.rotate(90); // TODO issue with sprite
 			image.rotate(direction);
 		} else {
 			if (id == 1) {
-				image = new Image("src/resource/rotatedlaser.png")
+				image = new Image("resources/rotatedlaser.png")
 						.getScaledCopy(tileDistance / 100);
 			} else if (id == 2) {
-				image = new Image("src/resource/rotatedlaser2.png")
+				image = new Image("resources/rotatedlaser2.png")
 						.getScaledCopy(tileDistance / 100);
 			}
 			image.rotate(270);
@@ -95,7 +95,7 @@ public class Laser {
 	 */
 	public void setRotated(int lastRotation, int rotation, float tileDistance)
 			throws SlickException {
-		image = new Image("src/resource/rotatedlaser.png")
+		image = new Image("resources/rotatedlaser.png")
 				.getScaledCopy(tileDistance / 100);
 	}
 

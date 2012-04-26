@@ -14,7 +14,8 @@ public class Player {
 	private float scale = 1.0f;
 	private float posX = 0;
 	private float posY = 0;
-	private int life = 5;
+	private int MAXLIFE = 1;//TODO
+	private int life = MAXLIFE;
 	private static final int ROTATION_NORTH = 0;
 	private static final int ROTATION_WEST = 270;
 	private static final int ROTATION_SOUTH = 180;
@@ -55,6 +56,10 @@ public class Player {
 		isWalking = new boolean[4];
 		isKeyPressed = new boolean[5];
 
+	}
+	
+	public void ressurect() {
+		life = MAXLIFE;
 	}
 
 	public Image getImage() {
@@ -310,6 +315,11 @@ public class Player {
 		} else {
 			return false;
 		}
+	}
+
+	public void setPosition(int posX, int posY) {
+		this.posX = posX;
+		this.posY = posY;
 	}
 
 }
