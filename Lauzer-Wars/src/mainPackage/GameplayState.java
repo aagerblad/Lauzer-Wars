@@ -89,11 +89,13 @@ public class GameplayState extends BasicGameState {
 			throws SlickException {
 		timeHandler = new TimeHandler();
 		background = new Image("src/resource/background.png");
-		player1 = new Player("Andreas", 1, new Image(
-				"resources/Character1.png").getScaledCopy(tileDistance / 100 // TODO
+		player1 = new Player("Andreas", 1,
+				new Image("resources/Character1.png")
+						.getScaledCopy(tileDistance / 100 // TODO
 						), 1, 1);
-		player2 = new Player("Dexter", 2, new Image(
-				"resources/Character2.png").getScaledCopy(tileDistance / 100 // TODO
+		player2 = new Player("Dexter", 2,
+				new Image("resources/Character2.png")
+						.getScaledCopy(tileDistance / 100 // TODO
 						), NUMBER_OF_X_TILES - 2, NUMBER_OF_Y_TILES - 2);
 		map = new Tile[NUMBER_OF_X_TILES][NUMBER_OF_Y_TILES];
 		for (int i = 0; i < map.length; i++) {
@@ -167,13 +169,13 @@ public class GameplayState extends BasicGameState {
 			map[i][j].addPillar(new Pillar(tileDistance));
 		}
 	}
-	
+
 	private void resetGame() throws SlickException {
 		addMirrors();
 		System.out.println("HEJ");
 		player1.ressurect();
 		player2.ressurect();
-		player1.setPosition(1,1);
+		player1.setPosition(1, 1);
 		player2.setPosition(NUMBER_OF_X_TILES - 2, NUMBER_OF_Y_TILES - 2);
 		gameHasBeenReset = true;
 	}
@@ -186,9 +188,9 @@ public class GameplayState extends BasicGameState {
 			throws SlickException {
 		if (!gameHasBeenReset) {
 			resetGame();
-			
+
 		}
-		
+
 		Input input = gc.getInput();
 
 		// Makes sure the game stays at the set framrate.
@@ -196,12 +198,12 @@ public class GameplayState extends BasicGameState {
 		while (timePile >= msPerFrame) {
 			timePile -= msPerFrame;
 			timeHandler.tick();
-//			System.out.println(player2.isDead());
+			// System.out.println(player2.isDead());
 			if (player1.isDead()) {
 				System.out.println(player1.getName() + " died.");
 				gameHasBeenReset = false;
 				sbg.enterState(2);
-				
+
 			}
 			if (player2.isDead()) {
 				System.out.println(player2.getName() + " died.");
@@ -387,13 +389,14 @@ public class GameplayState extends BasicGameState {
 	 *            The pressed key.
 	 * @throws SlickException
 	 */
-	private void handleInput(GameContainer gc, Input input) throws SlickException {
+	private void handleInput(GameContainer gc, Input input)
+			throws SlickException {
 		// Player 1:
 		// The following methods handle the first player's input.
 
 		int player1X = Math.round(player1.getPosX());
 		int player1Y = Math.round(player1.getPosY());
-		
+
 		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
 			gc.exit();
 			return;
