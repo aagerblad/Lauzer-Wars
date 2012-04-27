@@ -58,7 +58,7 @@ public class Player {
 
 	}
 	
-	public void ressurect() {
+	public void resurrect() {
 		life = MAXLIFE;
 	}
 
@@ -265,11 +265,11 @@ public class Player {
 	// }
 	// }
 
-	public void setParalyzed(boolean b, int idOfPlayer, float tileDistance)
+	public void setParalyzed(boolean b, float tileDistance)
 			throws SlickException {
 		paralyzed = b;
 		if (b == false) {
-			switch (idOfPlayer) {
+			switch (id) {
 			case 1:
 				image = new Image("resources/Character1.png")
 						.getScaledCopy(tileDistance / 100);
