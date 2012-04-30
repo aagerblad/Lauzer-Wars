@@ -226,15 +226,18 @@ public class Player {
 		invulnerable = true;
 		life--;
 		System.out.println(name + ": " + life);
+		float lastRotation = image.getRotation();
 		switch (idOfPlayer) {
 		case 1:
 			image = new Image("resources/Character1stopped.png")
 					.getScaledCopy(tileDistance / 100);
+			image.rotate(lastRotation);
 			image.setAlpha(0.4f);
 			break;
 		case 2:
 			image = new Image("resources/Character2stopped.png")
 					.getScaledCopy(tileDistance / 100);
+			image.rotate(lastRotation);
 			image.setAlpha(0.4f);
 			break;
 
@@ -243,41 +246,22 @@ public class Player {
 		}
 	}
 
-	// private void resetPosition(int direction) {
-	// switch (direction) {
-	// case NORTH:
-	// posY += distance;
-	// break;
-	//
-	// case WEST:
-	// posX += distance;
-	// break;
-	//
-	// case SOUTH:
-	// posY -= distance;
-	// break;
-	//
-	// case EAST:
-	// posX -= distance;
-	//
-	// default:
-	// break;
-	// }
-	// }
-
 	public void setParalyzed(boolean b, float tileDistance)
 			throws SlickException {
 		paralyzed = b;
+		float lastRotation = image.getRotation();
 		if (b == false) {
 			switch (id) {
 			case 1:
 				image = new Image("resources/Character1.png")
 						.getScaledCopy(tileDistance / 100);
+				image.rotate(lastRotation);
 				image.setAlpha(0.4f);
 				break;
 			case 2:
 				image = new Image("resources/Character2.png")
 						.getScaledCopy(tileDistance / 100);
+				image.rotate(lastRotation);
 				image.setAlpha(0.4f);
 				break;
 			default:
