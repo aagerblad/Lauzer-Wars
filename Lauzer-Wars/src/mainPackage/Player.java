@@ -94,59 +94,32 @@ public class Player {
 		return id;
 	}
 
-	private void setRotation(float r) {
-		image.setRotation(r);
-	}
-
-	public void moveNorth(boolean collision) {
-		if (paralyzed) {
-			// Do nothing
-		} else if (collision) {
-			setRotation(ROTATION_NORTH);
-		} else {
-			move(NORTH, ROTATION_NORTH);
+	public void setRotation(float r) {
+		if (!paralyzed) {
+			image.setRotation(r);
 		}
 	}
 
-	public void moveWest(boolean collision) {
-		if (paralyzed) {
-			// Do nothing
-		} else if (collision) {
-			setRotation(ROTATION_WEST);
-		} else {
-			move(WEST, ROTATION_WEST);
-		}
-	}
+	public void move(int direction) {
+		if (!aldreadyWalking() && !paralyzed) {
+			switch (direction) {
+			case EAST:
+				image.setRotation(ROTATION_EAST);
+				break;
+			case WEST:
+				image.setRotation(ROTATION_WEST);
+				break;
+			case NORTH:
+				image.setRotation(ROTATION_NORTH);
+				break;
+			case SOUTH:
+				image.setRotation(ROTATION_SOUTH);
+				break;
 
-	public void moveSouth(boolean collision) {
-		if (paralyzed) {
-			// Do nothing
-		} else if (collision) {
-			setRotation(ROTATION_SOUTH);
-		} else {
-			move(SOUTH, ROTATION_SOUTH);
-		}
-	}
-
-	public void moveEast(boolean collision) {
-		if (paralyzed) {
-			// Do nothing
-		} else if (collision) {
-			setRotation(ROTATION_EAST);
-		} else {
-			move(EAST, ROTATION_EAST);
-		}
-	}
-
-	private void move(int direction, int wantedRotation) {
-		boolean directionPressed = isKeyPressed[direction];
-		if (!directionPressed) {
-			isKeyPressed[direction] = true;
-			if (image.getRotation() == wantedRotation && !aldreadyWalking()) {
-				isWalking[direction] = true;
-			} else {
-				image.setRotation(wantedRotation);
+			default:
+				break;
 			}
+			isWalking[direction] = true;
 		}
 	}
 
