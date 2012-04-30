@@ -58,19 +58,23 @@ public class MainMenuState extends BasicGameState{
 
 	}
 
-	private void resetMainMenu() throws InterruptedException {
+	private void resetMainMenu() {
+		try {
+			
+			Thread.sleep(500);
+			System.out.println("hej");
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		mainMenuReseted = true;
 	}
 
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
-		if (!mainMenuReseted) {			
-			try {
-				resetMainMenu();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		if (!mainMenuReseted) {
+			resetMainMenu();
 		}
 		Input input = container.getInput();
 		if (input.isKeyPressed(Input.KEY_DOWN) || input.isKeyPressed(Input.KEY_S)) {

@@ -172,9 +172,18 @@ public class GameplayState extends BasicGameState {
 
 	private void resetGame() throws SlickException {
 		addMirrors();
-		System.out.println("HEJ");
-		player1.ressurect();
-		player2.ressurect();
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[j].length; j++) {
+				map[i][j].clearLaser(1);
+				map[i][j].clearLaser(2);
+			}
+		}
+		player1.resurrect();
+		player2.resurrect();
+		player1.setParalyzed(false, tileDistance);
+		player2.setParalyzed(false, tileDistance);
+		player1.setInvulnerable(false);
+		player2.setInvulnerable(false);
 		player1.setPosition(1, 1);
 		player2.setPosition(NUMBER_OF_X_TILES - 2, NUMBER_OF_Y_TILES - 2);
 		gameHasBeenReset = true;
@@ -193,7 +202,7 @@ public class GameplayState extends BasicGameState {
 
 		Input input = gc.getInput();
 
-		// Makes sure the game stays at the set framrate.
+		// Makes sure the game stays at the set framerate.
 		timePile += delta;
 		while (timePile >= msPerFrame) {
 			timePile -= msPerFrame;
@@ -355,7 +364,7 @@ public class GameplayState extends BasicGameState {
 		tileToAddPlayer2.addPlayer(player2);
 
 		if (timeHandler.paralyzeDone(1)) {
-			player1.setParalyzed(false, 1, tileDistance);
+			player1.setParalyzed(false, tileDistance);
 		}
 
 		if (timeHandler.invulnerableDone(1)) {
@@ -363,7 +372,7 @@ public class GameplayState extends BasicGameState {
 		}
 
 		if (timeHandler.paralyzeDone(2)) {
-			player2.setParalyzed(false, 2, tileDistance);
+			player2.setParalyzed(false, tileDistance);
 		}
 
 		if (timeHandler.invulnerableDone(2)) {
