@@ -418,7 +418,7 @@ public class GameplayState extends BasicGameState {
 		}
 
 		// Handles the case where the player wants to move east.
-		if (input.isKeyDown(Input.KEY_D)) {
+		if (input.isKeyDown(Input.KEY_D) || input.isControllerRight(1)) {
 			Tile wantedTile = map[player1X + 1][player1Y];
 			if (!wantedTile.hasCollision()) {
 				player1.moveEast(false);
@@ -479,7 +479,7 @@ public class GameplayState extends BasicGameState {
 		}
 
 		// Handles the case where the player wants to shoot.
-		if (input.isKeyDown(Input.KEY_Q)) {
+		if (input.isKeyDown(Input.KEY_LCONTROL)) {
 			if (!player1.aldreadyWalking() && !player1.isParalyzed()) {
 				handleLaser(player1);
 			}
@@ -551,7 +551,8 @@ public class GameplayState extends BasicGameState {
 		}
 		// Handles the case where the player wants to change the orientation of
 		// a tile
-		if (input.isKeyDown(Input.KEY_ENTER)) {
+		if (input.isKeyDown(Input.KEY_RSHIFT)
+				|| input.isKeyDown(Input.KEY_MINUS)) {
 			Tile tileToCheck = map[player2X][player2Y];
 			if (tileToCheck.hasMirror()) {
 				if (!player2.getKeyPressed(CHANGE_MIRROR)) {

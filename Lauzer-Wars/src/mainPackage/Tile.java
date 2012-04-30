@@ -8,7 +8,7 @@ import org.newdawn.slick.SlickException;
 
 public class Tile {
 
-	private static final int CHANCE_OF_MIRROR = 4;
+	private static final int CHANCE_OF_MIRROR = 3;
 	private Player playerOnTile = null;
 	private Mirror mirrorOnTile = null;
 	private Pillar pillarOnTile = null;
@@ -107,7 +107,7 @@ public class Tile {
 		}
 		return false;
 	}
-	
+
 	public void clearMirror() {
 		mirrorOnTile = null;
 	}
