@@ -55,7 +55,6 @@ public class Player {
 		this.id = id;
 		isWalking = new boolean[4];
 		isKeyPressed = new boolean[5];
-
 	}
 
 	public void resurrect() {

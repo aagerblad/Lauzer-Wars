@@ -32,6 +32,9 @@ public class TimeHandler {
 
 	}
 
+	/**
+	 * Updates variables counting how long a laser has been out.
+	 */
 	public void tick() {
 		if (player1LaserActivated) {
 			player1LaserTime++;
@@ -41,6 +44,11 @@ public class TimeHandler {
 		}
 	}
 
+	/**
+	 * Updates variables counting the time after a player has been hit.
+	 * 
+	 * @param idOfPlayer
+	 */
 	public void hitTick(int idOfPlayer) {
 		switch (idOfPlayer) {
 		case 1:
@@ -53,24 +61,26 @@ public class TimeHandler {
 		}
 	}
 
+	/**
+	 * Updates variables counting how long different buttons have been pressed.
+	 * 
+	 * @param idOfPlayer
+	 * @param rotation
+	 */
 	public void pressTick(int idOfPlayer, float rotation) {
 		if (idOfPlayer == 1) {
 			switch ((int) rotation) {
 			case ROTATION_EAST:
 				player1ButtonEastPressed++;
-				System.out.println(player1ButtonEastPressed);
 				break;
 			case ROTATION_WEST:
 				player1ButtonWestPressed++;
-				System.out.println(player1ButtonWestPressed);
 				break;
 			case ROTATION_NORTH:
 				player1ButtonNorthPressed++;
-				System.out.println(player1ButtonNorthPressed);
 				break;
 			case ROTATION_SOUTH:
 				player1ButtonSouthPressed++;
-				System.out.println(player1ButtonSouthPressed);
 
 			default:
 				break;
@@ -79,19 +89,15 @@ public class TimeHandler {
 			switch ((int) rotation) {
 			case ROTATION_EAST:
 				player2ButtonEastPressed++;
-				System.out.println(player2ButtonEastPressed);
 				break;
 			case ROTATION_WEST:
 				player2ButtonWestPressed++;
-				System.out.println(player2ButtonWestPressed);
 				break;
 			case ROTATION_NORTH:
 				player2ButtonNorthPressed++;
-				System.out.println(player2ButtonNorthPressed);
 				break;
 			case ROTATION_SOUTH:
 				player2ButtonSouthPressed++;
-				System.out.println(player2ButtonSouthPressed);
 
 			default:
 				break;
@@ -99,24 +105,26 @@ public class TimeHandler {
 		}
 	}
 
+	/**
+	 * Sets the variable connected to the specified rotation to zero.
+	 * 
+	 * @param idOfPlayer
+	 * @param rotation
+	 */
 	public void pressReset(int idOfPlayer, int rotation) {
 		if (idOfPlayer == 1) {
 			switch ((int) rotation) {
 			case ROTATION_EAST:
 				player1ButtonEastPressed = 0;
-				System.out.println(player1ButtonEastPressed);
 				break;
 			case ROTATION_WEST:
 				player1ButtonWestPressed = 0;
-				System.out.println(player1ButtonWestPressed);
 				break;
 			case ROTATION_NORTH:
 				player1ButtonNorthPressed = 0;
-				System.out.println(player1ButtonNorthPressed);
 				break;
 			case ROTATION_SOUTH:
 				player1ButtonSouthPressed = 0;
-				System.out.println(player1ButtonSouthPressed);
 
 			default:
 				break;
@@ -125,19 +133,15 @@ public class TimeHandler {
 			switch ((int) rotation) {
 			case ROTATION_EAST:
 				player2ButtonEastPressed = 0;
-				System.out.println(player2ButtonEastPressed);
 				break;
 			case ROTATION_WEST:
 				player2ButtonWestPressed = 0;
-				System.out.println(player2ButtonWestPressed);
 				break;
 			case ROTATION_NORTH:
 				player2ButtonNorthPressed = 0;
-				System.out.println(player2ButtonNorthPressed);
 				break;
 			case ROTATION_SOUTH:
 				player2ButtonSouthPressed = 0;
-				System.out.println(player2ButtonSouthPressed);
 
 			default:
 				break;
@@ -145,6 +149,14 @@ public class TimeHandler {
 		}
 	}
 
+	/**
+	 * Returns true if the button has been pressed long enough to trigger an
+	 * action.
+	 * 
+	 * @param idOfPlayer
+	 * @param rotation
+	 * @return
+	 */
 	public boolean pressingDone(int idOfPlayer, float rotation) {
 		if (idOfPlayer == 1) {
 			switch ((int) rotation) {
@@ -211,52 +223,71 @@ public class TimeHandler {
 		}
 	}
 
+	/**
+	 * Set the variable connected to the specified button to PRESS_TIME,
+	 * regardless of how long the button has actually been pressed.
+	 * 
+	 * @param idOfPlayer
+	 * @param rotation
+	 */
 	public void setPressed(int idOfPlayer, float rotation) {
 		if (idOfPlayer == 1) {
 			switch ((int) rotation) {
 			case ROTATION_EAST:
-				player1ButtonEastPressed = PRESS_TIME;
-				System.out.println(player1ButtonEastPressed);
+				if (player1ButtonEastPressed == 0) {
+					player1ButtonEastPressed = PRESS_TIME;
+				}
 				break;
 			case ROTATION_WEST:
-				player1ButtonWestPressed = PRESS_TIME;
-				System.out.println(player1ButtonWestPressed);
+				if (player1ButtonWestPressed == 0) {
+					player1ButtonWestPressed = PRESS_TIME;
+				}
 				break;
 			case ROTATION_NORTH:
-				player1ButtonNorthPressed = PRESS_TIME;
-				System.out.println(player1ButtonNorthPressed);
+				if (player1ButtonNorthPressed == 0) {
+					player1ButtonNorthPressed = PRESS_TIME;
+				}
 				break;
 			case ROTATION_SOUTH:
-				player1ButtonSouthPressed = PRESS_TIME;
-				System.out.println(player1ButtonSouthPressed);
-
+				if (player1ButtonSouthPressed == 0) {
+					player1ButtonSouthPressed = PRESS_TIME;
+				}
 			default:
 				break;
 			}
 		} else if (idOfPlayer == 2) {
 			switch ((int) rotation) {
 			case ROTATION_EAST:
-				player2ButtonEastPressed = PRESS_TIME;
-				System.out.println(player2ButtonEastPressed);
+				if (player2ButtonEastPressed == 0) {
+					player2ButtonEastPressed = PRESS_TIME;
+				}
 				break;
 			case ROTATION_WEST:
-				player2ButtonWestPressed = PRESS_TIME;
-				System.out.println(player2ButtonWestPressed);
+				if (player2ButtonWestPressed == 0) {
+					player2ButtonWestPressed = PRESS_TIME;
+				}
 				break;
 			case ROTATION_NORTH:
-				player2ButtonNorthPressed = PRESS_TIME;
-				System.out.println(player2ButtonNorthPressed);
+				if (player2ButtonNorthPressed == 0) {
+					player2ButtonNorthPressed = PRESS_TIME;
+				}
 				break;
 			case ROTATION_SOUTH:
-				player2ButtonSouthPressed = PRESS_TIME;
-				System.out.println(player2ButtonSouthPressed);
-
+				if (player2ButtonSouthPressed == 0) {
+					player2ButtonSouthPressed = PRESS_TIME;
+				}
 			default:
 				break;
 			}
 		}
 	}
 
+	/**
+	 * Return true if it is time for the player to stop being paralyzed.
+	 * 
+	 * @param idOfPlayer
+	 * @return
+	 */
 	public boolean paralyzeDone(int idOfPlayer) {
 		switch (idOfPlayer) {
 		case 1:
@@ -276,6 +307,12 @@ public class TimeHandler {
 		}
 	}
 
+	/**
+	 * Return true if it is time for the player to stop being invulnerable.
+	 * 
+	 * @param idOfPlayer
+	 * @return
+	 */
 	public boolean invulnerableDone(int idOfPlayer) {
 		switch (idOfPlayer) {
 		case 1:

@@ -516,94 +516,103 @@ public class GameplayState extends BasicGameState {
 				handleLaser(player1);
 			}
 		}
+
+		// Player 2
+		// The following methods handle the second player's input.
+
+		int player2X = Math.round(player2.getPosX());
+		int player2Y = Math.round(player2.getPosY());
+		// Handles the case where the player wants to move west.
+		if (input.isKeyDown(Input.KEY_LEFT)) {
+			Tile wantedTile = map[player2X - 1][player2Y];
+			timeHandler.pressTick(2, ROTATION_WEST);
+			if ((timeHandler.pressingDone(2, ROTATION_WEST))
+					&& !wantedTile.hasCollision()) {
+				player2.move(WEST);
+			} else {
+				player2.setRotation(ROTATION_WEST);
+			}
+		} else {
+			timeHandler.pressReset(2, ROTATION_WEST);
+		}
+		if (player2.isWalking(WEST)) {
+			player2.walkAnimate(WEST);
+		}
+
+		// Handles the case where the player wants to move east.
+		if (input.isKeyDown(Input.KEY_RIGHT)) {
+			Tile wantedTile = map[player2X + 1][player2Y];
+			timeHandler.pressTick(2, ROTATION_EAST);
+			if ((timeHandler.pressingDone(2, ROTATION_EAST))
+					&& !wantedTile.hasCollision()) {
+				player2.move(EAST);
+			} else {
+				player2.setRotation(ROTATION_EAST);
+			}
+		} else {
+			timeHandler.pressReset(2, ROTATION_EAST);
+		}
+		if (player2.isWalking(EAST)) {
+			player2.walkAnimate(EAST);
+		}
+
+		// Handles the case where the player wants to move north.
+		if (input.isKeyDown(Input.KEY_UP)) {
+			Tile wantedTile = map[player2X][player2Y - 1];
+			timeHandler.pressTick(2, ROTATION_NORTH);
+			if (timeHandler.pressingDone(2, ROTATION_NORTH)
+					&& !wantedTile.hasCollision()) {
+				player2.move(NORTH);
+			} else {
+				player2.setRotation(ROTATION_NORTH);
+			}
+		} else {
+			timeHandler.pressReset(2, ROTATION_NORTH);
+		}
+
+		if (player2.isWalking(NORTH)) {
+			player2.walkAnimate(NORTH);
+		}
+
+		// Handles the case where the player wants to move south.
+		if (input.isKeyDown(Input.KEY_DOWN)) {
+			Tile wantedTile = map[player2X][player2Y + 1];
+			timeHandler.pressTick(2, ROTATION_SOUTH);
+			if (timeHandler.pressingDone(2, ROTATION_SOUTH)
+					&& !wantedTile.hasCollision()) {
+				player2.move(SOUTH);
+			} else {
+				player2.setRotation(ROTATION_SOUTH);
+			}
+		} else {
+			timeHandler.pressReset(2, ROTATION_SOUTH);
+		}
+
+		if (player2.isWalking(SOUTH)) {
+			player2.walkAnimate(SOUTH);
+		}
+		// Handles the case where the player wants to change the orientation
+		// of
+		// a tile
+		if (input.isKeyDown(Input.KEY_RSHIFT)
+				|| input.isKeyDown(Input.KEY_MINUS)) {
+			Tile tileToCheck = map[player2X][player2Y];
+			if (tileToCheck.hasMirror()) {
+				if (!player2.getKeyPressed(CHANGE_MIRROR)) {
+					Mirror mirrorToChange = tileToCheck.getMirror();
+					mirrorToChange.changeOrientation();
+				}
+			}
+			player2.setKeyPressed(CHANGE_MIRROR, true);
+		} else {
+			player2.setKeyPressed(CHANGE_MIRROR, false);
+		}
+
+		// Handles the case where the player wants to shoot.
+		if (input.isKeyDown(Input.KEY_RCONTROL)) {
+			if (!player2.aldreadyWalking() && !player2.isParalyzed()) {
+				handleLaser(player2);
+			}
+		}
 	}
 }
-
-// // Player 2
-// // The following methods handle the second player's input.
-//
-// int player2X = Math.round(player2.getPosX());
-// int player2Y = Math.round(player2.getPosY());
-// // Handles the case where the player wants to move west.
-// if (input.isKeyDown(Input.KEY_LEFT)) {
-// Tile wantedTile = map[player2X - 1][player2Y];
-// if (!wantedTile.hasCollision()) {
-// player2.moveWest(false);
-// }
-// player2.moveWest(true);
-// } else {
-// player2.setKeyPressed(WEST, false);
-// }
-//
-// if (player2.isWalking(WEST)) {
-// player2.walkAnimate(WEST);
-// }
-//
-// // Handles the case where the player wants to move east.
-// if (input.isKeyDown(Input.KEY_RIGHT)) {
-// Tile wantedTile = map[player2X + 1][player2Y];
-// if (!wantedTile.hasCollision()) {
-// player2.moveEast(false);
-// }
-// player2.moveEast(true);
-// } else {
-// player2.setKeyPressed(EAST, false);
-// }
-//
-// if (player2.isWalking(EAST)) {
-// player2.walkAnimate(EAST);
-// }
-//
-// // Handles the case where the player wants to move north.
-// if (input.isKeyDown(Input.KEY_UP)) {
-// Tile wantedTile = map[player2X][player2Y - 1];
-// if (!wantedTile.hasCollision()) {
-// player2.moveNorth(false);
-// }
-// player2.moveNorth(true);
-// } else {
-// player2.setKeyPressed(NORTH, false);
-// }
-//
-// if (player2.isWalking(NORTH)) {
-// player2.walkAnimate(NORTH);
-// }
-//
-// // Handles the case where the player wants to move south.
-// if (input.isKeyDown(Input.KEY_DOWN)) {
-// Tile wantedTile = map[player2X][player2Y + 1];
-// if (!wantedTile.hasCollision()) {
-// player2.moveSouth(false);
-// }
-// player2.moveSouth(true);
-// } else {
-// player2.setKeyPressed(SOUTH, false);
-// }
-//
-// if (player2.isWalking(SOUTH)) {
-// player2.walkAnimate(SOUTH);
-// }
-// // Handles the case where the player wants to change the orientation of
-// // a tile
-// if (input.isKeyDown(Input.KEY_RSHIFT)
-// || input.isKeyDown(Input.KEY_MINUS)) {
-// Tile tileToCheck = map[player2X][player2Y];
-// if (tileToCheck.hasMirror()) {
-// if (!player2.getKeyPressed(CHANGE_MIRROR)) {
-// Mirror mirrorToChange = tileToCheck.getMirror();
-// mirrorToChange.changeOrientation();
-// }
-// }
-// player2.setKeyPressed(CHANGE_MIRROR, true);
-// } else {
-// player2.setKeyPressed(CHANGE_MIRROR, false);
-// }
-//
-// // Handles the case where the player wants to shoot.
-// if (input.isKeyDown(Input.KEY_RCONTROL)) {
-// if (!player2.aldreadyWalking() && !player2.isParalyzed()) {
-// handleLaser(player2);
-// }
-// }
-// }
-// }
