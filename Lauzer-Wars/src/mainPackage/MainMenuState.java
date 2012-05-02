@@ -62,7 +62,6 @@ public class MainMenuState extends BasicGameState{
 		try {
 			
 			Thread.sleep(500);
-			System.out.println("hej");
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -91,7 +90,7 @@ public class MainMenuState extends BasicGameState{
 			pointerPosition();
 		}
 
-		if (input.isKeyPressed(Input.KEY_ENTER) || input.isKeyPressed(Input.KEY_SPACE)) {
+		if (input.isKeyPressed(Input.KEY_SPACE)) {
 			handlePointer(game);
 		}
 
@@ -99,7 +98,9 @@ public class MainMenuState extends BasicGameState{
 			tick += delta;
 			if (tick >= 800) {
 				if (gameplayStateToStart) {
-					game.enterState(1);					
+					gameplayStateToStart = false;
+					laserShot = false;
+					game.enterState(1);
 				} else if (gameToExit) {
 					container.exit();
 					return;
