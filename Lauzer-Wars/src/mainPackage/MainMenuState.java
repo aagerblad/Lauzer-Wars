@@ -8,7 +8,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class MainMenuState extends BasicGameState{
+public class MainMenuState extends BasicGameState {
 
 	int StateID = -1;
 	Image background = null;
@@ -35,45 +35,54 @@ public class MainMenuState extends BasicGameState{
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
 		background = new Image("resources/MainMenuBackground.png");
-		pointer = new Image("resources/MainMenuPointer.png").getSubImage(0, 0, 130, 89);
+		pointer = new Image("resources/MainMenuPointer.png").getSubImage(0, 0,
+				130, 89);
 		backgroundComplete = new Image("resources/MainMenuComplete.png");
-		start2pGameOption = backgroundComplete.getSubImage(171, 339, 686 - 171, 412 - 339);
-		start1pGameOption = backgroundComplete.getSubImage(171, 408, 708 - 171, 476 - 408);
-		exitOption = backgroundComplete.getSubImage(171, 480, 318 - 171, 554 - 480);
-		laser = new Image("resources/MainMenuLaser.png").getSubImage(117, 297, 800-117, 456-297);
+		start2pGameOption = backgroundComplete.getSubImage(171, 339, 686 - 171,
+				412 - 339);
+		start1pGameOption = backgroundComplete.getSubImage(171, 408, 708 - 171,
+				476 - 408);
+		exitOption = backgroundComplete.getSubImage(171, 480, 318 - 171,
+				554 - 480);
+		laser = new Image("resources/MainMenuLaser.png").getSubImage(117, 297,
+				800 - 117, 456 - 297);
 
 	}
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
-		background.draw(0,0);
+		background.draw(0, 0);
 		pointer.draw(pointerPositionX, pointerPositionY);
 		start2pGameOption.draw(171, 339);
 		start1pGameOption.draw(171, 440);
 		exitOption.draw(171, 520);
 		if (laserShot) {
-			laser.draw(120, pointerPositionY-50);
+			laser.draw(120, pointerPositionY - 50);
 		}
 
 	}
 
-	private void resetMainMenu() throws InterruptedException {
+	private void resetMainMenu() {
+		try {
+
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		mainMenuReseted = true;
 	}
 
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
-		if (!mainMenuReseted) {			
-			try {
-				resetMainMenu();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		if (!mainMenuReseted) {
+			resetMainMenu();
 		}
 		Input input = container.getInput();
-		if (input.isKeyPressed(Input.KEY_DOWN) || input.isKeyPressed(Input.KEY_S)) {
+		if (input.isKeyPressed(Input.KEY_DOWN)
+				|| input.isKeyPressed(Input.KEY_S)) {
 			if (pointerValue < 2) {
 				pointerValue++;
 			}
@@ -87,7 +96,8 @@ public class MainMenuState extends BasicGameState{
 			pointerPosition();
 		}
 
-		if (input.isKeyPressed(Input.KEY_ENTER) || input.isKeyPressed(Input.KEY_SPACE)) {
+		if (input.isKeyPressed(Input.KEY_ENTER)
+				|| input.isKeyPressed(Input.KEY_SPACE)) {
 			handlePointer(game);
 		}
 
@@ -95,15 +105,13 @@ public class MainMenuState extends BasicGameState{
 			tick += delta;
 			if (tick >= 800) {
 				if (gameplayStateToStart) {
-					game.enterState(1);					
+					game.enterState(1);
 				} else if (gameToExit) {
 					container.exit();
 					return;
 				}
 			}
 		}
-
-
 
 	}
 
