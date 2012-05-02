@@ -55,7 +55,6 @@ public class Player {
 		this.id = id;
 		isWalking = new boolean[4];
 		isKeyPressed = new boolean[5];
-
 	}
 
 	public void resurrect() {
@@ -94,59 +93,32 @@ public class Player {
 		return id;
 	}
 
-	private void setRotation(float r) {
-		image.setRotation(r);
-	}
-
-	public void moveNorth(boolean collision) {
-		if (paralyzed) {
-			// Do nothing
-		} else if (collision) {
-			setRotation(ROTATION_NORTH);
-		} else {
-			move(NORTH, ROTATION_NORTH);
+	public void setRotation(float r) {
+		if (!paralyzed) {
+			image.setRotation(r);
 		}
 	}
 
-	public void moveWest(boolean collision) {
-		if (paralyzed) {
-			// Do nothing
-		} else if (collision) {
-			setRotation(ROTATION_WEST);
-		} else {
-			move(WEST, ROTATION_WEST);
-		}
-	}
+	public void move(int direction) {
+		if (!aldreadyWalking() && !paralyzed) {
+			switch (direction) {
+			case EAST:
+				image.setRotation(ROTATION_EAST);
+				break;
+			case WEST:
+				image.setRotation(ROTATION_WEST);
+				break;
+			case NORTH:
+				image.setRotation(ROTATION_NORTH);
+				break;
+			case SOUTH:
+				image.setRotation(ROTATION_SOUTH);
+				break;
 
-	public void moveSouth(boolean collision) {
-		if (paralyzed) {
-			// Do nothing
-		} else if (collision) {
-			setRotation(ROTATION_SOUTH);
-		} else {
-			move(SOUTH, ROTATION_SOUTH);
-		}
-	}
-
-	public void moveEast(boolean collision) {
-		if (paralyzed) {
-			// Do nothing
-		} else if (collision) {
-			setRotation(ROTATION_EAST);
-		} else {
-			move(EAST, ROTATION_EAST);
-		}
-	}
-
-	private void move(int direction, int wantedRotation) {
-		boolean directionPressed = isKeyPressed[direction];
-		if (!directionPressed) {
-			isKeyPressed[direction] = true;
-			if (image.getRotation() == wantedRotation && !aldreadyWalking()) {
-				isWalking[direction] = true;
-			} else {
-				image.setRotation(wantedRotation);
+			default:
+				break;
 			}
+			isWalking[direction] = true;
 		}
 	}
 
@@ -226,15 +198,18 @@ public class Player {
 		invulnerable = true;
 		life--;
 		System.out.println(name + ": " + life);
+		float lastRotation = image.getRotation();
 		switch (idOfPlayer) {
 		case 1:
 			image = new Image("resources/Character1stopped.png")
 					.getScaledCopy(tileDistance / 100);
+			image.rotate(lastRotation);
 			image.setAlpha(0.4f);
 			break;
 		case 2:
 			image = new Image("resources/Character2stopped.png")
 					.getScaledCopy(tileDistance / 100);
+			image.rotate(lastRotation);
 			image.setAlpha(0.4f);
 			break;
 
@@ -243,41 +218,22 @@ public class Player {
 		}
 	}
 
-	// private void resetPosition(int direction) {
-	// switch (direction) {
-	// case NORTH:
-	// posY += distance;
-	// break;
-	//
-	// case WEST:
-	// posX += distance;
-	// break;
-	//
-	// case SOUTH:
-	// posY -= distance;
-	// break;
-	//
-	// case EAST:
-	// posX -= distance;
-	//
-	// default:
-	// break;
-	// }
-	// }
-
 	public void setParalyzed(boolean b, float tileDistance)
 			throws SlickException {
 		paralyzed = b;
+		float lastRotation = image.getRotation();
 		if (b == false) {
 			switch (id) {
 			case 1:
 				image = new Image("resources/Character1.png")
 						.getScaledCopy(tileDistance / 100);
+				image.rotate(lastRotation);
 				image.setAlpha(0.4f);
 				break;
 			case 2:
 				image = new Image("resources/Character2.png")
 						.getScaledCopy(tileDistance / 100);
+				image.rotate(lastRotation);
 				image.setAlpha(0.4f);
 				break;
 			default:
