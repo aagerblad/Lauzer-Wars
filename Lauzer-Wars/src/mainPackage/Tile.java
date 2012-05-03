@@ -107,7 +107,7 @@ public class Tile {
 		}
 		return false;
 	}
-	
+
 	public void clearMirror() {
 		mirrorOnTile = null;
 	}

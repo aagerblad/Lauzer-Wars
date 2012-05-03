@@ -9,7 +9,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class GameplayState extends BasicGameState {
-
+	
 	private int timePile = 0;
 	private Image background = null;
 	private static final int msPerFrame = 10;
@@ -20,6 +20,10 @@ public class GameplayState extends BasicGameState {
 	private static final int SOUTH = 2;
 	private static final int EAST = 3;
 	private static final int CHANGE_MIRROR = 4;
+	private static final int ROTATION_NORTH = 0;
+	private static final int ROTATION_WEST = 270;
+	private static final int ROTATION_SOUTH = 180;
+	private static final int ROTATION_EAST = 90;
 	private static final int NUMBER_OF_X_TILES = 24 - 1;
 	private static final int NUMBER_OF_Y_TILES = 6 * NUMBER_OF_X_TILES / 8;
 	private static float tileDistance = 0;
@@ -28,10 +32,10 @@ public class GameplayState extends BasicGameState {
 	TimeHandler timeHandler = null;
 	private int stateID;
 	private boolean gameHasBeenReset;
-
+	
 	public GameplayState(int stateID, int sizeX) {
 		this.stateID = stateID;
-		tileDistance = sizeX / (NUMBER_OF_X_TILES + 1);
+		tileDistance = (float)sizeX / (NUMBER_OF_X_TILES + 1);
 		offset = tileDistance / 2;
 	}
 
@@ -54,7 +58,7 @@ public class GameplayState extends BasicGameState {
 							.getImage()
 							.draw(tileDistance * i + offset,
 									tileDistance * j + offset);
-
+					
 				}
 				if (map[i][j].hasPillar()) {
 					map[i][j]
@@ -68,19 +72,23 @@ public class GameplayState extends BasicGameState {
 						laser.getImage().draw(tileDistance * i + offset,
 								tileDistance * j + offset);
 					}
-
+				
 				}
 			}
 		}
-
+		
 		// TODO offset if rotated OR have different sprites for each rotation
 		player1.getImage().draw(player1.getPosX() * tileDistance + offset,
 				player1.getPosY() * tileDistance + offset);
 		player2.getImage().draw(player2.getPosX() * tileDistance + offset,
 				player2.getPosY() * tileDistance + offset);
-
+		
+		Input input = arg0.getInput();
+		arg1.drawString("Mouse x: " + input .getAbsoluteMouseX(), 10, 25);
+		arg1.drawString("Mouse y: " + input.getAbsoluteMouseY(), 10, 40);
+		
 	}
-
+	
 	/**
 	 * Initializes the players and the map.
 	 */
@@ -110,7 +118,7 @@ public class GameplayState extends BasicGameState {
 		// Add the random mirrors to the map.
 		addMirrors();
 	}
-
+	
 	/**
 	 * Add random mirrors to the map.
 	 * 
@@ -206,23 +214,33 @@ public class GameplayState extends BasicGameState {
 		timePile += delta;
 		while (timePile >= msPerFrame) {
 			timePile -= msPerFrame;
-			timeHandler.tick();
-			// System.out.println(player2.isDead());
+			timeHandler.laserTick();
 			if (player1.isDead()) {
 				System.out.println(player1.getName() + " died.");
+				//TODO Add wait
 				gameHasBeenReset = false;
 				sbg.enterState(2);
 
 			}
 			if (player2.isDead()) {
 				System.out.println(player2.getName() + " died.");
+				//TODO Add wait
 				gameHasBeenReset = false;
 				sbg.enterState(3);
 			}
 			handlePlayerPositions();
 			checkLaserLife();
 			handleInput(gc, input);
+			checkRotations(); // TODO
 		}
+	}
+
+	/**
+	 * 
+	 */
+	private void checkRotations() {
+		timeHandler.setPressed(1, player1.getRotation());
+		timeHandler.setPressed(2, player2.getRotation());
 	}
 
 	/*
@@ -379,6 +397,7 @@ public class GameplayState extends BasicGameState {
 			player2.setInvulnerable(false);
 		}
 
+		//TODO remove this
 		if (player1.isInvulnerable()) {
 			timeHandler.hitTick(1);
 		}
@@ -386,7 +405,6 @@ public class GameplayState extends BasicGameState {
 		if (player2.isInvulnerable()) {
 			timeHandler.hitTick(2);
 		}
-
 	}
 
 	/**
@@ -413,13 +431,16 @@ public class GameplayState extends BasicGameState {
 
 		// Handles the case where the player wants to move west.
 		if (input.isKeyDown(Input.KEY_A)) {
+			timeHandler.pressTick(1, ROTATION_WEST);
 			Tile wantedTile = map[player1X - 1][player1Y];
-			if (!wantedTile.hasCollision()) {
-				player1.moveWest(false);
+			if ((timeHandler.pressingDone(1, ROTATION_WEST))
+					&& !wantedTile.hasCollision()) {
+				player1.move(WEST);
+			} else {
+				player1.setRotation(ROTATION_WEST);
 			}
-			player1.moveWest(true);
 		} else {
-			player1.setKeyPressed(WEST, false);
+			timeHandler.pressReset(1, ROTATION_WEST);
 		}
 
 		if (player1.isWalking(WEST)) {
@@ -428,13 +449,16 @@ public class GameplayState extends BasicGameState {
 
 		// Handles the case where the player wants to move east.
 		if (input.isKeyDown(Input.KEY_D)) {
+			timeHandler.pressTick(1, ROTATION_EAST);
 			Tile wantedTile = map[player1X + 1][player1Y];
-			if (!wantedTile.hasCollision()) {
-				player1.moveEast(false);
+			if (timeHandler.pressingDone(1, ROTATION_EAST)
+					&& !wantedTile.hasCollision()) {
+				player1.move(EAST);
+			} else {
+				player1.setRotation(ROTATION_EAST);
 			}
-			player1.moveEast(true);
 		} else {
-			player1.setKeyPressed(EAST, false);
+			timeHandler.pressReset(1, ROTATION_EAST);
 		}
 
 		if (player1.isWalking(EAST)) {
@@ -443,14 +467,16 @@ public class GameplayState extends BasicGameState {
 
 		// Handles the case where the player wants to move north.
 		if (input.isKeyDown(Input.KEY_W)) {
+			timeHandler.pressTick(1, ROTATION_NORTH);
 			Tile wantedTile = map[player1X][player1Y - 1];
-			if (!wantedTile.hasCollision()) {
-				player1.moveNorth(false);
+			if (timeHandler.pressingDone(1, ROTATION_NORTH)
+					&& !wantedTile.hasCollision()) {
+				player1.move(NORTH);
 			} else {
-				player1.moveNorth(true);
+				player1.setRotation(ROTATION_NORTH);
 			}
 		} else {
-			player1.setKeyPressed(NORTH, false);
+			timeHandler.pressReset(1, ROTATION_NORTH);
 		}
 
 		if (player1.isWalking(NORTH)) {
@@ -459,13 +485,16 @@ public class GameplayState extends BasicGameState {
 
 		// Handles the case where the player wants to move south.
 		if (input.isKeyDown(Input.KEY_S)) {
+			timeHandler.pressTick(1, ROTATION_SOUTH);
 			Tile wantedTile = map[player1X][player1Y + 1];
-			if (!wantedTile.hasCollision()) {
-				player1.moveSouth(false);
+			if (timeHandler.pressingDone(1, ROTATION_SOUTH)
+					&& !wantedTile.hasCollision()) {
+				player1.move(SOUTH);
+			} else {
+				player1.setRotation(ROTATION_SOUTH);
 			}
-			player1.moveSouth(true);
 		} else {
-			player1.setKeyPressed(SOUTH, false);
+			timeHandler.pressReset(1, ROTATION_SOUTH);
 		}
 
 		if (player1.isWalking(SOUTH)) {
@@ -488,7 +517,7 @@ public class GameplayState extends BasicGameState {
 		}
 
 		// Handles the case where the player wants to shoot.
-		if (input.isKeyDown(Input.KEY_Q)) {
+		if (input.isKeyDown(Input.KEY_LCONTROL)) {
 			if (!player1.aldreadyWalking() && !player1.isParalyzed()) {
 				handleLaser(player1);
 			}
@@ -502,14 +531,16 @@ public class GameplayState extends BasicGameState {
 		// Handles the case where the player wants to move west.
 		if (input.isKeyDown(Input.KEY_LEFT)) {
 			Tile wantedTile = map[player2X - 1][player2Y];
-			if (!wantedTile.hasCollision()) {
-				player2.moveWest(false);
+			timeHandler.pressTick(2, ROTATION_WEST);
+			if ((timeHandler.pressingDone(2, ROTATION_WEST))
+					&& !wantedTile.hasCollision()) {
+				player2.move(WEST);
+			} else {
+				player2.setRotation(ROTATION_WEST);
 			}
-			player2.moveWest(true);
 		} else {
-			player2.setKeyPressed(WEST, false);
+			timeHandler.pressReset(2, ROTATION_WEST);
 		}
-
 		if (player2.isWalking(WEST)) {
 			player2.walkAnimate(WEST);
 		}
@@ -517,14 +548,16 @@ public class GameplayState extends BasicGameState {
 		// Handles the case where the player wants to move east.
 		if (input.isKeyDown(Input.KEY_RIGHT)) {
 			Tile wantedTile = map[player2X + 1][player2Y];
-			if (!wantedTile.hasCollision()) {
-				player2.moveEast(false);
+			timeHandler.pressTick(2, ROTATION_EAST);
+			if ((timeHandler.pressingDone(2, ROTATION_EAST))
+					&& !wantedTile.hasCollision()) {
+				player2.move(EAST);
+			} else {
+				player2.setRotation(ROTATION_EAST);
 			}
-			player2.moveEast(true);
 		} else {
-			player2.setKeyPressed(EAST, false);
+			timeHandler.pressReset(2, ROTATION_EAST);
 		}
-
 		if (player2.isWalking(EAST)) {
 			player2.walkAnimate(EAST);
 		}
@@ -532,12 +565,15 @@ public class GameplayState extends BasicGameState {
 		// Handles the case where the player wants to move north.
 		if (input.isKeyDown(Input.KEY_UP)) {
 			Tile wantedTile = map[player2X][player2Y - 1];
-			if (!wantedTile.hasCollision()) {
-				player2.moveNorth(false);
+			timeHandler.pressTick(2, ROTATION_NORTH);
+			if (timeHandler.pressingDone(2, ROTATION_NORTH)
+					&& !wantedTile.hasCollision()) {
+				player2.move(NORTH);
+			} else {
+				player2.setRotation(ROTATION_NORTH);
 			}
-			player2.moveNorth(true);
 		} else {
-			player2.setKeyPressed(NORTH, false);
+			timeHandler.pressReset(2, ROTATION_NORTH);
 		}
 
 		if (player2.isWalking(NORTH)) {
@@ -547,20 +583,25 @@ public class GameplayState extends BasicGameState {
 		// Handles the case where the player wants to move south.
 		if (input.isKeyDown(Input.KEY_DOWN)) {
 			Tile wantedTile = map[player2X][player2Y + 1];
-			if (!wantedTile.hasCollision()) {
-				player2.moveSouth(false);
+			timeHandler.pressTick(2, ROTATION_SOUTH);
+			if (timeHandler.pressingDone(2, ROTATION_SOUTH)
+					&& !wantedTile.hasCollision()) {
+				player2.move(SOUTH);
+			} else {
+				player2.setRotation(ROTATION_SOUTH);
 			}
-			player2.moveSouth(true);
 		} else {
-			player2.setKeyPressed(SOUTH, false);
+			timeHandler.pressReset(2, ROTATION_SOUTH);
 		}
 
 		if (player2.isWalking(SOUTH)) {
 			player2.walkAnimate(SOUTH);
 		}
-		// Handles the case where the player wants to change the orientation of
+		// Handles the case where the player wants to change the orientation
+		// of
 		// a tile
-		if (input.isKeyDown(Input.KEY_ENTER)) {
+		if (input.isKeyDown(Input.KEY_RSHIFT)
+				|| input.isKeyDown(Input.KEY_MINUS)) {
 			Tile tileToCheck = map[player2X][player2Y];
 			if (tileToCheck.hasMirror()) {
 				if (!player2.getKeyPressed(CHANGE_MIRROR)) {
