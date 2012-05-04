@@ -600,6 +600,7 @@ public class GameplayState extends BasicGameState {
 		// Handles the case where the player wants to change the orientation
 		// of
 		// a tile
+
 		if (input.isKeyDown(Input.KEY_RSHIFT)
 				|| input.isKeyDown(Input.KEY_MINUS)) {
 			Tile tileToCheck = map[player2X][player2Y];
