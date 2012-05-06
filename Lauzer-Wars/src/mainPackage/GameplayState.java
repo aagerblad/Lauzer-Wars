@@ -13,8 +13,8 @@ public class GameplayState extends BasicGameState {
 	private int timePile = 0;
 	private Image background = null;
 	private static final int msPerFrame = 10;
-	Player player1 = null;
-	Player player2 = null;
+	private Player player1 = null;
+	private Player player2 = null;
 	private static final int NORTH = 0;
 	private static final int WEST = 1;
 	private static final int SOUTH = 2;
@@ -29,7 +29,7 @@ public class GameplayState extends BasicGameState {
 	private static float tileDistance = 0;
 	private static float offset = 0;
 	private Tile[][] map = null;
-	TimeHandler timeHandler = null;
+	private TimeHandler timeHandler = null;
 	private int stateID;
 	private boolean gameHasBeenReset;
 
@@ -50,6 +50,12 @@ public class GameplayState extends BasicGameState {
 	public void render(GameContainer arg0, StateBasedGame sgb, Graphics arg1)
 			throws SlickException {
 		background.draw(0, 0);
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[i].length; j++) {
+				map[i][j].getImage().draw(tileDistance * i + offset,
+						tileDistance * j + offset);
+			}
+		}
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
 				if (map[i][j].hasMirror()) {

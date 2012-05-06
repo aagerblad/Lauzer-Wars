@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 public class Tile {
@@ -14,6 +15,7 @@ public class Tile {
 	private Pillar pillarOnTile = null;
 	private ArrayList<Laser> laserOnTile = null;
 	private Random random = null;
+	private Image image = null;
 
 	/**
 	 * Initialize the tile object.
@@ -24,6 +26,8 @@ public class Tile {
 	public Tile(float tileDistance) throws SlickException {
 		random = new Random();
 		laserOnTile = new ArrayList<Laser>();
+		image = new Image("resources/tile.png")
+				.getScaledCopy(tileDistance / 100);
 	}
 
 	/**
@@ -31,6 +35,13 @@ public class Tile {
 	 */
 	public ArrayList<Laser> getLaser() {
 		return laserOnTile;
+	}
+
+	/**
+	 * 
+	 */
+	public Image getImage() {
+		return image;
 	}
 
 	/**
