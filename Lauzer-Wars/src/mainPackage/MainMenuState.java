@@ -105,6 +105,8 @@ public class MainMenuState extends BasicGameState {
 			tick += delta;
 			if (tick >= 800) {
 				if (gameplayStateToStart) {
+					gameplayStateToStart = false;
+					laserShot = false;
 					game.enterState(1);
 				} else if (gameToExit) {
 					container.exit();

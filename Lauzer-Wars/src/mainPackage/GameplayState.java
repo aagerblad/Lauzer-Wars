@@ -9,7 +9,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class GameplayState extends BasicGameState {
-
+	
 	private int timePile = 0;
 	private Image background = null;
 	private static final int msPerFrame = 10;
@@ -32,10 +32,10 @@ public class GameplayState extends BasicGameState {
 	private TimeHandler timeHandler = null;
 	private int stateID;
 	private boolean gameHasBeenReset;
-
+	
 	public GameplayState(int stateID, int sizeX) {
 		this.stateID = stateID;
-		tileDistance = sizeX / (NUMBER_OF_X_TILES + 1);
+		tileDistance = (float)sizeX / (NUMBER_OF_X_TILES + 1);
 		offset = tileDistance / 2;
 	}
 
@@ -64,7 +64,7 @@ public class GameplayState extends BasicGameState {
 							.getImage()
 							.draw(tileDistance * i + offset,
 									tileDistance * j + offset);
-
+					
 				}
 				if (map[i][j].hasPillar()) {
 					map[i][j]
@@ -78,19 +78,23 @@ public class GameplayState extends BasicGameState {
 						laser.getImage().draw(tileDistance * i + offset,
 								tileDistance * j + offset);
 					}
-
+				
 				}
 			}
 		}
-
+		
 		// TODO offset if rotated OR have different sprites for each rotation
 		player1.getImage().draw(player1.getPosX() * tileDistance + offset,
 				player1.getPosY() * tileDistance + offset);
 		player2.getImage().draw(player2.getPosX() * tileDistance + offset,
 				player2.getPosY() * tileDistance + offset);
-
+		
+		Input input = arg0.getInput();
+		arg1.drawString("Mouse x: " + input .getAbsoluteMouseX(), 10, 25);
+		arg1.drawString("Mouse y: " + input.getAbsoluteMouseY(), 10, 40);
+		
 	}
-
+	
 	/**
 	 * Initializes the players and the map.
 	 */
@@ -120,7 +124,7 @@ public class GameplayState extends BasicGameState {
 		// Add the random mirrors to the map.
 		addMirrors();
 	}
-
+	
 	/**
 	 * Add random mirrors to the map.
 	 * 
@@ -216,16 +220,17 @@ public class GameplayState extends BasicGameState {
 		timePile += delta;
 		while (timePile >= msPerFrame) {
 			timePile -= msPerFrame;
-			timeHandler.tick();
-			// System.out.println(player2.isDead());
+			timeHandler.laserTick();
 			if (player1.isDead()) {
 				System.out.println(player1.getName() + " died.");
+				//TODO Add wait
 				gameHasBeenReset = false;
 				sbg.enterState(2);
 
 			}
 			if (player2.isDead()) {
 				System.out.println(player2.getName() + " died.");
+				//TODO Add wait
 				gameHasBeenReset = false;
 				sbg.enterState(3);
 			}
@@ -398,6 +403,7 @@ public class GameplayState extends BasicGameState {
 			player2.setInvulnerable(false);
 		}
 
+		//TODO remove this
 		if (player1.isInvulnerable()) {
 			timeHandler.hitTick(1);
 		}

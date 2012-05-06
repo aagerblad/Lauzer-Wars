@@ -35,7 +35,7 @@ public class TimeHandler {
 	/**
 	 * Updates variables counting how long a laser has been out.
 	 */
-	public void tick() {
+	public void laserTick() {
 		if (player1LaserActivated) {
 			player1LaserTime++;
 		}
