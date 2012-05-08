@@ -6,6 +6,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -27,6 +28,7 @@ public class MainMenuState extends BasicGameState {
 	private boolean gameToExit;
 	private boolean mainMenuReseted;
 	private Music titleMusic = null;
+	private Sound laserSound = null;
 	private boolean gameToCredits;
 	private boolean gameToHowToPlay;
 
@@ -42,6 +44,7 @@ public class MainMenuState extends BasicGameState {
 		background = new Image("resources/MainMenu.png");
 		pointer = new Image("resources/Character1.png");
 		pointer.rotate(90);
+		laserSound = new Sound("resources/pew.ogg");
 		// backgroundComplete = new Image("resources/MainMenuComplete.png");
 	}
 
@@ -92,6 +95,7 @@ public class MainMenuState extends BasicGameState {
 
 		if (input.isKeyPressed(Input.KEY_ENTER)
 				|| input.isKeyPressed(Input.KEY_SPACE)) {
+			laserSound.play();
 			handlePointer(game);
 		}
 
