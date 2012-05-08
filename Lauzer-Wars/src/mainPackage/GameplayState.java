@@ -5,16 +5,18 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class GameplayState extends BasicGameState {
-	
+
 	private int timePile = 0;
 	private Image background = null;
 	private static final int msPerFrame = 10;
 	private Player player1 = null;
 	private Player player2 = null;
+	private Sound laserSound = null;
 	private static final int NORTH = 0;
 	private static final int WEST = 1;
 	private static final int SOUTH = 2;
@@ -32,11 +34,12 @@ public class GameplayState extends BasicGameState {
 	private TimeHandler timeHandler = null;
 	private int stateID;
 	private boolean gameHasBeenReset;
-	
-	public GameplayState(int stateID, int sizeX) {
+
+	public GameplayState(int stateID, int sizeX) throws SlickException {
 		this.stateID = stateID;
-		tileDistance = (float)sizeX / (NUMBER_OF_X_TILES + 1);
+		tileDistance = (float) sizeX / (NUMBER_OF_X_TILES + 1);
 		offset = tileDistance / 2;
+		laserSound = new Sound("resources/pew.ogg");
 	}
 
 	public int getID() {
@@ -64,7 +67,7 @@ public class GameplayState extends BasicGameState {
 							.getImage()
 							.draw(tileDistance * i + offset,
 									tileDistance * j + offset);
-					
+
 				}
 				if (map[i][j].hasPillar()) {
 					map[i][j]
@@ -78,23 +81,23 @@ public class GameplayState extends BasicGameState {
 						laser.getImage().draw(tileDistance * i + offset,
 								tileDistance * j + offset);
 					}
-				
+
 				}
 			}
 		}
-		
+
 		// TODO offset if rotated OR have different sprites for each rotation
 		player1.getImage().draw(player1.getPosX() * tileDistance + offset,
 				player1.getPosY() * tileDistance + offset);
 		player2.getImage().draw(player2.getPosX() * tileDistance + offset,
 				player2.getPosY() * tileDistance + offset);
-		
+
 		Input input = arg0.getInput();
-		arg1.drawString("Mouse x: " + input .getAbsoluteMouseX(), 10, 25);
+		arg1.drawString("Mouse x: " + input.getAbsoluteMouseX(), 10, 25);
 		arg1.drawString("Mouse y: " + input.getAbsoluteMouseY(), 10, 40);
-		
+
 	}
-	
+
 	/**
 	 * Initializes the players and the map.
 	 */
@@ -124,7 +127,7 @@ public class GameplayState extends BasicGameState {
 		// Add the random mirrors to the map.
 		addMirrors();
 	}
-	
+
 	/**
 	 * Add random mirrors to the map.
 	 * 
@@ -223,14 +226,14 @@ public class GameplayState extends BasicGameState {
 			timeHandler.laserTick();
 			if (player1.isDead()) {
 				System.out.println(player1.getName() + " died.");
-				//TODO Add wait
+				// TODO Add wait
 				gameHasBeenReset = false;
 				sbg.enterState(2);
 
 			}
 			if (player2.isDead()) {
 				System.out.println(player2.getName() + " died.");
-				//TODO Add wait
+				// TODO Add wait
 				gameHasBeenReset = false;
 				sbg.enterState(3);
 			}
@@ -295,6 +298,7 @@ public class GameplayState extends BasicGameState {
 	private void handleLaser(Player player) throws SlickException {
 		if (!player.hasShot()) {
 			player.setShot(true);
+			laserSound.play();
 			timeHandler.playerJustShotWithHisOrHerLaser(player);
 			laserAlgorithm(Math.round(player.getRotation()),
 					Math.round(player.getPosX()), Math.round(player.getPosY()),
@@ -403,7 +407,7 @@ public class GameplayState extends BasicGameState {
 			player2.setInvulnerable(false);
 		}
 
-		//TODO remove this
+		// TODO remove this
 		if (player1.isInvulnerable()) {
 			timeHandler.hitTick(1);
 		}

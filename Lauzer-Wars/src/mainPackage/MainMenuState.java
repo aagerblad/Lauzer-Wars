@@ -103,6 +103,7 @@ public class MainMenuState extends BasicGameState {
 
 		if (gameplayStateToStart || gameToExit) {
 			tick += delta;
+
 			if (tick >= 800) {
 				if (gameplayStateToStart) {
 					gameplayStateToStart = false;
