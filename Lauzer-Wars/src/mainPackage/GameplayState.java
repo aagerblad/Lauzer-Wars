@@ -26,7 +26,7 @@ public class GameplayState extends BasicGameState {
 	private static final int ROTATION_WEST = 270;
 	private static final int ROTATION_SOUTH = 180;
 	private static final int ROTATION_EAST = 90;
-	private static final int NUMBER_OF_X_TILES = 32 - 1;
+	private static final int NUMBER_OF_X_TILES = 24 - 1;
 	private static final int NUMBER_OF_Y_TILES = 6 * NUMBER_OF_X_TILES / 8;
 	private static float tileDistance = 0;
 	private static float offset = 0;
