@@ -233,6 +233,8 @@ public class GameplayState extends BasicGameState {
 
 			}
 			if (player2.isDead()) {
+				Music gameOverMusic = new Music("resources/titlemusic.ogg");
+				gameOverMusic.play();
 				System.out.println(player2.getName() + " died.");
 				// TODO Add wait
 				gameHasBeenReset = false;

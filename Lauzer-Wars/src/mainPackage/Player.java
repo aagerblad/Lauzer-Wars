@@ -204,13 +204,13 @@ public class Player {
 			image = new Image("resources/Character1stopped.png")
 					.getScaledCopy(tileDistance / 100);
 			image.rotate(lastRotation);
-			image.setAlpha(0.4f);
+			// image.setAlpha(0.4f);
 			break;
 		case 2:
 			image = new Image("resources/Character2stopped.png")
 					.getScaledCopy(tileDistance / 100);
 			image.rotate(lastRotation);
-			image.setAlpha(0.4f);
+			// image.setAlpha(0.4f);
 			break;
 
 		default:
