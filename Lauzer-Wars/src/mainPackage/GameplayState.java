@@ -4,6 +4,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
@@ -223,6 +224,8 @@ public class GameplayState extends BasicGameState {
 			timePile -= msPerFrame;
 			timeHandler.laserTick();
 			if (player1.isDead()) {
+				Music gameOverMusic = new Music("resources/titlemusic.ogg");
+				gameOverMusic.play();
 				System.out.println(player1.getName() + " died.");
 				// TODO Add wait
 				gameHasBeenReset = false;

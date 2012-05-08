@@ -4,6 +4,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -26,6 +27,7 @@ public class MainMenuState extends BasicGameState {
 	private int tick;
 	private boolean gameToExit;
 	private boolean mainMenuReseted;
+	private Music titleMusic = null;
 
 	public MainMenuState(int stateID) {
 		this.StateID = stateID;
@@ -46,6 +48,8 @@ public class MainMenuState extends BasicGameState {
 				554 - 480);
 		laser = new Image("resources/MainMenuLaser.png").getSubImage(117, 297,
 				800 - 117, 456 - 297);
+		titleMusic = new Music("resources/titlemusic.ogg");
+		titleMusic.loop();
 
 	}
 
@@ -103,11 +107,12 @@ public class MainMenuState extends BasicGameState {
 
 		if (gameplayStateToStart || gameToExit) {
 			tick += delta;
-
 			if (tick >= 800) {
 				if (gameplayStateToStart) {
 					gameplayStateToStart = false;
 					laserShot = false;
+					Music music = new Music("resources/music.ogg");
+					music.loop();
 					game.enterState(1);
 				} else if (gameToExit) {
 					container.exit();
