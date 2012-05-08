@@ -2,6 +2,7 @@ package mainPackage;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 
 /**
  * @author Dexter
@@ -34,6 +35,7 @@ public class Player {
 	private boolean hasShot;
 	private boolean paralyzed;
 	private boolean invulnerable;
+	private Sound hitSound = null;
 
 	// Only floats which equals TILE_DISTANCE/n where n is a integer
 
@@ -46,8 +48,10 @@ public class Player {
 	 *            starting coordinate, x-wise
 	 * @param posY
 	 *            starting coordinate, y-wise
+	 * @throws SlickException
 	 */
-	public Player(String name, int id, Image image, float posX, float posY) {
+	public Player(String name, int id, Image image, float posX, float posY)
+			throws SlickException {
 		this.posX = posX;
 		this.posY = posY;
 		this.image = image;
@@ -55,6 +59,7 @@ public class Player {
 		this.id = id;
 		isWalking = new boolean[4];
 		isKeyPressed = new boolean[5];
+		hitSound = new Sound("resources/hit.ogg");
 	}
 
 	public void resurrect() {
@@ -194,6 +199,7 @@ public class Player {
 
 	public void hit(int idOfPlayer, int rotation, float tileDistance)
 			throws SlickException {
+		hitSound.play(0.6f, 1);
 		paralyzed = true;
 		invulnerable = true;
 		life--;
