@@ -5,16 +5,17 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class GameplayState extends BasicGameState {
 
 	private int timePile = 0;
-	private Image background = null;
 	private static final int msPerFrame = 10;
 	private Player player1 = null;
 	private Player player2 = null;
+	private Sound laserSound = null;
 	private static final int NORTH = 0;
 	private static final int WEST = 1;
 	private static final int SOUTH = 2;
@@ -33,10 +34,11 @@ public class GameplayState extends BasicGameState {
 	private int stateID;
 	private boolean gameHasBeenReset;
 
-	public GameplayState(int stateID, int sizeX) {
+	public GameplayState(int stateID, int sizeX) throws SlickException {
 		this.stateID = stateID;
 		tileDistance = (float) sizeX / (NUMBER_OF_X_TILES + 1);
 		offset = tileDistance / 2;
+		laserSound = new Sound("resources/pew.ogg");
 	}
 
 	public int getID() {
@@ -49,7 +51,7 @@ public class GameplayState extends BasicGameState {
 	@Override
 	public void render(GameContainer arg0, StateBasedGame sgb, Graphics arg1)
 			throws SlickException {
-		background.draw(0, 0);
+		// background.draw(0, 0);
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
 				map[i][j].getImage().draw(tileDistance * i + offset,
@@ -102,7 +104,6 @@ public class GameplayState extends BasicGameState {
 	public void init(GameContainer arg0, StateBasedGame sbg)
 			throws SlickException {
 		timeHandler = new TimeHandler();
-		background = new Image("resources/background.png");
 		player1 = new Player("Andreas", 1,
 				new Image("resources/Character1.png")
 						.getScaledCopy(tileDistance / 100 // TODO
@@ -295,6 +296,7 @@ public class GameplayState extends BasicGameState {
 	private void handleLaser(Player player) throws SlickException {
 		if (!player.hasShot()) {
 			player.setShot(true);
+			laserSound.play();
 			timeHandler.playerJustShotWithHisOrHerLaser(player);
 			laserAlgorithm(Math.round(player.getRotation()),
 					Math.round(player.getPosX()), Math.round(player.getPosY()),

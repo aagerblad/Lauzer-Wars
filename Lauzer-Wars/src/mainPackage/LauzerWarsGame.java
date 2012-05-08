@@ -7,13 +7,12 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class LauzerWarsGame extends StateBasedGame implements Runnable {
 
-
-	static final int SIZE_X = 800;
+	static final int SIZE_X = 816;
 	static final int SIZE_Y = SIZE_X * 6 / 8;
-	public static final int MAINMENUSTATE          = 0;
-	public static final int GAMEPLAYSTATE          = 1;
-	public static final int GAMEOVERSTATEP1          = 2;
-	public static final int GAMEOVERSTATEP2          = 3;
+	public static final int MAINMENUSTATE = 0;
+	public static final int GAMEPLAYSTATE = 1;
+	public static final int GAMEOVERSTATEP1 = 2;
+	public static final int GAMEOVERSTATEP2 = 3;
 
 	public LauzerWarsGame() throws SlickException {
 		this("Lauzer wars");
@@ -27,7 +26,6 @@ public class LauzerWarsGame extends StateBasedGame implements Runnable {
 		this.addState(new GameOverState(GAMEOVERSTATEP2));
 		this.enterState(MAINMENUSTATE);
 	}
-
 
 	public static void main(String[] args) throws SlickException {
 		LauzerWarsGame main = new LauzerWarsGame("Lauzer Wars");
