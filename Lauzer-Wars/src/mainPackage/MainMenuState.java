@@ -4,6 +4,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -25,6 +26,7 @@ public class MainMenuState extends BasicGameState {
 	private int tick;
 	private boolean gameToExit;
 	private boolean mainMenuReseted;
+	private Music titleMusic = null;
 	private boolean gameToCredits;
 	private boolean gameToHowToPlay;
 
@@ -35,11 +37,12 @@ public class MainMenuState extends BasicGameState {
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
+		titleMusic = new Music("resources/titlemusic.ogg");
+		titleMusic.loop();
 		background = new Image("resources/MainMenu.png");
 		pointer = new Image("resources/Character1.png");
 		pointer.rotate(90);
-//		backgroundComplete = new Image("resources/MainMenuComplete.png");
-
+		// backgroundComplete = new Image("resources/MainMenuComplete.png");
 	}
 
 	@Override
@@ -47,10 +50,9 @@ public class MainMenuState extends BasicGameState {
 			throws SlickException {
 		background.draw(0, 0);
 		pointer.draw(pointerPositionX, pointerPositionY);
-		
 
 		Input input = container.getInput();
-		g.drawString("Mouse x: " + input .getAbsoluteMouseX(), 10, 25);
+		g.drawString("Mouse x: " + input.getAbsoluteMouseX(), 10, 25);
 		g.drawString("Mouse y: " + input.getAbsoluteMouseY(), 10, 40);
 
 	}
@@ -93,20 +95,23 @@ public class MainMenuState extends BasicGameState {
 			handlePointer(game);
 		}
 
-		if (gameplayStateToStart || gameToExit || gameToCredits || gameToHowToPlay) {
+		if (gameplayStateToStart || gameToExit || gameToCredits
+				|| gameToHowToPlay) {
 			tick += delta;
 
 			if (tick >= 800) {
 				if (gameplayStateToStart) {
 					gameplayStateToStart = false;
+					Music music = new Music("resources/music.ogg");
+					music.loop();
 					game.enterState(1);
 				} else if (gameToExit) {
 					container.exit();
 					return;
 				} else if (gameToCredits) {
-					//TODO add credits state
+					// TODO add credits state
 				} else if (gameToHowToPlay) {
-					//TODO add how to play state
+					// TODO add how to play state
 				}
 			}
 		}

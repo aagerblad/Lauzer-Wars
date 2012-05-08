@@ -4,6 +4,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
@@ -12,7 +13,6 @@ import org.newdawn.slick.state.StateBasedGame;
 public class GameplayState extends BasicGameState {
 
 	private int timePile = 0;
-	private Image background = null;
 	private static final int msPerFrame = 10;
 	private Player player1 = null;
 	private Player player2 = null;
@@ -52,7 +52,7 @@ public class GameplayState extends BasicGameState {
 	@Override
 	public void render(GameContainer arg0, StateBasedGame sgb, Graphics arg1)
 			throws SlickException {
-		background.draw(0, 0);
+		// background.draw(0, 0);
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
 				map[i][j].getImage().draw(tileDistance * i + offset,
@@ -105,7 +105,6 @@ public class GameplayState extends BasicGameState {
 	public void init(GameContainer arg0, StateBasedGame sbg)
 			throws SlickException {
 		timeHandler = new TimeHandler();
-		background = new Image("resources/background.png");
 		player1 = new Player("Andreas", 1,
 				new Image("resources/Character1.png")
 						.getScaledCopy(tileDistance / 100 // TODO
@@ -225,6 +224,8 @@ public class GameplayState extends BasicGameState {
 			timePile -= msPerFrame;
 			timeHandler.laserTick();
 			if (player1.isDead()) {
+				Music gameOverMusic = new Music("resources/titlemusic.ogg");
+				gameOverMusic.play();
 				System.out.println(player1.getName() + " died.");
 				// TODO Add wait
 				gameHasBeenReset = false;
