@@ -13,7 +13,7 @@ public class MainMenuState extends BasicGameState {
 	int StateID = -1;
 	Image background = null;
 	Image pointer = null;
-	int pointerPositionY = 350;
+	int pointerPositionY = 200;
 	int pointerPositionX = 23;
 	int pointerValue = 0;
 	Image backgroundComplete = null;
@@ -21,11 +21,12 @@ public class MainMenuState extends BasicGameState {
 	Image start1pGameOption = null;
 	Image exitOption = null;
 	Image laser = null;
-	private boolean laserShot;
 	private boolean gameplayStateToStart;
 	private int tick;
 	private boolean gameToExit;
 	private boolean mainMenuReseted;
+	private boolean gameToCredits;
+	private boolean gameToHowToPlay;
 
 	public MainMenuState(int stateID) {
 		this.StateID = stateID;
@@ -34,18 +35,10 @@ public class MainMenuState extends BasicGameState {
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
-		background = new Image("resources/MainMenuBackground.png");
-		pointer = new Image("resources/MainMenuPointer.png").getSubImage(0, 0,
-				130, 89);
-		backgroundComplete = new Image("resources/MainMenuComplete.png");
-		start2pGameOption = backgroundComplete.getSubImage(171, 339, 686 - 171,
-				412 - 339);
-		start1pGameOption = backgroundComplete.getSubImage(171, 408, 708 - 171,
-				476 - 408);
-		exitOption = backgroundComplete.getSubImage(171, 480, 318 - 171,
-				554 - 480);
-		laser = new Image("resources/MainMenuLaser.png").getSubImage(117, 297,
-				800 - 117, 456 - 297);
+		background = new Image("resources/MainMenu.png");
+		pointer = new Image("resources/Character1.png");
+		pointer.rotate(90);
+//		backgroundComplete = new Image("resources/MainMenuComplete.png");
 
 	}
 
@@ -54,12 +47,11 @@ public class MainMenuState extends BasicGameState {
 			throws SlickException {
 		background.draw(0, 0);
 		pointer.draw(pointerPositionX, pointerPositionY);
-		start2pGameOption.draw(171, 339);
-		start1pGameOption.draw(171, 440);
-		exitOption.draw(171, 520);
-		if (laserShot) {
-			laser.draw(120, pointerPositionY - 50);
-		}
+		
+
+		Input input = container.getInput();
+		g.drawString("Mouse x: " + input .getAbsoluteMouseX(), 10, 25);
+		g.drawString("Mouse y: " + input.getAbsoluteMouseY(), 10, 40);
 
 	}
 
@@ -83,7 +75,7 @@ public class MainMenuState extends BasicGameState {
 		Input input = container.getInput();
 		if (input.isKeyPressed(Input.KEY_DOWN)
 				|| input.isKeyPressed(Input.KEY_S)) {
-			if (pointerValue < 2) {
+			if (pointerValue < 3) {
 				pointerValue++;
 			}
 			pointerPosition();
@@ -101,16 +93,19 @@ public class MainMenuState extends BasicGameState {
 			handlePointer(game);
 		}
 
-		if (gameplayStateToStart || gameToExit) {
+		if (gameplayStateToStart || gameToExit || gameToCredits || gameToHowToPlay) {
 			tick += delta;
 			if (tick >= 800) {
 				if (gameplayStateToStart) {
 					gameplayStateToStart = false;
-					laserShot = false;
 					game.enterState(1);
 				} else if (gameToExit) {
 					container.exit();
 					return;
+				} else if (gameToCredits) {
+					//TODO add credits state
+				} else if (gameToHowToPlay) {
+					//TODO add how to play state
 				}
 			}
 		}
@@ -120,29 +115,45 @@ public class MainMenuState extends BasicGameState {
 	private void pointerPosition() {
 		switch (pointerValue) {
 		case 0:
-			pointerPositionY = 350;
+			pointerPositionY = 200;
+			pointerPositionX = 23;
+			pointer.setRotation(90);
 			break;
 		case 1:
-			pointerPositionY = 440;
+			pointerPositionY = 300;
+			pointerPositionX = 450;
+			pointer.setRotation(270);
 			break;
 		case 2:
-			pointerPositionY = 530;
+			pointerPositionY = 390;
+			pointerPositionX = 23;
+			pointer.setRotation(90);
+			break;
+		case 3:
+			pointerPositionY = 470;
+			pointerPositionX = 350;
+			pointer.setRotation(270);
 			break;
 		default:
 			break;
 		}
 	}
 
-	private void handlePointer(StateBasedGame game) {
+	private void handlePointer(StateBasedGame game) throws SlickException {
 		mainMenuReseted = false;
-		laserShot = true;
 		switch (pointerValue) {
 		case 0:
+			background = new Image("resources/MainMenuOption0.png");
 			gameplayStateToStart = true;
 			break;
 		case 1:
+			background = new Image("resources/MainMenuOption1.png");
 			break;
 		case 2:
+			background = new Image("resources/MainMenuOption2.png");
+			break;
+		case 3:
+			background = new Image("resources/MainMenuOption3.png");
 			gameToExit = true;
 			break;
 		default:
