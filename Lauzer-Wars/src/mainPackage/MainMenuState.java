@@ -53,11 +53,6 @@ public class MainMenuState extends BasicGameState {
 			throws SlickException {
 		background.draw(0, 0);
 		pointer.draw(pointerPositionX, pointerPositionY);
-
-		Input input = container.getInput();
-		g.drawString("Mouse x: " + input.getAbsoluteMouseX(), 10, 25);
-		g.drawString("Mouse y: " + input.getAbsoluteMouseY(), 10, 40);
-
 	}
 
 	private void resetMainMenu() throws SlickException {
