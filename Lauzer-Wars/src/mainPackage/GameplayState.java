@@ -161,7 +161,6 @@ public class GameplayState extends BasicGameState {
 			if (j % 2 == 0 && j != 0) {
 				j++;
 			}
-			System.out.println(j);
 			map[i][j].addMirror(tileDistance);
 		}
 
@@ -298,7 +297,6 @@ public class GameplayState extends BasicGameState {
 			if (player1.isDead()) {
 				Music gameOverMusic = new Music("resources/titlemusic.ogg");
 				gameOverMusic.play();
-				System.out.println(player1.getName() + " died.");
 				// TODO Add wait
 				gameHasBeenReset = false;
 				sbg.enterState(2);
@@ -307,7 +305,6 @@ public class GameplayState extends BasicGameState {
 			if (player2.isDead()) {
 				Music gameOverMusic = new Music("resources/titlemusic.ogg");
 				gameOverMusic.play();
-				System.out.println(player2.getName() + " died.");
 				// TODO Add wait
 				gameHasBeenReset = false;
 				sbg.enterState(3);
