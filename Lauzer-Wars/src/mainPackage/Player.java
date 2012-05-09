@@ -98,6 +98,10 @@ public class Player {
 		return id;
 	}
 
+	public int getLife() {
+		return life;
+	}
+
 	public void setRotation(float r) {
 		if (!paralyzed) {
 			image.setRotation(r);
@@ -203,7 +207,6 @@ public class Player {
 		paralyzed = true;
 		invulnerable = true;
 		life--;
-		System.out.println(name + ": " + life);
 		float lastRotation = image.getRotation();
 		switch (idOfPlayer) {
 		case 1:

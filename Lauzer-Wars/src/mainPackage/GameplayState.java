@@ -36,6 +36,8 @@ public class GameplayState extends BasicGameState {
 	private TimeHandler timeHandler = null;
 	private int stateID;
 	private boolean gameHasBeenReset;
+	private Image player1Heart = null;
+	private Image player2Heart = null;
 
 	public GameplayState(int stateID, int sizeX) throws SlickException {
 		this.stateID = stateID;
@@ -94,10 +96,20 @@ public class GameplayState extends BasicGameState {
 		player2.getImage().draw(player2.getPosX() * tileDistance + offset,
 				player2.getPosY() * tileDistance + offset);
 
-		Input input = arg0.getInput();
-		arg1.drawString("Mouse x: " + input.getAbsoluteMouseX(), 10, 25);
-		arg1.drawString("Mouse y: " + input.getAbsoluteMouseY(), 10, 40);
+		int heartDraw1 = 2;
+		for (int i = 0; i < player1.getLife(); i++) {
+			player1Heart.draw(heartDraw1, 1);
+			heartDraw1 += tileDistance / 2;
 
+		}
+		int heartDraw2 = 0;
+		for (int i = 0; i < player2.getLife(); i++) {
+			player2Heart.draw((NUMBER_OF_X_TILES) * tileDistance + offset
+					+ heartDraw2, (NUMBER_OF_Y_TILES) * tileDistance + offset
+					+ 2);
+			heartDraw2 -= tileDistance / 2;
+
+		}
 	}
 
 	/**
@@ -106,6 +118,11 @@ public class GameplayState extends BasicGameState {
 	@Override
 	public void init(GameContainer arg0, StateBasedGame sbg)
 			throws SlickException {
+		arg0.setShowFPS(false);
+
+		player1Heart = new Image("resources/redheart.png").getScaledCopy(0.14f);
+		player2Heart = new Image("resources/purpleheart.png")
+				.getScaledCopy(0.14f);
 		timeHandler = new TimeHandler();
 		player1 = new Player("Andreas", 1,
 				new Image("resources/Character1.png")
@@ -396,6 +413,7 @@ public class GameplayState extends BasicGameState {
 			if (map[posX][posY].hasPlayer()) {
 				Player hitPlayer = map[posX][posY].getPlayer();
 				if (!hitPlayer.isInvulnerable()) {
+
 					hitPlayer.hit(hitPlayer.getId(), rotation, tileDistance);
 				}
 			}
