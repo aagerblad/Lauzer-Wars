@@ -215,7 +215,6 @@ public class GameplayState extends BasicGameState {
 			resetGame();
 
 		}
-
 		Input input = gc.getInput();
 
 		// Makes sure the game stays at the set framerate.
@@ -225,16 +224,15 @@ public class GameplayState extends BasicGameState {
 			timeHandler.laserTick();
 			if (player1.isDead()) {
 				Music gameOverMusic = new Music("resources/titlemusic.ogg");
-				gameOverMusic.play();
+				gameOverMusic.loop();
 				System.out.println(player1.getName() + " died.");
 				// TODO Add wait
 				gameHasBeenReset = false;
 				sbg.enterState(2);
-
 			}
 			if (player2.isDead()) {
 				Music gameOverMusic = new Music("resources/titlemusic.ogg");
-				gameOverMusic.play();
+				gameOverMusic.loop();
 				System.out.println(player2.getName() + " died.");
 				// TODO Add wait
 				gameHasBeenReset = false;
