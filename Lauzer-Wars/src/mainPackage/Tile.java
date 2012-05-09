@@ -178,11 +178,8 @@ public class Tile {
 	 * @throws SlickException
 	 */
 	public boolean addMirror(float tileDistance) throws SlickException {
-		int randomMirror = random.nextInt(CHANCE_OF_MIRROR);
-		if (randomMirror == 1) {
-			Mirror mirrorToAdd = new Mirror(random.nextInt(2), tileDistance);
-			mirrorOnTile = mirrorToAdd;
-		}
+		Mirror mirrorToAdd = new Mirror(random.nextInt(2), tileDistance);
+		mirrorOnTile = mirrorToAdd;
 		return true; // TODO
 	}
 

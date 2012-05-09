@@ -1,5 +1,7 @@
 package mainPackage;
 
+import java.util.Random;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -133,18 +135,71 @@ public class GameplayState extends BasicGameState {
 	 * @throws SlickException
 	 */
 	private void addMirrors() throws SlickException {
+		Random rand = new Random();
+		removeMirrors();
+
+		// Makes sure there is at least one mirror in each column.
+		for (int i = 1; i < NUMBER_OF_X_TILES - 1; i += 2) {
+			int j = 1 + rand.nextInt((NUMBER_OF_Y_TILES - 3));
+			if (j % 2 == 0 && j != 0) {
+				j++;
+			}
+			System.out.println(j);
+			map[i][j].addMirror(tileDistance);
+		}
+
+		// Makes sure there is at least one mirror in each row.
+		for (int j = 1; j < NUMBER_OF_Y_TILES - 1; j += 2) {
+			int i = 1 + rand.nextInt((NUMBER_OF_X_TILES - 3));
+			if (i % 2 == 0 && i != 0) {
+				i++;
+			}
+			if (!rowHasMirror(j)) {
+				map[i][j].addMirror(tileDistance);
+			}
+		}
+
+		// Adds mirrors to the four corners of the map
+		map[1][1].addMirror(tileDistance);
+		map[NUMBER_OF_X_TILES - 2][1].addMirror(tileDistance);
+		map[1][NUMBER_OF_Y_TILES - 2].addMirror(tileDistance);
+		map[NUMBER_OF_X_TILES - 2][NUMBER_OF_Y_TILES - 2]
+				.addMirror(tileDistance);
+
+		for (int i = 1; i < NUMBER_OF_X_TILES - 1; i += 2) {
+			int j = 1 + rand.nextInt((NUMBER_OF_Y_TILES - 3));
+			if (j % 2 == 0 && j != 0) {
+				j++;
+			}
+			map[i][j].addMirror(tileDistance);
+		}
+
+	}
+
+	/**
+	 * Removes all of the mirrors on the map.
+	 */
+	private void removeMirrors() {
 		for (int i = 1; i < NUMBER_OF_X_TILES - 1; i++) {
 			for (int j = 1; j < NUMBER_OF_Y_TILES - 1; j++) {
 				map[i][j].clearMirror();
-				if ((map[i - 1][j].hasPillar() && map[i + 1][j].hasPillar())
-						|| (map[i][j - 1].hasPillar())
-						&& map[i][j + 1].hasPillar()) {
-					// Do nothing
-				} else {
-					map[i][j].addMirror(tileDistance);
-				}
 			}
 		}
+	}
+
+	/**
+	 * Checks if the specified column has any mirrors.
+	 * 
+	 * @throws SlickException
+	 */
+	private boolean rowHasMirror(int column) throws SlickException {
+		int j = column;
+		for (int i = 1; i < NUMBER_OF_X_TILES; i++) {
+			if (map[i][j].hasMirror()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -233,6 +288,8 @@ public class GameplayState extends BasicGameState {
 
 			}
 			if (player2.isDead()) {
+				Music gameOverMusic = new Music("resources/titlemusic.ogg");
+				gameOverMusic.play();
 				System.out.println(player2.getName() + " died.");
 				// TODO Add wait
 				gameHasBeenReset = false;
