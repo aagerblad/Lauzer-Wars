@@ -13,6 +13,9 @@ public class LauzerWarsGame extends StateBasedGame implements Runnable {
 	public static final int GAMEPLAYSTATE = 1;
 	public static final int GAMEOVERSTATEP1 = 2;
 	public static final int GAMEOVERSTATEP2 = 3;
+	public static final int CREDITSSTATE = 4;
+	public static final int HOWTOPLAYSTATE = 5;
+	
 
 	public LauzerWarsGame() throws SlickException {
 		this("Lauzer wars");
@@ -24,6 +27,7 @@ public class LauzerWarsGame extends StateBasedGame implements Runnable {
 		this.addState(new GameplayState(GAMEPLAYSTATE, SIZE_X));
 		this.addState(new GameOverState(GAMEOVERSTATEP1));
 		this.addState(new GameOverState(GAMEOVERSTATEP2));
+		this.addState(new CreditsState(CREDITSSTATE));
 		this.enterState(MAINMENUSTATE);
 	}
 
