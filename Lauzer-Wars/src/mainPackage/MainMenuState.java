@@ -60,14 +60,9 @@ public class MainMenuState extends BasicGameState {
 
 	}
 
-	private void resetMainMenu() {
-		try {
+	private void resetMainMenu() throws SlickException {
 
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		background = new Image("resources/MainMenu.png");
 		mainMenuReseted = true;
 	}
 
@@ -103,7 +98,7 @@ public class MainMenuState extends BasicGameState {
 				|| gameToHowToPlay) {
 			tick += delta;
 
-			if (tick >= 800) {
+			if (tick >= 8000) {
 				if (gameplayStateToStart) {
 					gameplayStateToStart = false;
 					Music music = new Music("resources/music.ogg");
@@ -153,6 +148,7 @@ public class MainMenuState extends BasicGameState {
 		mainMenuReseted = false;
 		switch (pointerValue) {
 		case 0:
+			System.out.println("hej1");
 			background = new Image("resources/MainMenuOption0.png");
 			gameplayStateToStart = true;
 			break;
