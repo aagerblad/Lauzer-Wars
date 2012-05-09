@@ -26,7 +26,7 @@ public class MainMenuState extends BasicGameState {
 	private boolean gameplayStateToStart;
 	private int tick;
 	private boolean gameToExit;
-	private boolean mainMenuReseted;
+	private boolean mainMenuReseted = false;
 	private Music titleMusic = null;
 	private Sound laserSound = null;
 	private boolean gameToCredits;
@@ -55,14 +55,10 @@ public class MainMenuState extends BasicGameState {
 		pointer.draw(pointerPositionX, pointerPositionY);
 	}
 
-	private void resetMainMenu() {
-		try {
-
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	private void resetMainMenu() throws SlickException {
+		
+		System.out.println("hej");
+		background = new Image("resources/MainMenu.png");
 		mainMenuReseted = true;
 	}
 
@@ -70,6 +66,7 @@ public class MainMenuState extends BasicGameState {
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
 		if (!mainMenuReseted) {
+			System.out.println("wat?");
 			resetMainMenu();
 		}
 		Input input = container.getInput();
@@ -99,6 +96,8 @@ public class MainMenuState extends BasicGameState {
 			tick += delta;
 
 			if (tick >= 800) {
+				tick = 0;
+				mainMenuReseted = false;
 				if (gameplayStateToStart) {
 					gameplayStateToStart = false;
 					Music music = new Music("resources/music.ogg");
@@ -108,7 +107,8 @@ public class MainMenuState extends BasicGameState {
 					container.exit();
 					return;
 				} else if (gameToCredits) {
-					// TODO add credits state
+					gameToCredits = false;
+					game.enterState(4);
 				} else if (gameToHowToPlay) {
 					// TODO add how to play state
 				}
@@ -145,7 +145,6 @@ public class MainMenuState extends BasicGameState {
 	}
 
 	private void handlePointer(StateBasedGame game) throws SlickException {
-		mainMenuReseted = false;
 		switch (pointerValue) {
 		case 0:
 			background = new Image("resources/MainMenuOption0.png");
@@ -156,6 +155,7 @@ public class MainMenuState extends BasicGameState {
 			break;
 		case 2:
 			background = new Image("resources/MainMenuOption2.png");
+			gameToCredits = true;
 			break;
 		case 3:
 			background = new Image("resources/MainMenuOption3.png");
