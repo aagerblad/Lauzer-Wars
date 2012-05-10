@@ -116,7 +116,6 @@ public class GameplayState extends BasicGameState {
 			heartDraw2 -= tileDistance / 2;
 
 		}
-		System.out.println("hej");
 
 	}
 
