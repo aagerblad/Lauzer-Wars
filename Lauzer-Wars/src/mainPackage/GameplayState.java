@@ -99,12 +99,15 @@ public class GameplayState extends BasicGameState {
 		player2.getImage().draw(player2.getPosX() * tileDistance + offset,
 				player2.getPosY() * tileDistance + offset);
 
+		// Draws hearts on the screen corresponding to the number of lives they
+		// have left.
 		int heartDraw1 = 2;
 		for (int i = 0; i < player1.getLife(); i++) {
 			player1Heart.draw(heartDraw1, 1);
 			heartDraw1 += tileDistance / 2;
 
 		}
+
 		int heartDraw2 = 0;
 		for (int i = 0; i < player2.getLife(); i++) {
 			player2Heart.draw((NUMBER_OF_X_TILES) * tileDistance + offset
@@ -113,7 +116,6 @@ public class GameplayState extends BasicGameState {
 			heartDraw2 -= tileDistance / 2;
 
 		}
-		System.out.println("hej");
 
 	}
 
@@ -124,7 +126,6 @@ public class GameplayState extends BasicGameState {
 	public void init(GameContainer arg0, StateBasedGame sbg)
 			throws SlickException {
 		arg0.setShowFPS(false);
-		
 
 		player1Heart = new Image("resources/redheart.png").getScaledCopy(0.14f);
 		player2Heart = new Image("resources/purpleheart.png")
@@ -293,8 +294,16 @@ public class GameplayState extends BasicGameState {
 			resetGame();
 
 		}
-
 		Input input = gc.getInput();
+		if (input.isKeyPressed(Input.KEY_P)) {
+			gc.setPaused(!gc.isPaused());
+			if (gc.isPaused()) {
+				gc.setMusicOn(false);
+			} else {
+				gc.setMusicOn(true);
+
+			}
+		}
 
 		// Makes sure the game stays at the set framerate.
 		timePile += delta;
@@ -346,7 +355,6 @@ public class GameplayState extends BasicGameState {
 						}
 					}
 				};
-				System.out.println("dongs");
 				Timer timer = new Timer();
 				timer.schedule(player2Death, 300);
 			}
@@ -547,11 +555,6 @@ public class GameplayState extends BasicGameState {
 
 		int player1X = Math.round(player1.getPosX());
 		int player1Y = Math.round(player1.getPosY());
-
-		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
-			gc.exit();
-			return;
-		}
 
 		// Handles the case where the player wants to move west.
 		if (input.isKeyDown(Input.KEY_A)) {
