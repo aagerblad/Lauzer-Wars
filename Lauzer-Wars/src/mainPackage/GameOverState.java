@@ -13,7 +13,8 @@ public class GameOverState extends BasicGameState {
 
 	int stateID = -1;
 	int pointerValue = 0;
-	float pointerPosValueY = 280;
+	float pointerPosValueY = 0;
+	float pointerPosValueX = 0;
 	Image background = null;
 	Image pointer = null;
 
@@ -26,15 +27,18 @@ public class GameOverState extends BasicGameState {
 			throws SlickException {
 		switch (stateID) {
 		case 2:
-			background = new Image("resources/GameOverP2.png");
+			background = new Image("resources/GameOverPlayer2Options.png");
+			pointer = new Image("resources/Character1.png");
 			break;
 		case 3:
-			background = new Image("resources/GameOverP1.png");
+			background = new Image("resources/GameOverPlayer1Options.png");
+			pointer = new Image("resources/Character2.png");
 			break;
 		default:
 			break;
 		}
-		pointer = new Image("resources/MainMenuPointer.png");
+		pointer.setRotation(90);
+		handlePointer(0);
 
 	}
 
@@ -42,7 +46,7 @@ public class GameOverState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 		background.draw(0, 0);
-		pointer.draw(80, pointerPosValueY);
+		pointer.draw(pointerPosValueX, pointerPosValueY);
 
 	}
 
@@ -52,30 +56,52 @@ public class GameOverState extends BasicGameState {
 		Input input = container.getInput();
 		if (input.isKeyPressed(Input.KEY_DOWN)
 				|| input.isKeyPressed(Input.KEY_S)) {
-			if (pointerValue == 1) {
-				pointerValue = 0;
-				pointerPosValueY = 380;
-			}
+			handlePointer(1);
 		}
 
 		if (input.isKeyPressed(Input.KEY_UP) || input.isKeyPressed(Input.KEY_W)) {
-			if (pointerValue == 0) {
-				pointerValue = 1;
-				pointerPosValueY = 280;
-			}
+			handlePointer(0);
 		}
 
 		if (input.isKeyPressed(Input.KEY_SPACE)
 				|| input.isKeyPressed(Input.KEY_ENTER)) {
-			if (pointerValue == 1) {
-				Music music = new Music("resources/music.ogg");
-				music.loop();
-				game.enterState(1); // Enter Game loop again
-			} else if (pointerValue == 0) {
-				game.enterState(0); // Enter Main menu
-			}
+
+
+			handleValue(game);
 		}
 
+	}
+
+	private void handleValue(StateBasedGame game) throws SlickException {
+		switch (pointerValue) {
+		case 0:
+			Music music = new Music("resources/music.ogg");
+			music.loop();
+			game.enterState(1); // Enter Game loop again
+			break;
+		case 1:
+			game.enterState(0); // Enter Main menu			
+			break;
+		default:
+			break;
+		}
+
+	}
+
+	private void handlePointer(int i) {
+		pointerValue = i;
+		switch (pointerValue) {
+		case 0:
+			pointerPosValueX = 150;
+			pointerPosValueY = 350;
+			break;
+		case 1:
+			pointerPosValueX = 150;
+			pointerPosValueY = 440;
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override
