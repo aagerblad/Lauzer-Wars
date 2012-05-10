@@ -1,6 +1,8 @@
 package mainPackage;
 
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -38,6 +40,7 @@ public class GameplayState extends BasicGameState {
 	private boolean gameHasBeenReset;
 	private Image player1Heart = null;
 	private Image player2Heart = null;
+	private boolean gameOver = false;
 
 	public GameplayState(int stateID, int sizeX) throws SlickException {
 		this.stateID = stateID;
@@ -277,13 +280,14 @@ public class GameplayState extends BasicGameState {
 		player1.setPosition(1, 1);
 		player2.setPosition(NUMBER_OF_X_TILES - 2, NUMBER_OF_Y_TILES - 2);
 		gameHasBeenReset = true;
+		gameOver = false;
 	}
 
 	/**
 	 * Updates the game world.
 	 */
 	@Override
-	public void update(GameContainer gc, StateBasedGame sbg, int delta)
+	public void update(GameContainer gc, final StateBasedGame sbg, int delta)
 			throws SlickException {
 		if (!gameHasBeenReset) {
 			resetGame();
@@ -297,20 +301,54 @@ public class GameplayState extends BasicGameState {
 		while (timePile >= msPerFrame) {
 			timePile -= msPerFrame;
 			timeHandler.laserTick();
-			if (player1.isDead()) {
-				Music gameOverMusic = new Music("resources/titlemusic.ogg");
-				gameOverMusic.play();
-				// TODO Add wait
-				gameHasBeenReset = false;
-				sbg.enterState(2);
+			if (player1.isDead() && !gameOver) {
+				TimerTask player1Death = new TimerTask() {
+					@Override
+					public void run() {
+						if (!gameOver) {
+							Music gameOverMusic = null;
+							try {
+								gameOverMusic = new Music(
+										"resources/titlemusic.ogg");
+							} catch (SlickException e) {
+								e.printStackTrace();
+							}
+							gameOverMusic.loop();
+							// TODO Add wait
+							gameHasBeenReset = false;
+							gameOver = true;
+							sbg.enterState(2);
+						}
+					}
+				};
+				Timer timer = new Timer();
+				timer.schedule(player1Death, 500);
 
 			}
-			if (player2.isDead()) {
-				Music gameOverMusic = new Music("resources/titlemusic.ogg");
-				gameOverMusic.play();
-				// TODO Add wait
-				gameHasBeenReset = false;
-				sbg.enterState(3);
+			if (player2.isDead() && !gameOver) {
+				TimerTask player2Death = new TimerTask() {
+					@Override
+					public void run() {
+						if (!gameOver) {
+							Music gameOverMusic = null;
+							try {
+								gameOverMusic = new Music(
+										"resources/titlemusic.ogg");
+							} catch (SlickException e) {
+								e.printStackTrace();
+							}
+							gameOverMusic.loop();
+							System.out.println("derp");
+							// TODO Add wait
+							gameHasBeenReset = false;
+							gameOver = true;
+							sbg.enterState(3);
+						}
+					}
+				};
+				System.out.println("dongs");
+				Timer timer = new Timer();
+				timer.schedule(player2Death, 300);
 			}
 			handlePlayerPositions();
 			checkLaserLife();
