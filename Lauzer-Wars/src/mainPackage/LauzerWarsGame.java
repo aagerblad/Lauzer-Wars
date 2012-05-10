@@ -28,6 +28,7 @@ public class LauzerWarsGame extends StateBasedGame implements Runnable {
 		this.addState(new GameOverState(GAMEOVERSTATEP1));
 		this.addState(new GameOverState(GAMEOVERSTATEP2));
 		this.addState(new CreditsState(CREDITSSTATE));
+		this.addState(new HowToPlayState(HOWTOPLAYSTATE));
 		this.enterState(MAINMENUSTATE);
 	}
 
