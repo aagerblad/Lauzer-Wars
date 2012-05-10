@@ -109,7 +109,8 @@ public class MainMenuState extends BasicGameState {
 					gameToCredits = false;
 					game.enterState(4);
 				} else if (gameToHowToPlay) {
-					// TODO add how to play state
+					gameToHowToPlay = false;
+					game.enterState(5);
 				}
 			}
 		}
@@ -151,6 +152,7 @@ public class MainMenuState extends BasicGameState {
 			break;
 		case 1:
 			background = new Image("resources/MainMenuOption1.png");
+			gameToHowToPlay = true;
 			break;
 		case 2:
 			background = new Image("resources/MainMenuOption2.png");

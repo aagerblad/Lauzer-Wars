@@ -15,7 +15,7 @@ public class Player {
 	private float scale = 1.0f;
 	private float posX = 0;
 	private float posY = 0;
-	private int MAXLIFE = 1;// TODO
+	private int MAXLIFE = 5;// TODO
 	private int life = MAXLIFE;
 	private static final int ROTATION_NORTH = 0;
 	private static final int ROTATION_WEST = 270;
