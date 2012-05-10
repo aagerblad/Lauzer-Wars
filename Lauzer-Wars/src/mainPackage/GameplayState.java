@@ -1,5 +1,9 @@
 package mainPackage;
 
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -34,6 +38,9 @@ public class GameplayState extends BasicGameState {
 	private TimeHandler timeHandler = null;
 	private int stateID;
 	private boolean gameHasBeenReset;
+	private Image player1Heart = null;
+	private Image player2Heart = null;
+	private boolean gameOver = false;
 
 	public GameplayState(int stateID, int sizeX) throws SlickException {
 		this.stateID = stateID;
@@ -92,10 +99,23 @@ public class GameplayState extends BasicGameState {
 		player2.getImage().draw(player2.getPosX() * tileDistance + offset,
 				player2.getPosY() * tileDistance + offset);
 
-		Input input = arg0.getInput();
-		arg1.drawString("Mouse x: " + input.getAbsoluteMouseX(), 10, 25);
-		arg1.drawString("Mouse y: " + input.getAbsoluteMouseY(), 10, 40);
+		// Draws hearts on the screen corresponding to the number of lives they
+		// have left.
+		int heartDraw1 = 2;
+		for (int i = 0; i < player1.getLife(); i++) {
+			player1Heart.draw(heartDraw1, 1);
+			heartDraw1 += tileDistance / 2;
 
+		}
+
+		int heartDraw2 = 0;
+		for (int i = 0; i < player2.getLife(); i++) {
+			player2Heart.draw((NUMBER_OF_X_TILES) * tileDistance + offset
+					+ heartDraw2, (NUMBER_OF_Y_TILES) * tileDistance + offset
+					+ 2);
+			heartDraw2 -= tileDistance / 2;
+
+		}
 	}
 
 	/**
@@ -104,6 +124,11 @@ public class GameplayState extends BasicGameState {
 	@Override
 	public void init(GameContainer arg0, StateBasedGame sbg)
 			throws SlickException {
+		arg0.setShowFPS(false);
+
+		player1Heart = new Image("resources/redheart.png").getScaledCopy(0.14f);
+		player2Heart = new Image("resources/purpleheart.png")
+				.getScaledCopy(0.14f);
 		timeHandler = new TimeHandler();
 		player1 = new Player("Andreas", 1,
 				new Image("resources/Character1.png")
@@ -133,18 +158,70 @@ public class GameplayState extends BasicGameState {
 	 * @throws SlickException
 	 */
 	private void addMirrors() throws SlickException {
+		Random rand = new Random();
+		removeMirrors();
+
+		// Makes sure there is at least one mirror in each column.
+		for (int i = 1; i < NUMBER_OF_X_TILES - 1; i += 2) {
+			int j = 1 + rand.nextInt((NUMBER_OF_Y_TILES - 3));
+			if (j % 2 == 0 && j != 0) {
+				j++;
+			}
+			map[i][j].addMirror(tileDistance);
+		}
+
+		// Makes sure there is at least one mirror in each row.
+		for (int j = 1; j < NUMBER_OF_Y_TILES - 1; j += 2) {
+			int i = 1 + rand.nextInt((NUMBER_OF_X_TILES - 3));
+			if (i % 2 == 0 && i != 0) {
+				i++;
+			}
+			if (!rowHasMirror(j)) {
+				map[i][j].addMirror(tileDistance);
+			}
+		}
+
+		// Adds mirrors to the four corners of the map
+		map[1][1].addMirror(tileDistance);
+		map[NUMBER_OF_X_TILES - 2][1].addMirror(tileDistance);
+		map[1][NUMBER_OF_Y_TILES - 2].addMirror(tileDistance);
+		map[NUMBER_OF_X_TILES - 2][NUMBER_OF_Y_TILES - 2]
+				.addMirror(tileDistance);
+
+		for (int i = 1; i < NUMBER_OF_X_TILES - 1; i += 2) {
+			int j = 1 + rand.nextInt((NUMBER_OF_Y_TILES - 3));
+			if (j % 2 == 0 && j != 0) {
+				j++;
+			}
+			map[i][j].addMirror(tileDistance);
+		}
+
+	}
+
+	/**
+	 * Removes all of the mirrors on the map.
+	 */
+	private void removeMirrors() {
 		for (int i = 1; i < NUMBER_OF_X_TILES - 1; i++) {
 			for (int j = 1; j < NUMBER_OF_Y_TILES - 1; j++) {
 				map[i][j].clearMirror();
-				if ((map[i - 1][j].hasPillar() && map[i + 1][j].hasPillar())
-						|| (map[i][j - 1].hasPillar())
-						&& map[i][j + 1].hasPillar()) {
-					// Do nothing
-				} else {
-					map[i][j].addMirror(tileDistance);
-				}
 			}
 		}
+	}
+
+	/**
+	 * Checks if the specified column has any mirrors.
+	 * 
+	 * @throws SlickException
+	 */
+	private boolean rowHasMirror(int column) throws SlickException {
+		int j = column;
+		for (int i = 1; i < NUMBER_OF_X_TILES; i++) {
+			if (map[i][j].hasMirror()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -203,13 +280,14 @@ public class GameplayState extends BasicGameState {
 		player1.setPosition(1, 1);
 		player2.setPosition(NUMBER_OF_X_TILES - 2, NUMBER_OF_Y_TILES - 2);
 		gameHasBeenReset = true;
+		gameOver = false;
 	}
 
 	/**
 	 * Updates the game world.
 	 */
 	@Override
-	public void update(GameContainer gc, StateBasedGame sbg, int delta)
+	public void update(GameContainer gc, final StateBasedGame sbg, int delta)
 			throws SlickException {
 		if (!gameHasBeenReset) {
 			resetGame();
@@ -222,21 +300,53 @@ public class GameplayState extends BasicGameState {
 		while (timePile >= msPerFrame) {
 			timePile -= msPerFrame;
 			timeHandler.laserTick();
-			if (player1.isDead()) {
-				Music gameOverMusic = new Music("resources/titlemusic.ogg");
-				gameOverMusic.loop();
-				System.out.println(player1.getName() + " died.");
-				// TODO Add wait
-				gameHasBeenReset = false;
-				sbg.enterState(2);
+			if (player1.isDead() && !gameOver) {
+				TimerTask player1Death = new TimerTask() {
+					@Override
+					public void run() {
+						if (!gameOver) {
+							Music gameOverMusic = null;
+							try {
+								gameOverMusic = new Music(
+										"resources/titlemusic.ogg");
+							} catch (SlickException e) {
+								e.printStackTrace();
+							}
+							gameOverMusic.loop();
+							// TODO Add wait
+							gameHasBeenReset = false;
+							gameOver = true;
+							sbg.enterState(2);
+						}
+					}
+				};
+				Timer timer = new Timer();
+				timer.schedule(player1Death, 500);
+
 			}
-			if (player2.isDead()) {
-				Music gameOverMusic = new Music("resources/titlemusic.ogg");
-				gameOverMusic.loop();
-				System.out.println(player2.getName() + " died.");
-				// TODO Add wait
-				gameHasBeenReset = false;
-				sbg.enterState(3);
+			if (player2.isDead() && !gameOver) {
+				TimerTask player2Death = new TimerTask() {
+					@Override
+					public void run() {
+						if (!gameOver) {
+							Music gameOverMusic = null;
+							try {
+								gameOverMusic = new Music(
+										"resources/titlemusic.ogg");
+							} catch (SlickException e) {
+								e.printStackTrace();
+							}
+							gameOverMusic.loop();
+							System.out.println("derp");
+							// TODO Add wait
+							gameHasBeenReset = false;
+							gameOver = true;
+							sbg.enterState(3);
+						}
+					}
+				};
+				Timer timer = new Timer();
+				timer.schedule(player2Death, 300);
 			}
 			handlePlayerPositions();
 			checkLaserLife();
@@ -339,6 +449,7 @@ public class GameplayState extends BasicGameState {
 			if (map[posX][posY].hasPlayer()) {
 				Player hitPlayer = map[posX][posY].getPlayer();
 				if (!hitPlayer.isInvulnerable()) {
+
 					hitPlayer.hit(hitPlayer.getId(), rotation, tileDistance);
 				}
 			}
