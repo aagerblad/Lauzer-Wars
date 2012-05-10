@@ -20,7 +20,7 @@ public class CreditsState extends BasicGameState {
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
-		background = new Image("resources/land.jpg");
+		background = new Image("resources/credits.png");
 		
 	}
 

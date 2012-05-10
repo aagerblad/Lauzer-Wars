@@ -57,8 +57,8 @@ public class MainMenuState extends BasicGameState {
 
 	private void resetMainMenu() throws SlickException {
 		
-		System.out.println("hej");
 		background = new Image("resources/MainMenu.png");
+		titleMusic.loop();
 		mainMenuReseted = true;
 	}
 
