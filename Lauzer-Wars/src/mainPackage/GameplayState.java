@@ -127,7 +127,6 @@ public class GameplayState extends BasicGameState {
 	public void init(GameContainer arg0, StateBasedGame sbg)
 			throws SlickException {
 		arg0.setShowFPS(false);
-		
 
 		player1Heart = new Image("resources/redheart.png").getScaledCopy(0.14f);
 		player2Heart = new Image("resources/purpleheart.png")
@@ -297,6 +296,15 @@ public class GameplayState extends BasicGameState {
 
 		}
 		Input input = gc.getInput();
+		if (input.isKeyPressed(Input.KEY_P)) {
+			gc.setPaused(!gc.isPaused());
+			if (gc.isPaused()) {
+				gc.setMusicOn(false);
+			} else {
+				gc.setMusicOn(true);
+
+			}
+		}
 
 		// Makes sure the game stays at the set framerate.
 		timePile += delta;
@@ -548,11 +556,6 @@ public class GameplayState extends BasicGameState {
 
 		int player1X = Math.round(player1.getPosX());
 		int player1Y = Math.round(player1.getPosY());
-
-		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
-			gc.exit();
-			return;
-		}
 
 		// Handles the case where the player wants to move west.
 		if (input.isKeyDown(Input.KEY_A)) {
