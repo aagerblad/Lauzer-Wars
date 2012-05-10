@@ -116,6 +116,8 @@ public class GameplayState extends BasicGameState {
 			heartDraw2 -= tileDistance / 2;
 
 		}
+		System.out.println("hej");
+
 	}
 
 	/**
@@ -125,6 +127,7 @@ public class GameplayState extends BasicGameState {
 	public void init(GameContainer arg0, StateBasedGame sbg)
 			throws SlickException {
 		arg0.setShowFPS(false);
+		
 
 		player1Heart = new Image("resources/redheart.png").getScaledCopy(0.14f);
 		player2Heart = new Image("resources/purpleheart.png")
