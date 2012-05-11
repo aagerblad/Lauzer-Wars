@@ -11,12 +11,12 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class GameOverState extends BasicGameState {
 
-	int stateID = -1;
-	int pointerValue = 0;
-	float pointerPosValueY = 0;
-	float pointerPosValueX = 0;
-	Image background = null;
-	Image pointer = null;
+	private int stateID = -1;
+	private int pointerValue = 0;
+	private float pointerPosValueY = 0;
+	private float pointerPosValueX = 0;
+	private Image background = null;
+	private Image pointer = null;
 
 	public GameOverState(int stateID) throws SlickException {
 		this.stateID = stateID;

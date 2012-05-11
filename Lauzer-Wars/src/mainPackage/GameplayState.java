@@ -347,8 +347,6 @@ public class GameplayState extends BasicGameState {
 								e.printStackTrace();
 							}
 							gameOverMusic.loop();
-							System.out.println("derp");
-							// TODO Add wait
 							gameHasBeenReset = false;
 							gameOver = true;
 							sbg.enterState(3);

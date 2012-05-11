@@ -31,6 +31,11 @@ public class MainMenuState extends BasicGameState {
 	private Sound laserSound = null;
 	private boolean gameToCredits;
 	private boolean gameToHowToPlay;
+	private Image backgroundStandard;
+	private Image backgroundOption0;
+	private Image backgroundOption2;
+	private Image backgroundOption1;
+	private Image backgroundOption3;
 
 	public MainMenuState(int stateID) {
 		this.StateID = stateID;
@@ -41,7 +46,12 @@ public class MainMenuState extends BasicGameState {
 			throws SlickException {
 		titleMusic = new Music("resources/titlemusic.ogg");
 		titleMusic.loop();
-		background = new Image("resources/MainMenu.png");
+		backgroundStandard = new Image("resources/MainMenu.png");
+		background = backgroundStandard;
+		backgroundOption0 = new Image("resources/MainMenuOption0.png");
+		backgroundOption1 = new Image("resources/MainMenuOption1.png");
+		backgroundOption2 = new Image("resources/MainMenuOption2.png");
+		backgroundOption3 = new Image("resources/MainMenuOption3.png");
 		pointer = new Image("resources/Character1.png");
 		pointer.rotate(90);
 		laserSound = new Sound("resources/pew.ogg");
@@ -57,7 +67,7 @@ public class MainMenuState extends BasicGameState {
 
 	private void resetMainMenu() throws SlickException {
 		
-		background = new Image("resources/MainMenu.png");
+		background = backgroundStandard;
 		mainMenuReseted = true;
 	}
 
@@ -65,7 +75,6 @@ public class MainMenuState extends BasicGameState {
 	public void update(GameContainer container, final StateBasedGame game, int delta)
 			throws SlickException {
 		if (!mainMenuReseted) {
-			System.out.println("wat?");
 			resetMainMenu();
 		}
 		Input input = container.getInput();
@@ -147,19 +156,19 @@ public class MainMenuState extends BasicGameState {
 	private void handlePointer(StateBasedGame game) throws SlickException {
 		switch (pointerValue) {
 		case 0:
-			background = new Image("resources/MainMenuOption0.png");
+			background = backgroundOption0;
 			gameplayStateToStart = true;
 			break;
 		case 1:
-			background = new Image("resources/MainMenuOption1.png");
+			background = backgroundOption1;
 			gameToHowToPlay = true;
 			break;
 		case 2:
-			background = new Image("resources/MainMenuOption2.png");
+			background = backgroundOption2;
 			gameToCredits = true;
 			break;
 		case 3:
-			background = new Image("resources/MainMenuOption3.png");
+			background = backgroundOption3;
 			gameToExit = true;
 			break;
 		default:
