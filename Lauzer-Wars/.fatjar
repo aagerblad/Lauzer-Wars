@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Fri May 11 11:39:40 CEST 2012
+onejar.license.required=false
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=Lauzer-Wars.jar
+manifest.mergeall=true
+manifest.mainclass=mainPackage.LauzerWarsGame
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=
+includes=
