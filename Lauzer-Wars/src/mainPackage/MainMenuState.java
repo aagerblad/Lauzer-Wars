@@ -103,7 +103,7 @@ public class MainMenuState extends BasicGameState {
 				|| gameToHowToPlay) {
 			tick += delta;
 
-			if (tick >= 801) {
+			if (tick >= 802) {
 				tick = 0;
 				mainMenuReseted = false;
 				if (gameplayStateToStart) {
